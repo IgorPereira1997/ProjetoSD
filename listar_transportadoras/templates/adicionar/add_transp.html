@@ -1,0 +1,62 @@
+
+{% include 'standard/base.html' %}
+{% load staticfiles %}
+
+<html>
+    <head>
+        <title>Inserir Nova Transportadora Filiada</title>
+        <link href="{% static '_css/alteracao.css' %}" rel="stylesheet">
+        <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <main>
+        <!-- Top navigation -->
+            <div class="topnav">
+                <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="#">Adicionar Filial</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                <a class="nav-link" href="/listar_transportadoras/listar/">Listar Filiais</a>
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a href="#">Sair</a>
+                </div>
+            </div>
+            <div id="janela_formulario">
+                <form action="/listar_transportadoras/atualizar/" method="POST">
+                    {% csrf_token %}
+
+                    <h2>Por favor confirme se os dados estão corretos, modifique o endereço se for necessário</h2>
+                    <h5> {{ form.nometransportadora.errors  }} </h5>
+                    <h4> {{ form.nometransportadora.label_tag }}{{ form.nometransportadora }} </h4>
+
+                    <h5> {{ form.cep.errors  }} </h5>
+                    <h4> {{ form.cep.label_tag }}{{ form.cep }} </h4>
+
+                    <h5> {{ form.estados.errors  }} </h5>
+                    <h4> {{ form.estados.label_tag }}{{ form.estados }} </h4>
+
+                    <h5> {{ form.cidade.errors  }} </h5>
+                    <h4> {{ form.cidade.label_tag }}{{ form.cidade }} </h4>
+
+                    <h5> {{ form.endereco.errors  }} </h5>
+                    <h4> {{ form.endereco.label_tag }}{{ form.endereco }} </h4>
+
+                    <h5> {{ form.telefone.errors  }} </h5>
+                    <h4> {{ form.telefone.label_tag }}{{ form.telefone }} </h4>
+
+                    <h5> {{ form.cnpj.errors  }} </h5>
+                    <h4> {{ form.cnpj.label_tag }}{{ form.cnpj }} </h4>
+
+                    <input type="submit" value="Inserir">
+                </form>
+                 <form action="/listar_transportadoras/listar/" method="GET">
+                    <input type="submit" value="Cancelar">
+                </form>
+            </div>
+        </main>
+    </body>
+</html>
+
+{% include 'standard/footer.html' %}

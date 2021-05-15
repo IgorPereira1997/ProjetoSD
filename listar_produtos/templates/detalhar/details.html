@@ -1,0 +1,60 @@
+{% include 'standard/base.html' %}
+{% load staticfiles %}
+
+<html>
+    <head>
+        <title>Detalhes do Produto</title>
+        <link href="{% static '_css/produto_detalhe.css' %}" rel="stylesheet">
+        <link href="{% static '_css/menu_ini.css'%}" rel='stylesheet'>
+    </head>
+    <body>
+        <main>
+        <!-- Top navigation -->
+            <div class="topnav">
+                <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="#">Detalhes</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                <a href="/listar_produtos/adicionar/">Adicionar Produto</a>
+                <a href="/listar_produtos/listar/">Listar Produtos</a>
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a href="#">Sair</a>
+                </div>
+            </div>
+            <div id="detalhe_produto">
+            {% for linha in prod %}
+                <ul>
+                    <li class="imagem"><img src="/media/{{linha.imagemgrande }}"></li>
+                    <li>
+                        <h2>{{ linha.nomeproduto }}</h2>
+                    </li>
+                    <li><b>Descri&ccedil;&atilde;o: </b>{{ linha.descricao }}</li>
+                    <li><b>C&oacute;digo de Barra: </b>{{ linha.codigobarra }}</li>
+                    <li><b>Tempo de Entrega: </b>{{ linha.tempoentrega }}&nbsp;dias</li>
+                    <li><b>Pre&ccedil;o Revenda: </b>R${{ linha.precorevenda }}</li>
+                    <li><b>Pre&ccedil;o Unit&aacute;rio: </b>R${{ linha.precounitario }}</li>
+                    <li><b>Quantidade em Estoque: </b>{{ linha.estoque }} unidades.</li>
+                </ul>
+                <br><br>
+                <form action="/listar_produtos/atualizar/" method="GET">
+                    <input type="hidden" name="prod" value="{{ linha.produtoid }}">
+                    <input type="submit" value="Atualizar Informações">
+                </form>
+                <span><br></span>
+                <form action="/listar_produtos/deletar/" method="GET">
+                    <input type="hidden" name="prod" value="{{ linha.produtoid }}">
+                    <input type="submit" value="Deletar Produto">
+                </form>
+                <span><br></span>
+                <form action="/listar_produtos/listar/" method="GET">
+                    <input type="submit" value="Voltar">
+                </form>
+            {% endfor %}
+            </div>
+        </main>
+    </body>
+</html>
+
+{% include 'standard/footer.html' %}

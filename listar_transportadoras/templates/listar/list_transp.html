@@ -1,0 +1,41 @@
+
+{% include 'standard/base.html' %}
+{% load staticfiles %}
+
+<html>
+    <head>
+        <title>Fornecedores Disponíveis</title>
+        <link href="{% static '_css/novo-alteracao.css' %}" rel="stylesheet">
+        <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <main>
+        <!-- Top navigation -->
+            <div class="topnav">
+            <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="/listar_transportadoras/listar/">Listar Filiais</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                <a href="/listar_transportadoras/adicionar_ini/">Adicionar Filial</a>
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                <a href="/listar_transportadoras/listar/">Sair</a>
+                </div>
+            </div>
+            <div id="janela_transportadoras">
+            {% for linha in filiais %}
+                <ul>
+                    <li>{{ linha.nometransportadora }}</li>
+                    <li>{{ linha.cidade }}</li>
+                    <li><a href="/listar_transportadoras/atualizar_ini/?codigo={{ linha.transportadoraid }}">Alterar</a> </li>
+                    <li><a href="/listar_transportadoras/deletar/?codigo={{ linha.transportadoraid }}">Excluir</a> </li>
+                </ul>
+            {% endfor %}
+            </div>
+        </main>
+    </body>
+</html>
+
+{% include 'standard/footer.html' %}
+

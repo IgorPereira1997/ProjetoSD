@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+
+{% include 'standard/base.html' %}
+{% load staticfiles %}
+
+<html>
+    <head>
+        <title>Login</title>
+        <link href="{% static '_css/login.css' %}" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <main>
+            <div id="janela_login">
+            <form action="/login/fornecedor/" method="post">
+            {% csrf_token %}
+                <h2>Tela de Login para Transportadoras</h2>
+                <input type="text" name="user_fornecedor" placeholder="Nome de Usuário">
+                <input type="password" name="key_password_fornecedor" placeholder="Senha">
+                <input type="submit" name="submit_fornecedor" value="Login">
+                {% if loginfornecedor == 'Diferente' %}
+                    <p>{{ msg }}</p>
+                {% endif %}
+            </form>
+        </div>
+        </main>
+    </body>
+    {% include 'standard/footer.html' %}
+</html>

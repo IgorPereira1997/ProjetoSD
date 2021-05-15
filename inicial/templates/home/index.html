@@ -1,0 +1,31 @@
+{% include 'standard/base.html' %}
+{% load staticfiles %}
+
+<html>
+    <head>
+        <title>Transportadora Vietnã</title>
+        <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <main>
+            <!-- Top navigation -->
+            <div class="topnav">
+                <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="#">Home</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                <a class="nav-link" href="/login/cliente/">Entrar como Cliente</a>
+                <a class="nav-link" href="/login/fornecedor/">Entrar como Fornecedor</a>
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a class="nav-link" href="#">Entrar como Administrador</a>
+                    <a class="nav-link" href="#">Fale Conosco</a>
+                    <a href="#">Sair</a>
+                </div>
+            </div>
+        </main>
+    <body>
+</html>
+
+{% include 'standard/footer.html' %}

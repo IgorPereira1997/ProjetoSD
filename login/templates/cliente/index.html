@@ -1,0 +1,28 @@
+{% include 'standard/base.html' %}
+{% load staticfiles %}
+
+<html>
+    <head>
+        <title>Login</title>
+        <link href="{% static '_css/login.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <main>
+            <div id="janela_login">
+            <form action="/login/cliente/" method="POST">
+            {% csrf_token %}
+                <h2>Tela de Login para Cliente</h2>
+                <input type="text" name="user_cliente" placeholder="Nome de Usuário">
+                <input type="password" name="key_password_cliente" placeholder="Senha">
+                <input type="submit" name="submit_cliente" value="Login">
+                {% if logincliente == 'Diferente' %}
+                    <p>{{ msg }}</p>
+                {% endif %}
+            </form>
+        </div>
+        <p>{{ sessao }}</p>
+        </main>
+    </body>
+</html>
+
+{% include 'standard/footer.html' %}
