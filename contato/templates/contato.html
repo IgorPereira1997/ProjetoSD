@@ -1,18 +1,5 @@
-<!--
-<?php require_once("../connection/conexao.php"); ?>
-<?php
-if (isset($_POST["enviar"])) {
-    if (enviarMensagem($_POST)) {
-        $mensagem = "Mensagem enviada com sucesso!";
-    } else {
-        $mensagem = "Erro no envio da mensagem!";
-    }
-}
-?>
--->
-
 {% extends 'pag_base/base.html' %}
-{% load staticfiles %}
+{% load static %}
 
 <html>
     <head>
@@ -28,11 +15,6 @@ if (isset($_POST["enviar"])) {
                     <label>Mensagem</label>
                     <textarea name="mensagem"></textarea>
                     <input type="submit" name="enviar" value="Enviar Mensagem">
-                    <?php
-                    if (isset($mensagem)) {
-                        echo "<p>" . $mensagem . "</p>";
-                    }
-                    ?>
                 </form>
             </div>
         </main>

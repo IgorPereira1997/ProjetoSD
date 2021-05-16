@@ -13,7 +13,6 @@ class Produtos(models.Model):
     estoque = models.IntegerField(blank=True, null=True)
     imagemgrande = models.FileField(upload_to='images/product_images')
     imagempequena = models.FileField(upload_to='images/product_images')
-    descontinuado = models.IntegerField(blank=True, null=True)
     fornecedorid = models.IntegerField(db_column='fornecedorID', blank=True, null=True)  # Field name made lowercase.
     categoriaid = models.IntegerField(db_column='categoriaID', blank=True, null=True)  # Field name made lowercase.
 

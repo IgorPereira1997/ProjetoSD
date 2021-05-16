@@ -118,7 +118,6 @@ def upd_transp_ini(request):
 def del_transp(request):
     codigo = request.GET.get('codigo')
     filial = Transportadoras.objects.get(transportadoraid__exact=codigo)
-    estado = Estados.objects.get(estadoid__exact=filial.estadoid)
     if request.method == "POST":
         filial.delete()
         return redirect('/listar_transportadoras/listar/')

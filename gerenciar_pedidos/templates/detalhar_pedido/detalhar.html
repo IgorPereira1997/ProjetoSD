@@ -1,0 +1,59 @@
+{% include 'standard/base.html' %}
+{% load static %}
+
+<html>
+    <head>
+        <title>Listagem dos pedidos</title>
+        <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <main>
+        <!-- Top navigation -->
+            <div class="topnav">
+            <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="/gerenciar_pedidos/lista_pedidos/">Lista de Pedidos</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                <a href="/gerenciar_pedidos/fazer_pedido">Cadastrar Pedido</a>
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a href="#">Sair</a>
+                </div>
+            </div>
+            <br><br><br>
+            <div id="janela_transportadoras">
+                {% for linha2 in transportadoras %}
+                    {% for linha3 in clientes %}
+                        {% if linha3.clienteid == pedidos.clienteid and pedidos.transportadoraid == linha2.transportadoraid %}
+                                <ul class="list-group list-group-horizontal-md">
+                                    <li class="list-group-item">Cliente:{{ linha3.nomecompleto }}</li>
+                                    <li class="list-group-item">Transportadora: {{ linha2.nometransportadora }}</li>
+                                    <li class="list-group-item">Data do Pedido:{{ pedidos.data_pedido }}</li>
+                                    <li class="list-group-item">Data de Saída:{{ pedidos.data_saida }}</li>
+                                    {% if pedidos.status_pedido == 3 or pedidos.status_pedido == 4 %}
+                                        <li class="list-group-item">Data de Cancelamento: 
+                                    {% else %}
+                                        <li class="list-group-item">Data de Entrega:
+                                    {% endif %}
+                                        {{ pedidos.data_entrega }}</li>
+                                    <li class="list-group-item">Valor do Pedido: R${{ pedidos.valor_pedido }}</li>
+                                </ul>
+                                <form action="/gerenciar_pedidos/detalhar_pedido/">
+                                    <input type="submit" value="Ver detlahes">
+                                </form>
+                                <form>
+                                    <input type="submit" value="Cancelar Pedido">
+                                </form>
+                                <form>
+                                    <input type="submit" value="Modificar Pedido">
+                                </form>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor%}
+            </div>
+        </main>
+    </body>
+</html>
+
+{% include 'standard/footer.html' %}
