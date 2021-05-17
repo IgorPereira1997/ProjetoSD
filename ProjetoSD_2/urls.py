@@ -29,7 +29,8 @@ urlpatterns = [
     path('login/', include('login.urls')),
     path('gerenciar_pedidos/', include('gerenciar_pedidos.urls')),
     path('inicial/', include('inicial.urls')),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 else:

@@ -15,6 +15,7 @@ def login_cliente(request):
             if ((campo['usuario'] == usuarioC) and (campo['senha'] == senhaC)):
                 validoCliente = 'Igual'
                 request.session['idCliente'] = campo['clienteid']
+                request.session['idFornecedor'] = ''
                 return redirect('/listar_produtos/listar/')
                 break
     else:
@@ -35,6 +36,7 @@ def login_fornecedor(request):
             if ((campo['usuario'] == usuarioF) and (campo['senha'] == senhaF)):
                 validoFornecedor = 'Igual'
                 request.session['idFornecedor'] = campo['fornecedorid']
+                request.session['idCliente'] = ''
                 return redirect('/listar_transportadoras/listar/')
                 break
     else:

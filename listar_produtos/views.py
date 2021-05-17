@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from inicial.models import Categorias
 from fornecedores.models import Fornecedores
 from .models import Produtos
+from gerenciar_pedidos.models import Pedidos, PedidosItem
 from .forms import AdicionarProdutoForm, AlterarProdutoForm
 
 import inicial.funcoes as func
@@ -60,11 +61,33 @@ def del_prod(request):
 
 def list_prod(request):
     cliente = request.session['idCliente']
+    fornecedor = request.session['idFornecedor']
     pesq = request.GET.get('produto')
-    if pesq is None: 
-        all_produtos = Produtos.objects.all
+    list_items = []
+    if cliente and fornecedor == "":
+        if Pedidos.objects.filter(clienteid__exact=cliente):
+            all_pedidos = Pedidos.objects.filter(clienteid__exact=cliente)
+        else:
+            all_pedidos = None
+        all_pedidos_item = PedidosItem.objects.values()
+        if all_pedidos:
+            for linha in all_pedidos:
+                for linha2 in all_pedidos_item:
+                    if linha.pedidoid == linha2['pedidoid']:
+                        list_items.append((linha2['produtoid'],linha2['quantidade']))
+
+            print(list_items)
+        else:
+            print("nada")
+        if pesq is None: 
+            all_produtos = Produtos.objects.all
+        else:
+            all_produtos = Produtos.objects.filter(nomeproduto__icontains=pesq)
     else:
-        all_produtos = Produtos.objects.filter(nomeproduto__icontains=pesq)
+        if pesq is None: 
+            all_produtos = Produtos.objects.all
+        else:
+            all_produtos = Produtos.objects.filter(nomeproduto__icontains=pesq)
     return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq,})
 
 
