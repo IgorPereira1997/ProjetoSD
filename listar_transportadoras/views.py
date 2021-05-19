@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from inicial.models import Estados
 from .models import Transportadoras
-from .forms import AdicionarTransportadoraForm, AdicionarTransportadoraIniForm
+import inicial.validators as v
+from .forms import AdicionarTransportadoraForm, AdicionarTransportadoraIniForm, AlterarTransportadoraForm
 from pycep_correios import get_address_from_cep, WebService
 
 # Create your views here.
@@ -57,7 +58,7 @@ def upd_transp(request):
     codigo = request.GET.get('codigo')
     flag = False
     if request.method == "POST":
-        form = AdicionarTransportadoraForm(estados_list, dados_preliminares,request.POST)
+        form = AlterarTransportadoraForm(estados_list, dados_preliminares,request.POST)
         if form.is_valid():
             filial = Transportadoras.objects.get(transportadoraid__exact=codigo)
             id = Estados.objects.get(nome__exact=request.POST.get('estados'))
@@ -86,10 +87,10 @@ def upd_transp(request):
                 filial.save(force_update=True)
             return redirect('/listar_transportadoras/listar/')
         else:
-            form = AdicionarTransportadoraForm(estados_list, dados_preliminares,request.POST)
+            form = AlterarTransportadoraForm(estados_list, dados_preliminares,request.POST)
             return render(request, 'atualizar/upd_transp.html', {'form': form, 'cod': codigo})
     else:
-        form = AdicionarTransportadoraForm(estados_list, dados_preliminares)
+        form = AlterarTransportadoraForm(estados_list, dados_preliminares)
         return render(request, 'atualizar/upd_transp.html', {'form': form, 'cod': codigo})
 
 def upd_transp_ini(request):

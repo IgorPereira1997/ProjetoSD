@@ -1,4 +1,4 @@
-from inicial.validators import validate_barcode, validate_float, validate_nomeProduto
+from inicial.validators import validate_barcode, validate_barcodeUpdate, validate_float, validate_nomeProduto, validate_nomeProdutoUpdate
 from django import forms
 from inicial.upload_validator import FileTypeValidator
 
@@ -108,11 +108,13 @@ class AlterarProdutoForm(forms.Form):
     nomeproduto = forms.CharField(
         required = True,
         label="Nome do Produto",
+        validators=[validate_nomeProdutoUpdate]
     )
     
     codigobarra = forms.CharField(
         required = True,
         label="Código de Barra",
+        validators=[validate_barcodeUpdate]
     )
     
     descricao = forms.CharField(
@@ -141,16 +143,19 @@ class AlterarProdutoForm(forms.Form):
     precorevenda = forms.CharField(
         required = True,
         label='Preço de revenda',
+        validators=[validate_float],
     )
 
     precounitario = forms.CharField(
         required = True,
-        label='Preço Unitário'
+        label='Preço Unitário',
+        validators=[validate_float],
     )
     
     estoque = forms.IntegerField(
         required = True,
-        label='Estoque adquirido'
+        label='Estoque adquirido',
+        min_value=1,
     )
 
     foto_grande = forms.FileField(
