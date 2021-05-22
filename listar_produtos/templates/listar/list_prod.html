@@ -18,8 +18,10 @@
                 </div>
                 <!-- Left-aligned links (default) -->
                 <a class="nav-link" href="/listar_produtos/adicionar/">Adicionar Produto</a>
+                <a href="/listar_transportadoras/listar/">Listar Filiais</a>
                 <!-- Right-aligned links -->
                 <div class="topnav-right">
+                    <a href="/gerenciar_pedidos/lista_pedidos/">Gerenciar Pedidos</a>
                     <a href="#">Sair</a>
                 </div>
             </div>
@@ -31,7 +33,10 @@
             </div>
 
             <div id="listagem_produtos">
-            {% for linha in produtos %}
+                {% if flag %}
+                    <h3>Não há produtos listados para o cliente/fornecedor!</h3>
+                {% else %}
+                    {% for linha in produtos %}
                     <ul>
                         <li class="imagem">
                             <a href="/listar_produtos/detalhar/?prod={{ linha.produtoid }}">
@@ -44,7 +49,8 @@
                         <li>Tempo de Entrega: {{ linha.tempoentrega }}&nbsp;dias</li>
                         <li>Preço unitário: R${{ linha.precounitario }}&nbsp;</li>
                     </ul>
-                {% endfor %}
+                    {% endfor %}
+                {% endif %}
                 <h5>{{teste}}</h5>
             </div>
         </main>

@@ -56,39 +56,58 @@ def del_prod(request):
         produto.delete()
         return redirect('/listar_produtos/listar/')
     else:
-        return render(request, 'deletar/del_prod.html', {'id': idProduto, 'msg':msg})
+        return render(request, 'deletar/del_prod.html', {'id': idProduto, 'msg': msg})
 
 
 def list_prod(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     pesq = request.GET.get('produto')
-    list_items = []
-    if cliente and fornecedor == "":
-        if Pedidos.objects.filter(clienteid__exact=cliente):
-            all_pedidos = Pedidos.objects.filter(clienteid__exact=cliente)
-        else:
-            all_pedidos = None
-        all_pedidos_item = PedidosItem.objects.values()
-        if all_pedidos:
-            for linha in all_pedidos:
-                for linha2 in all_pedidos_item:
-                    if linha.pedidoid == linha2['pedidoid']:
-                        list_items.append((linha2['produtoid'],linha2['quantidade']))
-
-            print(list_items)
-        else:
-            print("nada")
-        if pesq is None: 
-            all_produtos = Produtos.objects.all
-        else:
-            all_produtos = Produtos.objects.filter(nomeproduto__icontains=pesq)
+    if cliente == "" and fornecedor == "":
+        return redirect('/inicial/home/')
     else:
-        if pesq is None: 
-            all_produtos = Produtos.objects.all
+        if cliente:
+            all_produtos = []
+            list_items = []
+            qtd = 0
+            aux = []
+            if Pedidos.objects.filter(clienteid__exact=cliente):
+                all_pedidos = Pedidos.objects.filter(clienteid__exact=cliente)
+                all_pedidos_item = PedidosItem.objects.values()
+                for linha in all_pedidos:
+                    for linha2 in all_pedidos_item:
+                        if linha.pedidoid == linha2['pedidoid']:
+                            list_items.append((linha2['produtoid'],linha2['quantidade']))
+                list_items.sort()
+                for i in range(1, len(list_items)):
+                    if i == 1:
+                        qtd = list_items[i-1][1]
+                    if list_items[i-1][0] == list_items[i][0]:
+                        qtd += list_items[i][1]
+                    else:
+                        aux.append((list_items[i-1][0], qtd))
+                        if i == len(list_items) - 1:
+                            aux.append((list_items[i][0], qtd))
+                        else:
+                            qtd = list_items[i][1]
+                for i in range(0, len(aux)):
+                        all_produtos.append(Produtos.objects.get(produtoid=aux[i][0]))
+                return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq, 'flag': False})
+            else:
+                all_pedidos = None
+                print("Cliente não tem prodtuto em estoque")
+                return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq, 'flag': True})
         else:
-            all_produtos = Produtos.objects.filter(nomeproduto__icontains=pesq)
-    return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq,})
+            if Produtos.objects.filter(fornecedorid__exact=fornecedor):
+                if pesq is None:
+                    all_produtos = Produtos.objects.filter(fornecedorid__exact=fornecedor)
+                else:
+                    all_produtos = Produtos.objects.filter(fornecedorid__exact=fornecedor).filter(nomeproduto__icontains=pesq)
+                return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq,'flag': False})
+            else:
+                all_produtos = None
+                print("Fornecedor não tem produtos")
+                return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq,'flag': True})
 
 
 def upd_prod(request):
@@ -143,7 +162,17 @@ def upd_prod(request):
 
 
 def details(request):
+    cliente = request.session['idCliente']
+    fornecedor = request.session['idFornecedor']
     idProduto = request.GET.get('prod')
     produto = Produtos.objects.filter(produtoid__exact=idProduto)
-    return render(request, 'detalhar/details.html', {'prod': produto, 'id': idProduto})
+    qtd = 0
+    for i in range(0, len(aux)):
+        print(aux[i][0])
+        if int(aux[i][0]) == int(idProduto):
+            print("entrei")
+            qtd = aux[i][1]
+            break
+        print(qtd)
+    return render(request, 'detalhar/details.html', {'prod': produto, 'id': idProduto, 'cliente': cliente, 'forn': fornecedor, 'qtd': qtd})
 

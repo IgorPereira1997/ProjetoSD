@@ -35,9 +35,14 @@
                     <li><b>Tempo de Entrega: </b>{{ linha.tempoentrega }}&nbsp;dias</li>
                     <li><b>Pre&ccedil;o Revenda: </b>R${{ linha.precorevenda }}</li>
                     <li><b>Pre&ccedil;o Unit&aacute;rio: </b>R${{ linha.precounitario }}</li>
+                    {% if cliente %}
+                    <li><b>Quantidade em Estoque: </b>{{ qtd }} unidades.</li>
+                    {% else %}
                     <li><b>Quantidade em Estoque: </b>{{ linha.estoque }} unidades.</li>
+                    {%endif%}
                 </ul>
                 <br><br>
+                {%if forn%}
                 <form action="/listar_produtos/atualizar/" method="GET">
                     <input type="hidden" name="prod" value="{{ linha.produtoid }}">
                     <input type="submit" value="Atualizar Informações">
@@ -47,6 +52,7 @@
                     <input type="hidden" name="prod" value="{{ linha.produtoid }}">
                     <input type="submit" value="Deletar Produto">
                 </form>
+                {% endif %}
                 <span><br></span>
                 <form action="/listar_produtos/listar/" method="GET">
                     <input type="submit" value="Voltar">
