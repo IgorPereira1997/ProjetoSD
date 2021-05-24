@@ -1,5 +1,5 @@
 from django.db import models
-
+from listar_produtos.models import Produtos
 # Create your models here.
 
 class Pedidos(models.Model):
@@ -17,6 +17,9 @@ class Pedidos(models.Model):
         managed = True
         db_table = 'pedidos'
 
+    def __str__(self):
+        return f"{self.data_pedido} | Status:{self.status_pedido} | Valor: {self.valor_pedido}"
+
 
 class PedidosItem(models.Model):
     pedidoid = models.IntegerField(db_column='pedidoID', blank=True, null=True)  # Field name made lowercase.
@@ -28,6 +31,10 @@ class PedidosItem(models.Model):
         managed = True
         db_table = 'pedidos_item'
 
+    def __str__(self):
+        return f"{self.pedidoid} | {Produtos.objects.filter(produtoid__exact=self.produtoid).values('nomeproduto')} | QTD: {self.quantidade}"
+
+
 
 class PedidosStatus(models.Model):
     statusid = models.AutoField(db_column='statusID', primary_key=True)  # Field name made lowercase.
@@ -36,3 +43,6 @@ class PedidosStatus(models.Model):
     class Meta:
         managed = True
         db_table = 'pedidos_status'
+
+    def __str__(self):
+        return f"ID: {self.statusid} | {self.nomestatus}"

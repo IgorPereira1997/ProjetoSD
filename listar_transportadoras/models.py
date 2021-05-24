@@ -15,13 +15,5 @@ class Transportadoras(models.Model):
     class Meta:
         managed = True
         db_table = 'transportadoras'
-
     def __str__(self):
-        return (self.transportadoraid + ' ' +
-                self.nometransportadora + ' ' +
-                self.endereco + ' ' +
-                self.telefone + ' ' +
-                self.cidade + ' ' +
-                self.estadoid + ' ' +
-                self.cep + ' ' +
-                self.cnpj)
+        return f"{self.nometransportadora} | {self.cnpj}"

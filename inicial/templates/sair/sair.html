@@ -5,8 +5,8 @@
 <html>
     <head>
         <title>Fornecedores Disponíveis</title>
-        <link href="{% static '_css/novo-alteracao.css' %}" rel="stylesheet">
         <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
+        <link href="{% static '_css/inclusao.css' %}" rel="stylesheet">
     </head>
     <body>
         <main>
@@ -18,22 +18,23 @@
                 </div>
                 <!-- Left-aligned links (default) -->
                 <a href="/listar_transportadoras/adicionar_ini/">Adicionar Filial</a>
-                <a href="/listar_produtos/listar/">Produtos</a>
+                <a href="/listar_produtos/listar/">Listar Produtos</a>
                 <!-- Right-aligned links -->
                 <div class="topnav-right">
                 <a href="/gerenciar_pedidos/lista_pedidos/">Gerenciar Pedidos</a>
-                <a href="/inicial/sair/">Sair</a>
+                <a href="/listar_transportadoras/listar/">Sair</a>
                 </div>
             </div>
-            <div id="janela_transportadoras">
-            {% for linha in filiais %}
-                <ul>
-                    <li>{{ linha.nometransportadora }}</li>
-                    <li>{{ linha.cidade }}</li>
-                    <li><a href="/listar_transportadoras/atualizar_ini/?codigo={{ linha.transportadoraid }}">Alterar</a> </li>
-                    <li><a href="/listar_transportadoras/deletar/?codigo={{ linha.transportadoraid }}">Excluir</a> </li>
-                </ul>
-            {% endfor %}
+            <div>
+            <h3>Tem certeza que deseja sair?</h3>
+                <form method="POST" action="/listar_transportadoras/listar/">
+                    {% csrf_token %}
+                    <input type="submit" value="Cancelar">
+                </form>
+                <form method="POST" action="/inicial/home/">
+                {% csrf_token %}
+                    <input type="submit" value="Sair">
+                </form>
             </div>
         </main>
     </body>

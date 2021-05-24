@@ -19,3 +19,9 @@ class Produtos(models.Model):
     class Meta:
         managed = True
         db_table = 'produtos'
+    
+    def __str__(self):
+        return f"{self.nomeproduto} | {self.codigobarra}"
+    
+    def detalhes(self):
+        return f"{self.nomeproduto}"

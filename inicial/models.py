@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.db import models
 
 # Create your models here.
@@ -9,6 +10,9 @@ class Categorias(models.Model):
     class Meta:
         managed = True
         db_table = 'categorias'
+    
+    def __str__(self):
+        return f"{self.nomecategoria}"
 
 class Departamentos(models.Model):
     departamentoid = models.AutoField(db_column='departamentoID', primary_key=True)  # Field name made lowercase.
@@ -18,6 +22,10 @@ class Departamentos(models.Model):
         managed = True
         db_table = 'departamentos'
 
+    def __str__(self):
+        return f"{self.nomedepartamento}"
+
+
 class Estados(models.Model):
     estadoid = models.AutoField(db_column='estadoID', primary_key=True)  # Field name made lowercase.
     nome = models.CharField(max_length=20, blank=True, null=True)
@@ -26,3 +34,6 @@ class Estados(models.Model):
     class Meta:
         managed = True
         db_table = 'estados'
+
+    def __str__(self):
+        return f"{self.nome} | UF = {self.sigla}"

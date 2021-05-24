@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
 from clientes.models import Clientes
 from fornecedores.models import Fornecedores
+from django.contrib.auth.models import User
 # Create your views here.
 
 mensagem = 'Usuário ou senha incorretos!'
 
 def login_cliente(request):
+    request.session['idFornecedor'] = ''
+    request.session['idAdmin'] = ''
     if request.method == "POST":
         all_clientes = Clientes.objects.values('usuario', 'senha', 'clienteid')
         validoCliente = 'Diferente'
@@ -16,6 +19,7 @@ def login_cliente(request):
                 validoCliente = 'Igual'
                 request.session['idCliente'] = campo['clienteid']
                 request.session['idFornecedor'] = ''
+                request.session['idAdmin'] = ''
                 return redirect('/listar_produtos/listar/')
                 break
     else:
@@ -27,6 +31,8 @@ def login_cliente(request):
 
 
 def login_fornecedor(request):
+    request.session['idCliente'] = ''
+    request.session['idAdmin'] = ''
     if request.method == "POST":
         all_fornecedores = Fornecedores.objects.values('usuario', 'senha', 'fornecedorid')
         validoFornecedor = 'Diferente'
@@ -36,7 +42,6 @@ def login_fornecedor(request):
             if ((campo['usuario'] == usuarioF) and (campo['senha'] == senhaF)):
                 validoFornecedor = 'Igual'
                 request.session['idFornecedor'] = campo['fornecedorid']
-                request.session['idCliente'] = ''
                 return redirect('/listar_transportadoras/listar/')
                 break
     else:
@@ -45,3 +50,24 @@ def login_fornecedor(request):
         validoFornecedor = ''
         request.session['idFornecedor'] = ''
     return render(request, 'fornecedor/index.html', {'loginfornecedor': validoFornecedor,'msg': mensagem})
+
+def login_admin(request):
+    request.session['idCliente'] = ''
+    request.session['idFornecedor'] = ''
+    if request.method == "POST":
+        all_users = User.objects.filter(is_superuser=True)
+        validoFornecedor = 'Diferente'
+        usuarioA = request.POST.get('user_admin')
+        senhaA = request.POST.get('key_password_admin')
+        for campo in all_users:
+            if ((campo['usuario'] == usuarioA) and (campo['senha'] == senhaA)):
+                validoFornecedor = 'Igual'
+                request.session['idFornecedor'] = campo['fornecedorid']
+                return redirect('/listar_transportadoras/listar/')
+                break
+    else:
+        usuarioA = ''
+        senhaA = ''
+        validoFornecedor = ''
+        request.session['idFornecedor'] = ''
+    return render(request, 'admin/index.html', {'loginfornecedor': validoFornecedor,'msg': mensagem})

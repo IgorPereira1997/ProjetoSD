@@ -1,6 +1,5 @@
 from inicial.validators import validate_cep, validate_cnpj, validate_cnpjUpdate, validate_nomeTransportadora, validate_nomeTransportadoraUpdate
 from django import forms
-from inicial.models import Estados
 
 class AdicionarTransportadoraForm(forms.Form):
     def __init__(self, estados_choices, detalhes, *args, **kwargs):
@@ -101,7 +100,7 @@ class AdicionarTransportadoraIniForm(forms.Form):
 
 class AlterarTransportadoraIniForm(forms.Form):
     def __init__(self, detalhes ,*args, **kwargs):
-        super(AdicionarTransportadoraIniForm, self).__init__(*args, **kwargs)
+        super(AlterarTransportadoraIniForm, self).__init__(*args, **kwargs)
         if detalhes:
             self.fields['nometransportadora'].initial = detalhes.nometransportadora
             self.fields['cep'].initial = detalhes.cep

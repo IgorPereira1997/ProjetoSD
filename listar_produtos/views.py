@@ -167,12 +167,12 @@ def details(request):
     idProduto = request.GET.get('prod')
     produto = Produtos.objects.filter(produtoid__exact=idProduto)
     qtd = 0
-    for i in range(0, len(aux)):
+    '''for i in range(0, len(aux)):
         print(aux[i][0])
         if int(aux[i][0]) == int(idProduto):
             print("entrei")
             qtd = aux[i][1]
             break
-        print(qtd)
+        print(qtd)'''
     return render(request, 'detalhar/details.html', {'prod': produto, 'id': idProduto, 'cliente': cliente, 'forn': fornecedor, 'qtd': qtd})
 

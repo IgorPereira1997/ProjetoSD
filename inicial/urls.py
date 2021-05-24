@@ -6,4 +6,5 @@ app_name = 'inicial'
 
 urlpatterns = [
     path('home/', views.padrao, name='padrao'),
+    path('sair/', views.sair, name="sair"),
 ]
