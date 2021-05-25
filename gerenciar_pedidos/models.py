@@ -16,6 +16,7 @@ class Pedidos(models.Model):
     class Meta:
         managed = True
         db_table = 'pedidos'
+        ordering = ('pedidoid', 'data_pedido', 'status_pedido', 'valor_pedido')
 
     def __str__(self):
         return f"{self.data_pedido} | Status:{self.status_pedido} | Valor: {self.valor_pedido}"

@@ -4,4 +4,5 @@ from .models import Produtos
 
 @admin.register(Produtos)
 class ProdutosAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('nomeproduto', 'codigobarra', 'fornecedorid')
+    search_fields = ("nomeproduto__icontains", )

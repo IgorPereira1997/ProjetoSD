@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
-from clientes.models import Clientes
-from fornecedores.models import Fornecedores
+from login.models import Clientes, Fornecedores
 from django.contrib.auth.models import User
 # Create your views here.
 

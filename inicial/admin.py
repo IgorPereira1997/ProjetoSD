@@ -9,8 +9,8 @@ class DepartamentosAdmin(admin.ModelAdmin):
 
 @admin.register(Estados)
 class EstadosAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("sigla", 'nome')
 
 @admin.register(Categorias)
 class CategoriasAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('categoriaid', 'nomecategoria')

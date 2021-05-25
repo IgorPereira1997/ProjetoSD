@@ -22,6 +22,4 @@ class Produtos(models.Model):
     
     def __str__(self):
         return f"{self.nomeproduto} | {self.codigobarra}"
-    
-    def detalhes(self):
-        return f"{self.nomeproduto}"
+

@@ -11,4 +11,4 @@ def sair(request):
         request.session['idCliente'] = ''
         return redirect('/inicial/home/')
     else:
-        return  render(request, 'sair/sair.html', {})
+        return render(request, 'sair/sair.html', {})

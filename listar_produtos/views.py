@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 from inicial.models import Categorias
-from fornecedores.models import Fornecedores
+from login.models import Fornecedores, Clientes
 from .models import Produtos
 from gerenciar_pedidos.models import Pedidos, PedidosItem
 from .forms import AdicionarProdutoForm, AlterarProdutoForm

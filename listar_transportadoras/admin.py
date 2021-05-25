@@ -4,4 +4,4 @@ from .models import Transportadoras
 
 @admin.register(Transportadoras)
 class TransportadorasAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('nometransportadora', 'cnpj')

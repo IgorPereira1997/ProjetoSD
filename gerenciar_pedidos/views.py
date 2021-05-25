@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from clientes.models import Clientes
+from login.models import Clientes
 from listar_transportadoras.models import Transportadoras
 from .models import Pedidos, PedidosItem, PedidosStatus
 
