@@ -18,7 +18,7 @@
                 <a href="/gerenciar_pedidos/fazer_pedido">Cadastrar Pedido</a>
                 <!-- Right-aligned links -->
                 <div class="topnav-right">
-                    <a href="#">Sair</a>
+                    <a href="/inicial/sair/">Sair</a>
                 </div>
             </div>
             <br><br><br>
@@ -28,7 +28,9 @@
                     {% for linha3 in clientes %}
                         {% if linha3.clienteid == linha.clienteid and linha.transportadoraid == linha2.transportadoraid %}
                                 <ul class="list-group list-group-horizontal-md">
+                                {% if cli == '' %}
                                     <li class="list-group-item">Cliente:{{ linha3.nomecompleto }}</li>
+                                {% endif %}
                                     <li class="list-group-item">Transportadora: {{ linha2.nometransportadora }}</li>
                                     <li class="list-group-item">Data do Pedido:{{ linha.data_pedido }}</li>
                                     <li class="list-group-item">Data de Saída:{{ linha.data_saida }}</li>

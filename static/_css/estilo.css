@@ -22,7 +22,7 @@ div#header_central img {
 }
 div#header_saudacao {
     position: absolute;
-    top:0;
+    margin-top:20px;
     right:0px;
     text-align: right;
 }

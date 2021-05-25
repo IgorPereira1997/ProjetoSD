@@ -18,6 +18,7 @@ Pillow==8.2.0
 psycopg2==2.8.6
 psycopg2-binary==2.8.6
 pycep-correios==5.0.0
+python-decouple==3.4
 python-magic==0.4.22
 pytz==2021.1
 requests==2.25.1
