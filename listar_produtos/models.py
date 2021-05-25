@@ -19,6 +19,8 @@ class Produtos(models.Model):
     class Meta:
         managed = True
         db_table = 'produtos'
+        verbose_name = 'Produto'
+        verbose_name_plural  =  "Produtos Disponíveis"
     
     def __str__(self):
         return f"{self.nomeproduto} | {self.codigobarra}"

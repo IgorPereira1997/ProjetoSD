@@ -10,6 +10,8 @@ class Categorias(models.Model):
     class Meta:
         managed = True
         db_table = 'categorias'
+        verbose_name = 'Categoria'
+        verbose_name_plural  =  "Categorias"
     
     def __str__(self):
         return f"{self.nomecategoria}"
@@ -21,6 +23,8 @@ class Departamentos(models.Model):
     class Meta:
         managed = True
         db_table = 'departamentos'
+        verbose_name = 'Departamento'
+        verbose_name_plural  =  "Departamentos"
 
     def __str__(self):
         return f"{self.nomedepartamento}"
@@ -34,6 +38,8 @@ class Estados(models.Model):
     class Meta:
         managed = True
         db_table = 'estados'
+        verbose_name = 'Estado'
+        verbose_name_plural  =  "Lista de Estados"
 
     def __str__(self):
         return f"{self.nome} | UF = {self.sigla}"

@@ -17,6 +17,8 @@ class Pedidos(models.Model):
         managed = True
         db_table = 'pedidos'
         ordering = ('pedidoid', 'data_pedido', 'status_pedido', 'valor_pedido')
+        verbose_name = 'Pedido'
+        verbose_name_plural  =  "Pedidos"
 
     def __str__(self):
         return f"{self.data_pedido} | Status:{self.status_pedido} | Valor: {self.valor_pedido}"
@@ -31,6 +33,8 @@ class PedidosItem(models.Model):
     class Meta:
         managed = True
         db_table = 'pedidos_item'
+        verbose_name = 'Item do Pedido'
+        verbose_name_plural  =  "Items dos Pedidos"  
 
     def __str__(self):
         return f"{self.pedidoid} | {Produtos.objects.filter(produtoid__exact=self.produtoid).values('nomeproduto')} | QTD: {self.quantidade}"
@@ -44,6 +48,8 @@ class PedidosStatus(models.Model):
     class Meta:
         managed = True
         db_table = 'pedidos_status'
+        verbose_name = 'Status do Pedido'
+        verbose_name_plural  =  "Status dos Pedidos"
 
     def __str__(self):
         return f"ID: {self.statusid} | {self.nomestatus}"

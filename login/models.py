@@ -21,6 +21,8 @@ class Clientes(models.Model):
     class Meta:
         managed = True
         db_table = 'clientes'
+        verbose_name = 'Cliente'
+        verbose_name_plural  =  "Lista de Clientes"
 
     def __str__(self):
         return self.nomecompleto + ' | '+ self.email
@@ -39,6 +41,8 @@ class Fornecedores(models.Model):
     class Meta:
         managed = True
         db_table = 'fornecedores'
+        verbose_name = 'Fornecedor'
+        verbose_name_plural  =  "Lista de Fornecedores"
     
     def __str__(self):
         return self.nomefornecedor
@@ -55,6 +59,8 @@ class FornecedoresContatos(models.Model):
     class Meta:
         managed = True
         db_table = 'fornecedores_contatos'
+        verbose_name = 'Contato do Fornecedor'
+        verbose_name_plural  =  "Contatos dos Fornecedores"
 
     def __str__(self):
         return self.nome + " | " + self.email

@@ -19,10 +19,12 @@ def add_transp(request):
         form = AdicionarTransportadoraForm(estados_list, dados_preliminares,request.POST)
         if form.is_valid():
             id = Estados.objects.get(nome__exact=request.POST.get('estados'))
+            formated_cnpj = str(v.validate_cnpj(request.POST.get('cnpj')))
+            cnpj_new = formated_cnpj[0:2] + '.' + formated_cnpj[2:5] + '.' + formated_cnpj[5:8] + '/' + formated_cnpj[8:12] + '-' + formated_cnpj[12:]
             Transportadoras.objects.create(nometransportadora=str(request.POST.get('nometransportadora')), endereco=str(request.POST.get('endereco')),
                                            telefone=str(request.POST.get('telefone')), cidade=str(request.POST.get('cidade')), 
                                            estadoid=int(id.estadoid), cep=str(request.POST.get('cep')),
-                                           cnpj=str(request.POST.get('cnpj')))
+                                           cnpj=cnpj_new)
             return redirect('/listar_transportadoras/listar/')
         else:
             form = AdicionarTransportadoraForm(estados_list, dados_preliminares,request.POST)

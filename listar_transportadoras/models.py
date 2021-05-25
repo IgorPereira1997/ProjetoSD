@@ -15,5 +15,8 @@ class Transportadoras(models.Model):
     class Meta:
         managed = True
         db_table = 'transportadoras'
+        verbose_name = 'Transportadora'
+        verbose_name_plural  =  "Transportadoras Disponíveis"
+
     def __str__(self):
         return f"{self.nometransportadora} | {self.cnpj}"

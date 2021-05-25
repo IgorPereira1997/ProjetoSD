@@ -99,7 +99,7 @@ def validate_cnpj(value):
                 _('O CNPJ já existe!'),
                 params={'value': value},
             )
-        return value
+        return value_int
 
 def validate_cnpjUpdate(value):
     try:
