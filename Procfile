@@ -1,0 +1,1 @@
+web: gunicorn ProjetoSD_2.wsgi
