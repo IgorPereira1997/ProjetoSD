@@ -10,4 +10,7 @@ urlpatterns = [
     path('cancelar_pedido/', views.cancelar, name='cancPedido'),
     path('fazer_pedido/', views.pedir, name='makePedido'),
     path('detalhar_pedido/', views.detalhar, name="detPedido"),
+    path('produtos_det/', views.details, name="prod_det"),
+    path('produtos_disp/', views.list_prod, name="prod_disp"),
+    path('finalizar_pedido/', views.finalizar, name="finishPedido"),
 ]

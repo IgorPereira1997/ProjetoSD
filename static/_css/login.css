@@ -1,17 +1,22 @@
 /* estilos da pesquisa */
 main div#janela_login {
-    width:860px;
+    width:80%;
     margin:100px auto 30px;
+    justify-content: center;
+    align-items: center;
 }
 
 main div#janela_login form {
-    width:470px;
-    margin:10px auto;
+    width:30%;
+    margin:0px auto;
+    justify-content: center;
+    text-align: center;
 }
 
 main div#janela_login form h2  {
     font-family: sans-serif;
     color:#C5996B;
+    text-align: center;
 }
 
 main div#janela_login form p {
@@ -27,7 +32,7 @@ main div#janela_login form p {
 }
 
 main div#janela_login form input[type="text"] {
-    width:280px;
+    width:90%;
     padding:10px;
     border:1px solid #CDC99B;
     border-radius: 5px;
@@ -35,7 +40,7 @@ main div#janela_login form input[type="text"] {
 }
 
 main div#janela_login form input[type="password"] {
-    width:280px;
+    width:90%;
     padding:10px;
     margin-top:15px;
     border:1px solid #CDC99B;
@@ -44,14 +49,17 @@ main div#janela_login form input[type="password"] {
 }
 
 main div#janela_login form input[type="submit"] {
-    display: block;
-    padding:10px 20px;
-    margin-top:15px;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    margin-top: 15px;
     color: #FFF;
-    border:0;
+    border: 0;
     border-radius: 5px;
     background-color: #C5996B;
     outline: none;
     cursor: pointer;
+    font-size: 20px;
+    font-weight: 500;
 }
 /* fim do estilo da pesquisa */

@@ -1,0 +1,60 @@
+{% include 'standard/base.html' %}
+{% load static %}
+
+<html>
+    <head>
+        <title>Produtos Disponíveis</title>
+        <link href="{% static '_css/produtos.css' %}" rel="stylesheet">
+        <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
+        <link href="{% static '_css/produto_pesquisa.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <main>
+        <!-- Top navigation -->
+            <div class="topnav">
+                <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="#">Cadastrar Pedido</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                <a href="/gerenciar_pedidos/lista_pedidos/">Lista de Pedidos</a>
+                <a href="/listar_produtos/listar/">Produtos</a>
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a href="/listar_transportadoras/listar/">Filiais</a>
+                    <a href="/inicial/sair/">Sair</a>
+                </div>
+            </div>
+            <div id="janela_pesquisa">
+                <form action="/gerenciar_pedidos/produtos_disp/" method="GET">
+                    <input type="text" name="produto" placeholder="Pesquisa">
+                    <input type="image" name="pesquisa" src="{% static '_assets/botao_search.png' %}">
+                </form>
+            </div>
+
+            <div id="listagem_produtos">
+                {% if flag %}
+                    <h3>Não há produtos listados para o cliente/fornecedor!</h3>
+                {% else %}
+                    {% for linha in produtos %}
+                    <ul>
+                        <li class="imagem">
+                            <a href="/gerenciar_pedidos/produtos_det/?prod={{ linha.produtoid }}">
+                                <img src="/media/{{ linha.imagempequena }}">
+                            </a>
+                        </li>
+                        <li>
+                            <h3 style="font-size: 1.2rem;">{{ linha.nomeproduto }}</h3>
+                        </li>
+                        <li>Tempo de Entrega: {{ linha.tempoentrega }}&nbsp;dias</li>
+                        <li>Preço unitário: R${{ linha.precounitario }}&nbsp;</li>
+                    </ul>
+                    {% endfor %}
+                {% endif %}
+                <h5>{{teste}}</h5>
+            </div>
+        </main>
+    </body>
+</html>
+
+{% include 'standard/footer.html' %}

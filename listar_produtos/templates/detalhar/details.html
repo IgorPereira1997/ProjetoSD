@@ -10,6 +10,21 @@
     <body>
         <main>
         <!-- Top navigation -->
+            {% if cliente %}
+            <div class="topnav">
+                <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="#">Detalhes</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                <a href="/listar_produtos/listar/">Listar Produtos</a>
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a href="/gerenciar_pedidos/lista_pedidos/">Lista de Pedidos</a>
+                    <a href="/inicial/sair/">Sair</a>
+                </div>
+            </div>
+            {% elif fornecedor %}
             <div class="topnav">
                 <!-- Centered link -->
                 <div class="topnav-centered">
@@ -20,10 +35,12 @@
                 <a href="/listar_produtos/listar/">Listar Produtos</a>
                 <!-- Right-aligned links -->
                 <div class="topnav-right">
-                <a href="/listar_transportadoras/listar/">Listar Filiais</a>
+                    <a href="/listar_transportadoras/listar/">Listar Filiais</a>
+                    <a href="/gerenciar_pedidos/lista_pedidos/">Lista de Pedidos</a>
                     <a href="/inicial/sair/">Sair</a>
                 </div>
             </div>
+            {% endif %}
             <div id="detalhe_produto">
             {% for linha in prod %}
                 <ul>
@@ -36,11 +53,11 @@
                     <li><b>Tempo de Entrega: </b>{{ linha.tempoentrega }}&nbsp;dias</li>
                     <li><b>Pre&ccedil;o Revenda: </b>R${{ linha.precorevenda }}</li>
                     <li><b>Pre&ccedil;o Unit&aacute;rio: </b>R${{ linha.precounitario }}</li>
-                    {% if cliente %}
-                    <li><b>Quantidade em Estoque: </b>{{ qtd }} unidades.</li>
-                    {% else %}
+                    {% if fornecedor %}
                     <li><b>Quantidade em Estoque: </b>{{ linha.estoque }} unidades.</li>
-                    {%endif%}
+                    {% elif cliente %}
+                    <li><b>Quantidade em Estoque: </b>{{ qtd }} unidades.</li>
+                    {% endif %}
                 </ul>
                 <br><br>
                 {%if forn%}
@@ -48,12 +65,12 @@
                     <input type="hidden" name="prod" value="{{ linha.produtoid }}">
                     <input type="submit" value="Atualizar Informações">
                 </form>
+                {% endif %}
                 <span><br></span>
                 <form action="/listar_produtos/deletar/" method="GET">
                     <input type="hidden" name="prod" value="{{ linha.produtoid }}">
                     <input type="submit" value="Deletar Produto">
                 </form>
-                {% endif %}
                 <span><br></span>
                 <form action="/listar_produtos/listar/" method="GET">
                     <input type="submit" value="Voltar">

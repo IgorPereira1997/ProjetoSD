@@ -25,6 +25,7 @@ admin.site.site_title  =  "Administração da Transportadora Vietnã"
 admin.site.unregister(Group)
 
 urlpatterns = [
+    path('admin_tools/', include('admin_tools.urls')),
     path('admin/', admin.site.urls),
     path('contato/', include('contato.urls')),
     path('franquias/', include('franquias.urls')),

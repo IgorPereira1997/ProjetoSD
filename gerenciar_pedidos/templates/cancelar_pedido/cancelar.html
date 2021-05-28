@@ -1,4 +1,42 @@
 {% include 'standard/base.html' %}
 {% load static %}
 
+<html>
+    <head>
+        <title>Cancelar Pedido</title>
+        <link href="{% static '_css/inclusao.css' %}" rel="stylesheet">
+        <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <main>
+            <div class="topnav">
+                <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="#">Cancelar Pedido</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                <a href="/listar_produtos/listar/">Produtos</a>
+                <a href="/listar_transportadoras/listar/">Filiais</a>
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a href="/gerenciar_pedidos/lista_pedidos/">Gerenciar Pedidos</a>
+                    <a href="/inicial/sair/">Sair</a>
+                </div>
+            </div>
+            <div id="janela_pedidos">
+                <form action="/gerenciar_pedidos/cancelar_pedido/?order={{ id }}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <h4>{{ msg }}</h4>
+                    <input type="hidden" name="order" value="{{ id }}">
+                    <input type="submit" value="Cancelar Pedido">
+                </form>
+                <form action="/gerenciar_pedidos/detalhar_pedido/?prod={{ id }}" method="GET">
+                    <input type="hidden" name="order" value="{{ id }}">
+                    <input type="submit" value="Voltar">
+                </form>
+            </div>
+        </main>
+    </body>
+</html>
+
 {% include 'standard/footer.html' %}

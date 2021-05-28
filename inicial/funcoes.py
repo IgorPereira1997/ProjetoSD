@@ -10,6 +10,14 @@ def gerarCodigoUnico(extensao):
     date_agora = datetime.now().strftime('%d_%m_%Y%H%M%S')
     return "foto_"+date_agora+resultado+extensao[-4::]
 
+def gerarConhecimento():
+    alfabeto = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    tamanho = 7
+    resultado = ''
+    for i in range(1, tamanho):
+        resultado +=random.choice(alfabeto)
+    return resultado
+
 
 from io import BytesIO
 from django.core.files import File

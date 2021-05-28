@@ -1,15 +1,3 @@
-nav {
-    width:600px;
-    margin:30px auto;    
-}
-
-nav a {
-    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-    font-size:13px;
-    text-decoration:none;
-    color:#9A9668;
-}
-
 div#janela_transportadoras {
     width:600px;
     margin:30px auto 0;

@@ -9,7 +9,22 @@
     </head>
     <body>
         <main>
-        <div class="topnav">
+            {% if cliente %}
+            <div class="topnav">
+                <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="#">Deletar Produto</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                <a href="/gerenciar_pedidos/lista_pedidos/">Lista de Pedidos</a>
+                <a href="/listar_produtos/listar/">Listar Produtos</a>
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a href="/inicial/sair/">Sair</a>
+                </div>
+            </div>
+            {% elif fornecedor %}
+            <div class="topnav">
                 <!-- Centered link -->
                 <div class="topnav-centered">
                     <a class="active" href="#">Deletar Produto</a>
@@ -17,16 +32,18 @@
                 <!-- Left-aligned links (default) -->
                 <a href="/listar_produtos/adicionar/">Adicionar Produto</a>
                 <a href="/listar_produtos/listar/">Listar Produtos</a>
+                <a href="/gerenciar_pedidos/lista_pedidos/">Lista de Pedidos</a>
                 <!-- Right-aligned links -->
                 <div class="topnav-right">
                     <a href="/listar_transportadoras/listar/">Listar Filiais</a>
                     <a href="/inicial/sair/">Sair</a>
                 </div>
             </div>
+            {% endif %}
             <div id="janela_formulario">
-                <h4>{{ msg }}</h4>
                 <form action="/listar_produtos/deletar/?prod={{ id }}" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
+                    <h4>{{ msg }}</h4>
                     <input type="hidden" name="prod" value="{{ id }}">
                     <input type="submit" value="Deletar produto">
                 </form>

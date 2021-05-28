@@ -11,6 +11,21 @@
     <body>
         <main>
         <!-- Top navigation -->
+            {% if cliente %}
+            <div class="topnav">
+                <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="/listar_produtos/listar/">Listar Produtos</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                <a href="/gerenciar_pedidos/lista_pedidos/">Gerenciar Pedidos</a>
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a href="/gerenciar_pedidos/lista_pedidos/">Gerenciar Pedidos</a>
+                    <a href="/inicial/sair/">Sair</a>
+                </div>
+            </div>
+            {% else %}
             <div class="topnav">
                 <!-- Centered link -->
                 <div class="topnav-centered">
@@ -25,6 +40,7 @@
                     <a href="/inicial/sair/">Sair</a>
                 </div>
             </div>
+            {% endif %}
             <div id="janela_pesquisa">
                 <form action="/listar_produtos/listar/" method="GET">
                     <input type="text" name="produto" placeholder="Pesquisa">
@@ -51,7 +67,6 @@
                     </ul>
                     {% endfor %}
                 {% endif %}
-                <h5>{{teste}}</h5>
             </div>
         </main>
     </body>

@@ -1,7 +1,9 @@
 /* estilos da listagem */
 main div#listagem_produtos {
-    width:860px;
-    margin:0 auto;
+    width:80%;
+    justify-content: center;
+    align-items: center;
+    margin:50px auto 30px;
 }
 
 main div#listagem_produtos ul {

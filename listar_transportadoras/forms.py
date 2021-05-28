@@ -18,7 +18,7 @@ class AdicionarTransportadoraForm(forms.Form):
             attrs={'readonly': True}
         ),
         required=True,
-        label='Nome da Transportadora',
+        label='Nome',
         validators=[validate_nomeTransportadora],
     )
 
@@ -155,7 +155,7 @@ class AlterarTransportadoraForm(forms.Form):
             attrs={'readonly': True}
         ),
         required=True,
-        label='Nome da Transportadora',
+        label='Nome',
     )
 
     endereco = forms.CharField(

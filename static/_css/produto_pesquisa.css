@@ -1,19 +1,20 @@
 /* estilos da pesquisa */
 main div#janela_pesquisa {
-    width:860px;
+    width:80%;
     height: 70px;
+    padding: 7px;
     margin:0 auto 30px;
     border-bottom:1px dotted #ddd;
 }
 
 main div#janela_pesquisa form {
-    width:470px;
+    width:40%;
     margin:10px auto;
 }
 
 main div#janela_pesquisa form input[type="text"] {
-    width:380px;
-    padding:10px;
+    width:80%;
+    padding:4.5px;
     border:1px solid #CDC99B;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;

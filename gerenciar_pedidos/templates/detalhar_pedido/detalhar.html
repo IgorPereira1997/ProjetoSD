@@ -5,6 +5,7 @@
     <head>
         <title>Listagem dos pedidos</title>
         <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
+        <link href="{% static '_css/pedidos.css' %}" rel="stylesheet">
     </head>
     <body>
         <main>
@@ -22,31 +23,39 @@
                 </div>
             </div>
             <br><br><br>
-            <div id="janela_transportadoras">
+            <div id="janela_pedidos">
                 {% for linha2 in transportadoras %}
                     {% for linha3 in clientes %}
                         {% if linha3.clienteid == pedidos.clienteid and pedidos.transportadoraid == linha2.transportadoraid %}
-                                <ul class="list-group list-group-horizontal-md">
-                                    <li class="list-group-item">Cliente:{{ linha3.nomecompleto }}</li>
-                                    <li class="list-group-item">Transportadora: {{ linha2.nometransportadora }}</li>
-                                    <li class="list-group-item">Data do Pedido:{{ pedidos.data_pedido }}</li>
-                                    <li class="list-group-item">Data de Saída:{{ pedidos.data_saida }}</li>
+                                <ul class="list-group list-group-horizontal-md justify-content-center">
+                                    <li class="list-group-item col-md-2 text-center"><strong>Cliente:</strong>{{ linha3.nomecompleto }}</li>
+                                    <li class="list-group-item col-md-3 text-center"><strong>Transportadora:</strong>{{ linha2.nometransportadora }}</li>
+                                    <li class="list-group-item col-md-2 text-center"><strong>Data do Pedido:</strong>{{ pedidos.data_pedido }}</li>
+                                    <li class="list-group-item col-md-2 text-center"><strong>Data de Saída:</strong>{{ pedidos.data_saida }}</li>
+                                    {% for tipo in status %}
+                                        {% if linha.status_pedido == tipo.statusid %}
+                                        <li class="list-group-item col-md-2 text-center"><strong>Status:</strong>{{ tipo.nomestatus }}</li>
+                                        {% endif %}
+                                    {% endfor %}
                                     {% if pedidos.status_pedido == 3 or pedidos.status_pedido == 4 %}
-                                        <li class="list-group-item">Data de Cancelamento: 
+                                        <li class="list-group-item col-md-2 text-center"><strong>Data de Cancelamento:</strong> 
                                     {% else %}
-                                        <li class="list-group-item">Data de Entrega:
+                                        <li class="list-group-item col-md-2 text-center"><strong>Data de Entrega:</strong>
                                     {% endif %}
                                         {{ pedidos.data_entrega }}</li>
-                                    <li class="list-group-item">Valor do Pedido: R${{ pedidos.valor_pedido }}</li>
+                                    <li class="list-group-item col-md-2 text-center"><strong>Valor do Pedido:</strong> R${{ pedidos.valor_pedido }}</li>
                                 </ul>
-                                <form action="/gerenciar_pedidos/detalhar_pedido/">
-                                    <input type="submit" value="Ver detlahes">
-                                </form>
-                                <form>
+                                <form action="/gerenciar_pedidos/cancelar_pedido/" method="GET">
+                                    <input type="hidden" name="order" value={{id}}>
                                     <input type="submit" value="Cancelar Pedido">
                                 </form>
-                                <form>
+                                <form action="/gerenciar_pedidos/modificar_pedido/" method="POST">
+                                {% csrf_token %}
                                     <input type="submit" value="Modificar Pedido">
+                                </form>
+                                <form action="/gerenciar_pedidos/lista_pedidos/" method="POST">
+                                {% csrf_token %}
+                                    <input type="submit" value="Voltar">
                                 </form>
                         {% endif %}
                     {% endfor %}

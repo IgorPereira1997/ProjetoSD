@@ -1,0 +1,43 @@
+{% include 'standard/base.html' %}
+{% load static %}
+
+<html>
+    <head>
+        <title>Carrinho</title>
+        <link href="{% static '_css/inclusao.css' %}" rel="stylesheet">
+        <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <main>
+            <div class="topnav">
+                <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="#">Cadastrar Pedido</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                <a href="/gerenciar_pedidos/lista_pedidos/">Lista de Pedidos</a>
+                <a href="/listar_produtos/listar/">Produtos</a>
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a href="/listar_transportadoras/listar/">Filiais</a>
+                    <a href="/inicial/sair/">Sair</a>
+                </div>
+            </div>
+            <div id="janela_formulario">
+                <form action="/gerenciar_pedidos/finalizar_pedido/" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <h4>Defina a Transportadora para entrega do pedido</h4>
+                    <h5>{{ form.transportadora.errors }}</h5>
+                    <h4>{{ form.transportadora.label_tag }}{{ form.transportadora }}</h4>
+                    <input type="submit" value="Finalizar Pedido">
+                </form>
+                <span><br></span>
+                <form action="/gerenciar_pedidos/lista_pedidos/" method="GET">
+                    <input type="submit" value="Cancelar Pré-Pedido">
+                </form>
+            </div>
+        </main>
+    </body>
+</html>
+
+{% include 'standard/footer.html' %}

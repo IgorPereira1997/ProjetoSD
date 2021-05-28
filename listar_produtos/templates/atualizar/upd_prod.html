@@ -10,6 +10,21 @@
     <body>
         <main>
         <!-- Top navigation -->
+        {% if cliente %}
+            <div class="topnav">
+                <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="#">Atualizar Produto</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                <a href="/listar_produtos/listar/">Listar Produtos</a>
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a href="/gerenciar_pedidos/lista_pedidos/">Lista de Pedidos</a>
+                    <a href="/inicial/sair/">Sair</a>
+                </div>
+            </div>
+        {% elif fornecedor %}
             <div class="topnav">
                 <!-- Centered link -->
                 <div class="topnav-centered">
@@ -21,9 +36,11 @@
                 <!-- Right-aligned links -->
                 <div class="topnav-right">
                     <a href="/listar_transportadoras/listar/">Listar Filiais</a>
+                    <a href="/gerenciar_pedidos/lista_pedidos/">Lista de Pedidos</a>
                     <a href="/inicial/sair/">Sair</a>
                 </div>
             </div>
+        {% endif %}
             <div id="janela_formulario">
                 <form action="/listar_produtos/atualizar/?prod={{ id }}" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}

@@ -1,0 +1,61 @@
+{% include 'standard/base.html' %}
+{% load static %}
+
+<html>
+    <head>
+        <title>Detalhes do Produto</title>
+        <link href="{% static '_css/produto_detalhe.css' %}" rel="stylesheet">
+        <link href="{% static '_css/menu_ini.css'%}" rel='stylesheet'>
+    </head>
+    <body>
+        <main>
+        <!-- Top navigation -->
+            <div class="topnav">
+                <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="#">Cadastrar Pedido</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                <a href="/gerenciar_pedidos/lista_pedidos/">Lista de Pedidos</a>
+                <a href="/listar_produtos/listar/">Produtos</a>
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a href="/listar_transportadoras/listar/">Filiais</a>
+                    <a href="/inicial/sair/">Sair</a>
+                </div>
+            </div>
+            <div id="detalhe_produto">
+                <ul>
+                    <li class="imagem"><img src="/media/{{prod.imagemgrande }}"></li>
+                    <li>
+                        <h2>{{ prod.nomeproduto }}</h2>
+                    </li>
+                    <li><b>Descri&ccedil;&atilde;o: </b>{{ prod.descricao }}</li>
+                    <li><b>C&oacute;digo de Barra: </b>{{ prod.codigobarra }}</li>
+                    <li><b>Tempo de Entrega: </b>{{ prod.tempoentrega }}&nbsp;dias</li>
+                    <li><b>Pre&ccedil;o Revenda: </b>R${{ prod.precorevenda }}</li>
+                    <li><b>Pre&ccedil;o Unit&aacute;rio: </b>R${{ prod.precounitario }}</li>
+                    <li><b>Quantidade em Estoque: </b>{{ prod.estoque }} unidades.</li>
+                </ul>
+                <br><br>
+                <form action="/gerenciar_pedidos/produtos_det/?prod={{id}}" method="POST" enctype="multipart/form">
+                    {% csrf_token %}
+                    <h5> {{ form.estoque.errors }} </h5>
+                    <h4> {{ form.estoque.label_tag }} {{ form.estoque }} </h4>
+                    <br>
+                    <input type="submit" value="Adicionar ao Carrinho">
+                </form>
+                <span><br></span>
+                <form action="/gerenciar_pedidos/produtos_disp/" method="GET">
+                    <input type="submit" value="Voltar">
+                </form>
+                <span><br></span>
+                <form action="/gerenciar_pedidos/lista_pedidos/" method="GET">
+                    <input type="submit" value="Cancelar Pré-Pedido">
+                </form>
+            </div>
+        </main>
+    </body>
+</html>
+
+{% include 'standard/footer.html' %}
