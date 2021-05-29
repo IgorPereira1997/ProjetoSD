@@ -13,12 +13,16 @@
             <div class="topnav">
             <!-- Centered link -->
                 <div class="topnav-centered">
-                    <a class="active" href="/gerenciar_pedidos/lista_pedidos/">Lista de Pedidos</a>
+                    <a class="active" href="/gerenciar_pedidos/lista_pedidos/">Gerenciar Pedidos</a>
                 </div>
                 <!-- Left-aligned links (default) -->
                 <a href="/gerenciar_pedidos/fazer_pedido">Cadastrar Pedido</a>
+                {% if forn %}
+                    <a href="/listar_transportadoras/listar/">Listagem de Filiais</a>
+                {% endif %}
                 <!-- Right-aligned links -->
                 <div class="topnav-right">
+                    <a href="/listar_produtos/listar/">Listagem de Produtos</a>
                     <a href="#">Sair</a>
                 </div>
             </div>

@@ -52,7 +52,7 @@ def add_prod(request):
             form = AdicionarProdutoForm(forn_list, cat_list, entrega_list)
             return render(request, 'adicionar/add_prod.html', {'cat': all_categorias, 'forn': all_fornecedores, 'form': form, 'fornecedor': fornecedor, 'cliente': cliente})
     else:
-        return redirect('/inicial/home')
+        return redirect('/listar_produtos/listar/')
 
 
 def del_prod(request):
@@ -118,8 +118,16 @@ def list_prod(request):
                                 qtd = list_items[i][1]
                     for i in range(0, len(aux)):
                         all_produtos.append(Produtos.objects.get(produtoid=aux[i][0]))
-                    # implementar pesquisa para o cliente
-                    return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq, 'flag': False, 'fornecedor': fornecedor, 'cliente': cliente})
+                    all_produtos.sort(key=lambda x: x.nomeproduto)
+                    if pesq is None:
+                        aux = all_produtos
+                    else:
+                        aux = []
+                        from re import search
+                        for i in range(0, len(all_produtos)):
+                            if search(str(pesq).casefold(), str(all_produtos[i].nomeproduto).casefold()):
+                                aux.append(all_produtos[i])
+                    return render(request, 'listar/list_prod.html', {'produtos': aux, 'pesq': pesq, 'flag': False, 'fornecedor': fornecedor, 'cliente': cliente})
             else:
                 all_pedidos = None
                 print("Cliente não tem prodtuto em estoque")
@@ -135,8 +143,6 @@ def list_prod(request):
                 all_produtos = None
                 print("Fornecedor não tem produtos")
                 return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq,'flag': True, 'fornecedor': fornecedor, 'cliente': cliente})
-        else:
-            return redirect('/inicial/home/')
 
 
 def upd_prod(request):
@@ -251,8 +257,6 @@ def upd_prod(request):
         else:
             form = AlterarProdutoCliForm(forn_list, cat_list, entrega_list, produto, qtd)
             return render(request, 'atualizar/upd_prod.html', {'form': form, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente})
-    else:
-        return redirect('/inicial/home/')
 
 def details(request):
     cliente = request.session['idCliente']
@@ -276,6 +280,3 @@ def details(request):
                         if int(linha2['produtoid']) == int(idProduto):
                             qtd += linha2['quantidade']
         return render(request, 'detalhar/details.html', {'prod': produto, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente, 'qtd': qtd})
-    else:
-        return redirect('/inicial/home/')
-

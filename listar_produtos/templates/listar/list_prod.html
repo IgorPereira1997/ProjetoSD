@@ -11,35 +11,26 @@
     <body>
         <main>
         <!-- Top navigation -->
-            {% if cliente %}
             <div class="topnav">
                 <!-- Centered link -->
                 <div class="topnav-centered">
-                    <a class="active" href="/listar_produtos/listar/">Listar Produtos</a>
+                    <a class="active" href="/listar_produtos/listar/">Listagem de Produtos</a>
                 </div>
                 <!-- Left-aligned links (default) -->
-                <a href="/gerenciar_pedidos/lista_pedidos/">Gerenciar Pedidos</a>
-                <!-- Right-aligned links -->
-                <div class="topnav-right">
-                    <a href="/inicial/sair/">Sair</a>
-                </div>
-            </div>
-            {% else %}
-            <div class="topnav">
-                <!-- Centered link -->
-                <div class="topnav-centered">
-                    <a class="active" href="/listar_produtos/listar/">Listar Produtos</a>
-                </div>
-                <!-- Left-aligned links (default) -->
-                <a class="nav-link" href="/listar_produtos/adicionar/">Adicionar Produto</a>
-                <a href="/listar_transportadoras/listar/">Listar Filiais</a>
-                <!-- Right-aligned links -->
-                <div class="topnav-right">
+                {% if fornecedor %}
+                    <a href="/listar_produtos/adicionar/">Adicionar Produto</a>
+                    <a href="/listar_transportadoras/listar/">Listagem de Filiais</a>
+                {% elif cliente %}
                     <a href="/gerenciar_pedidos/lista_pedidos/">Gerenciar Pedidos</a>
+                {% endif %}
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    {% if fornecedor %}
+                        <a href="/gerenciar_pedidos/lista_pedidos/">Gerenciar Pedidos</a>
+                    {% endif %}
                     <a href="/inicial/sair/">Sair</a>
                 </div>
             </div>
-            {% endif %}
             {% if flag %}
             {% else %}
                 <div id="janela_pesquisa">

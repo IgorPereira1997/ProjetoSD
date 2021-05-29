@@ -13,6 +13,7 @@
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
+    transition: 0.3s;
   }
   
   /* Change the color of links on hover */
@@ -34,6 +35,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    transition: 0.3s;
   }
   
   /* Right-aligned section inside the top navigation */

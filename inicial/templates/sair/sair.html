@@ -14,19 +14,19 @@
             <div class="topnav">
             <!-- Centered link -->
                 <div class="topnav-centered">
-                    <a class="active" href="/listar_transportadoras/listar/">Listar Filiais</a>
+                    <a class="active" href="#">Sair</a>
                 </div>
                 <!-- Left-aligned links (default) -->
-                <a href="/listar_transportadoras/adicionar_ini/">Adicionar Filial</a>
-                <a href="/listar_produtos/listar/">Listar Produtos</a>
+                <a href="/listar_transportadoras/listar/">Listagem de Filiais</a>
+                <a href="/listar_produtos/listar/">Listagem de Produtos</a>
                 <!-- Right-aligned links -->
                 <div class="topnav-right">
                 <a href="/gerenciar_pedidos/lista_pedidos/">Gerenciar Pedidos</a>
                 <a href="/listar_transportadoras/listar/">Sair</a>
                 </div>
             </div>
-            <div id="janela_formulario"> 
-                <form method="POST" action="/listar_transportadoras/listar/">
+            <div id="janela_formulario">
+                <form method="POST" action="/listar_produtos/listar/">
                     {% csrf_token %}
                     <h4>Tem certeza que deseja sair?</h4>
                     <input type="submit" value="Cancelar">

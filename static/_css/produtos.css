@@ -10,8 +10,8 @@ main div#listagem_produtos ul {
     float:left;
     margin:5px 10px 5px;
     padding:0;
-    width:400px;
-    height: 80px;
+    width:30%;
+    height: 100px;
 }
 
 main div#listagem_produtos li {

@@ -5,9 +5,25 @@
     <head>
         <title>Login</title>
         <link href="{% static '_css/login.css' %}" rel="stylesheet">
+        <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
     </head>
     <body>
         <main>
+        <!-- Top navigation -->
+            <div class="topnav">
+                <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="/login/cliente/">Entrar como Cliente</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                <a href="/inicial/home/">Home</a>
+                <a href="/login/fornecedor/">Entrar como Fornecedor</a>
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a href="/admin/">Entrar como Administrador</a>
+                    <a href="#">Fale Conosco</a>
+                </div>
+            </div>
             <div id="janela_login">
             <form action="/login/cliente/" method="POST">
             {% csrf_token %}

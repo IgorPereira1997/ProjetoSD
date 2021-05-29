@@ -15,8 +15,10 @@
                     <a class="active" href="#">Cancelar Pedido</a>
                 </div>
                 <!-- Left-aligned links (default) -->
-                <a href="/listar_produtos/listar/">Produtos</a>
-                <a href="/listar_transportadoras/listar/">Filiais</a>
+                <a href="/listar_produtos/listar/">Listagem de Produtos</a>
+                {% if forn %}
+                    <a href="/listar_transportadoras/listar/">Listagem de Filiais</a>
+                {% endif %}
                 <!-- Right-aligned links -->
                 <div class="topnav-right">
                     <a href="/gerenciar_pedidos/lista_pedidos/">Gerenciar Pedidos</a>
@@ -30,8 +32,8 @@
                     <input type="hidden" name="order" value="{{ id }}">
                     <input type="submit" value="Cancelar Pedido">
                 </form>
-                <form action="/gerenciar_pedidos/detalhar_pedido/?prod={{ id }}" method="GET">
-                    <input type="hidden" name="order" value="{{ id }}">
+                <form action="/gerenciar_pedidos/detalhar_pedido/?pedido={{id}}" method="POST">
+                    {% csrf_token %}
                     <input type="submit" value="Voltar">
                 </form>
             </div>
