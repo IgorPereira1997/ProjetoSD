@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ocm86k%&#a&ecbgchihw7e$&vhe-6oq1od%tu($7%iet=-*i!7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['transportadora-vietna.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -96,11 +96,11 @@ WSGI_APPLICATION = 'ProjetoSD_2.wsgi.application'
 
 DATABASES = {
     'default':{
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'transportadora_vietna',
-        'USER': 'projetoSD',
-        'PASSWORD': 'projetoSD2021',
-        'HOST': '127.0.0.1',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ddi6bisncdt0sf',
+        'USER': 'vtliqlvhugzosr',
+        'PASSWORD': '8baf43986ded0c32fb633b1ddcc9a38c71a062ce19aedcd293ce0c2e783b78f8',
+        'HOST': 'ec2-18-214-140-149.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
@@ -143,6 +143,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
