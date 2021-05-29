@@ -4,7 +4,7 @@ from inicial.models import Categorias
 from login.models import Fornecedores, Clientes
 from .models import Produtos, ProdutosClientes
 from gerenciar_pedidos.models import Pedidos, PedidosItem
-from .forms import AdicionarProdutoForm, AlterarProdutoForm
+from .forms import AdicionarProdutoForm, AlterarProdutoCliForm, AlterarProdutoForm
 
 import inicial.funcoes as func
 import os
@@ -196,9 +196,18 @@ def upd_prod(request):
     elif cliente:
         idProduto = request.GET.get('prod')
         produto = ProdutosClientes.objects.get(produtoid__exact=idProduto)
+        qtd = 0
+        if Pedidos.objects.filter(clienteid__exact=cliente):
+            all_pedidos = Pedidos.objects.filter(clienteid__exact=cliente)
+            all_pedidos_item = PedidosItem.objects.values()
+            for linha in all_pedidos:
+                for linha2 in all_pedidos_item:
+                    if linha.pedidoid == linha2['pedidoid'] and linha.status_pedido == 1: # verifica se o cliente tem produtos
+                        if int(linha2['produtoid']) == int(idProduto):
+                            qtd += linha2['quantidade']
         flagChange = False
         if request.method == "POST":
-            form = AlterarProdutoForm(forn_list, cat_list, entrega_list, produto, request.POST, request.FILES)
+            form = AlterarProdutoCliForm(forn_list, cat_list, entrega_list, produto, qtd, request.POST, request.FILES)
             if form.is_valid():
                 if produto.nomeproduto   != str(request.POST.get('nomeproduto')):
                     produto.nomeproduto   = str(request.POST.get('nomeproduto'))
@@ -237,10 +246,10 @@ def upd_prod(request):
                     produto.save(force_update=True)
                 return redirect('/listar_produtos/listar/')
             else:
-                form = AlterarProdutoForm(forn_list, cat_list, entrega_list, produto, request.POST, request.FILES)
+                form = AlterarProdutoCliForm(forn_list, cat_list, entrega_list, produto, qtd, request.POST, request.FILES)
                 return render(request, 'atualizar/upd_prod.html', {'form': form, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente})
         else:
-            form = AlterarProdutoForm(forn_list, cat_list, entrega_list, produto)
+            form = AlterarProdutoCliForm(forn_list, cat_list, entrega_list, produto, qtd)
             return render(request, 'atualizar/upd_prod.html', {'form': form, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente})
     else:
         return redirect('/inicial/home/')

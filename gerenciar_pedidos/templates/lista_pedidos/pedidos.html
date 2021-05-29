@@ -6,10 +6,6 @@
         <title>Listagem dos pedidos</title>
         <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
         <link href="{% static '_css/pedidos.css' %}" rel="stylesheet">
-        {% block extrascript %}
-            <script src="https://www.paypal.com/sdk/js?client-id={{client_id}}&disable-funding=credit,card" > </script> 
-            <script src="{% static  'learn/js/main.js' %}" ></script>
-        {% endblock %}
     </head>
     <body>
         <main>
@@ -24,12 +20,15 @@
                 <a href="/listar_produtos/listar/">Produtos</a>
                 <!-- Right-aligned links -->
                 <div class="topnav-right">
+                {%if forn%}
                     <a href="/listar_transportadoras/listar/">Filiais</a>
+                {%endif%}
                     <a href="/inicial/sair/">Sair</a>
                 </div>
             </div>
             <br><br><br>
             <div id="janela_pedidos">
+            {% if pedidos %}
             {% for linha in pedidos %}
                 {% for linha2 in transportadoras %}
                     {% for linha3 in clientes %}
@@ -51,7 +50,9 @@
                     {% endfor %}
                 {% endfor%}
             {% endfor %}
-            <p>{{ paypal }}</p>
+            {% else %}
+                <h2>Não pedidos registrados para o cliente/fornecedor!</h2>
+            {% endif %}
             </div>
         </main>
     </body>

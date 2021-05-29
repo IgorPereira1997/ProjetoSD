@@ -21,7 +21,6 @@
                 <a href="/gerenciar_pedidos/lista_pedidos/">Gerenciar Pedidos</a>
                 <!-- Right-aligned links -->
                 <div class="topnav-right">
-                    <a href="/gerenciar_pedidos/lista_pedidos/">Gerenciar Pedidos</a>
                     <a href="/inicial/sair/">Sair</a>
                 </div>
             </div>
@@ -41,16 +40,18 @@
                 </div>
             </div>
             {% endif %}
-            <div id="janela_pesquisa">
+            {% if flag %}
+            {% else %}
+                <div id="janela_pesquisa">
                 <form action="/listar_produtos/listar/" method="GET">
                     <input type="text" name="produto" placeholder="Pesquisa">
                     <input type="image" name="pesquisa" src="{% static '_assets/botao_search.png' %}">
                 </form>
             </div>
-
+            {% endif %}
             <div id="listagem_produtos">
                 {% if flag %}
-                    <h3>Não há produtos listados para o cliente/fornecedor!</h3>
+                    <h2>Não há produtos listados para o cliente/fornecedor!</h2>
                 {% else %}
                     {% for linha in produtos %}
                     <ul>

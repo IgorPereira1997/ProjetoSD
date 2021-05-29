@@ -22,7 +22,6 @@ from django.contrib.auth.models import Group
 admin.site.site_header = "Transportadora Vietnã"
 admin.site.site_url = "/inicial/home/"
 admin.site.site_title  =  "Administração da Transportadora Vietnã"
-admin.site.unregister(Group)
 
 urlpatterns = [
     path('admin_tools/', include('admin_tools.urls')),

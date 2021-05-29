@@ -25,10 +25,10 @@
                 <a href="/listar_transportadoras/listar/">Sair</a>
                 </div>
             </div>
-            <div>
-            <h3>Tem certeza que deseja sair?</h3>
+            <div id="janela_formulario"> 
                 <form method="POST" action="/listar_transportadoras/listar/">
                     {% csrf_token %}
+                    <h4>Tem certeza que deseja sair?</h4>
                     <input type="submit" value="Cancelar">
                 </form>
                 <form method="POST" action="/inicial/home/">

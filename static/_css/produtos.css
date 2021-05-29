@@ -32,3 +32,15 @@ main div#listagem_produtos li h3 {
 main div#listagem_produtos li img {
     border:1px solid #ddd;   
 }
+
+main div#listagem_produtos h2{
+    width:70%;
+    justify-content: center;
+    align-items: center;
+    margin:150px auto 30px;
+    font-family: sans-serif;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 3px;
+    color: #9A9668;  
+}

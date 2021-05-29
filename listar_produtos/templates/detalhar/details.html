@@ -60,12 +60,10 @@
                     {% endif %}
                 </ul>
                 <br><br>
-                {%if forn%}
                 <form action="/listar_produtos/atualizar/" method="GET">
                     <input type="hidden" name="prod" value="{{ linha.produtoid }}">
                     <input type="submit" value="Atualizar Informações">
                 </form>
-                {% endif %}
                 <span><br></span>
                 <form action="/listar_produtos/deletar/" method="GET">
                     <input type="hidden" name="prod" value="{{ linha.produtoid }}">

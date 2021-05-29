@@ -38,7 +38,9 @@ def listar(request):
                                                               'pedidos': all_pedidos,
                                                               'status': all_status, 
                                                               'cli': cliente,
-                                                              'paypal': p})
+                                                              'paypal': p,
+                                                              'forn': fornecedor,
+                                                              'cli': cliente,})
 
 def list_prod(request):
     cliente = request.session['idCliente']
@@ -52,12 +54,13 @@ def list_prod(request):
                 all_produtos = Produtos.objects.filter(estoque__gt=0)
             else:
                 all_produtos = Produtos.objects.filter(nomeproduto__icontains=pesq)
-            return render(request, 'produtos_disp/produtos.html', {'produtos': all_produtos, 'pesq': pesq,'flag': False})
+            return render(request, 'produtos_disp/produtos.html', {'produtos': all_produtos, 'pesq': pesq,'flag': False, 'forn': fornecedor, 'cli': cliente})
         elif fornecedor:
             return redirect('/listar_transportadoras/listar/')
 
 def details(request):
     cliente = request.session['idCliente']
+    fornecedor = request.session['idFornecedor']
     if cliente == "":
         return redirect('/inicial/home/')
     elif cliente:
@@ -74,10 +77,10 @@ def details(request):
                 return redirect('/gerenciar_pedidos/fazer_pedido/')
             else:
                 form = PedidoForm(produto.estoque, request.POST)
-                return render(request, 'produtos_det/detalhe.html', {'form':form, 'prod': produto, 'id': idProduto, 'cliente': cliente,})
+                return render(request, 'produtos_det/detalhe.html', {'form':form, 'prod': produto, 'id': idProduto, 'cliente': cliente,'forn': fornecedor,})
         else:
             form = PedidoForm(produto.estoque)
-            return render(request, 'produtos_det/detalhe.html', {'form':form, 'prod': produto, 'id': idProduto, 'cliente': cliente,})
+            return render(request, 'produtos_det/detalhe.html', {'form':form, 'prod': produto, 'id': idProduto, 'cliente': cliente,'forn': fornecedor,})
     else:
         return redirect('/inicial/home/')
 
@@ -87,6 +90,7 @@ def modificar(request):
 
 def finalizar(request):
     cliente = request.session['idCliente']
+    fornecedor = request.session['idFornecedor']
     if cliente == "":
         return redirect('/inicial/home/')
     elif cliente:
@@ -108,16 +112,17 @@ def finalizar(request):
                 return redirect('/gerenciar_pedidos/lista_pedidos/')
             else:
                 form = TransportadoraPedidoForm(list_transp, request.POST)
-                return render(request, 'finalizar_pedido/finalizar.html', {'form': form})
+                return render(request, 'finalizar_pedido/finalizar.html', {'form': form, 'forn': fornecedor, 'cli': cliente})
         else:
             form = TransportadoraPedidoForm(list_transp)
-            return render(request, 'finalizar_pedido/finalizar.html', {'form': form})
+            return render(request, 'finalizar_pedido/finalizar.html', {'form': form, 'forn': fornecedor, 'cli': cliente})
     else:
         return redirect('/inicial/home/')
 
 
 def pedir(request):
     cliente = request.session['idCliente']
+    fornecedor = request.session['idFornecedor']
     if cliente == "":
         return redirect('/inicial/home/')
     elif cliente:
@@ -138,7 +143,7 @@ def pedir(request):
             pedido_final['conhecimento'] = gerarConhecimento()
             return redirect('/gerenciar_pedidos/finalizar_pedido/')
         else:
-            return render(request, 'fazer_pedido/realizar_pedido.html', {'msg': msg })
+            return render(request, 'fazer_pedido/realizar_pedido.html', {'msg': msg , 'forn': fornecedor, 'cli': cliente})
     else:
         return redirect('/inicial/home/')  
 
@@ -160,9 +165,11 @@ def cancelar(request):
             pedido.save(force_update=True)
             return redirect('/gerenciar_pedidos/lista_pedidos/')
         else:
-            return render(request, 'cancelar_pedido/cancelar.html', {'id': idPedido, 'msg': msg})
+            return render(request, 'cancelar_pedido/cancelar.html', {'id': idPedido, 'msg': msg, 'forn': fornecedor, 'cli': cliente})
 
 def detalhar(request):
+    cliente = request.session['idCliente']
+    fornecedor = request.session['idFornecedor']
     id = request.GET.get('pedido')
     all_transportadoras = Transportadoras.objects.all
     all_clientes = Clientes.objects.all
@@ -170,4 +177,4 @@ def detalhar(request):
     all_status = PedidosStatus.objects.all
     return render(request, 'detalhar_pedido/detalhar.html', {'transportadoras': all_transportadoras, 'clientes': all_clientes,
                                                              'pedidos': pedido, 'id': id,
-                                                             'status': all_status})
+                                                             'status': all_status, 'forn': fornecedor, 'cli': cliente})

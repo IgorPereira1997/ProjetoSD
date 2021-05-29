@@ -96,15 +96,12 @@ WSGI_APPLICATION = 'ProjetoSD_2.wsgi.application'
 
 DATABASES = {
     'default':{
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'transportadora_vietna',
         'USER': 'projetoSD',
         'PASSWORD': 'projetoSD2021',
         'HOST': '127.0.0.1',
-        'PORT': '3306',
-        'OPTIONS': {
-            'sql_mode': 'traditional',
-        }
+        'PORT': '5432',
     }
 }
 

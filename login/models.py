@@ -16,7 +16,6 @@ class Clientes(models.Model):
     email = models.CharField(max_length=50, blank=True, null=True)
     usuario = models.CharField(max_length=10, blank=True, null=True)
     senha = models.CharField(max_length=10, blank=True, null=True)
-    nivel = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
         managed = True
