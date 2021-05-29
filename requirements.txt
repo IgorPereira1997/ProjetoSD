@@ -9,7 +9,6 @@ cryptography==3.4.7
 defusedxml==0.7.1
 dj-database-url==0.5.0
 Django==3.2.3
-django-admin-black @ git+https://github.com/app-generator/django-admin-black.git@76ae27acc52057061e336f76fdf91b2e400ddf33
 django-admin-tools==0.9.1
 django-cleanup==5.2.0
 django-environ==0.4.5
@@ -23,7 +22,7 @@ mysqlclient==2.0.3
 paypal-checkout-serversdk==1.0.1
 paypalhttp==1.0.0
 Pillow==8.2.0
-psycopg2 @ file:///tmp/build/80754af9/psycopg2_1612298147424/work
+psycopg2==2.8.6
 psycopg2-binary==2.8.6
 py-mysql2pgsql==0.1.6
 pycep-correios==5.0.0
