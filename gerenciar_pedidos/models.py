@@ -9,7 +9,7 @@ class Pedidos(models.Model):
     data_pedido = models.DateField()
     data_saida = models.DateField(blank=True, null=True)
     data_entrega = models.DateField(blank=True, null=True)
-    status_pedido = models.IntegerField()
+    status_pedido = models.SmallIntegerField()
     valor_pedido = models.DecimalField(max_digits=10, decimal_places=2)
     conhecimento = models.CharField(max_length=20, blank=True, null=True)
 
