@@ -23,7 +23,7 @@ def listar(request):
     fornecedor = request.session['idFornecedor']
     p = settings.PAYPAL_CLIENT_ID
     if fornecedor == '' and cliente == '':
-        return redirect('/inicial/home')
+        return redirect('/')
     else:
         all_transportadoras = Transportadoras.objects.all
         all_status = PedidosStatus.objects.all
@@ -46,7 +46,7 @@ def list_prod(request):
     fornecedor = request.session['idFornecedor']
     pesq = request.GET.get('produto')
     if cliente == "" and fornecedor == "":
-        return redirect('/inicial/home/')
+        return redirect('/')
     else:
         if cliente:
             if pesq is None:
@@ -61,7 +61,7 @@ def details(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "":
-        return redirect('/inicial/home/')
+        return redirect('/')
     elif cliente:
         idProduto = request.GET.get('prod')
         produto = Produtos.objects.get(produtoid__exact=idProduto)
@@ -91,7 +91,7 @@ def finalizar(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "":
-        return redirect('/inicial/home/')
+        return redirect('/')
     elif cliente:
         if request.method == "POST":
             form = TransportadoraPedidoForm(list_transp, request.POST)
@@ -123,7 +123,7 @@ def pedir(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "":
-        return redirect('/inicial/home/')
+        return redirect('/')
     elif cliente:
         msg = "Deseja adicionar outro produto?"
         if request.method == "POST":
@@ -151,7 +151,7 @@ def cancelar(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return redirect('/inicial/home/')
+        return redirect('/')
     else:
         msg = "Você tem certeza que deseja cancelar o pedido?"
         idPedido = request.GET.get('order')
@@ -170,7 +170,7 @@ def detalhar(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        redirect('/inicial/home/')
+        redirect('/')
     else:
         id = request.GET.get('pedido')
         all_transportadoras = Transportadoras.objects.all

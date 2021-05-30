@@ -27,7 +27,7 @@ def add_prod(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return redirect('/inicial/home')
+        return redirect('/')
     elif fornecedor:
         if request.method == "POST":
             form = AdicionarProdutoForm(forn_list, cat_list, entrega_list, request.POST, request.FILES)
@@ -59,7 +59,7 @@ def del_prod(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return redirect('/inicial/home')
+        return redirect('/')
     elif fornecedor:
         idProduto = request.GET.get('prod')
         produto = Produtos.objects.get(produtoid__exact=idProduto)
@@ -85,7 +85,7 @@ def list_prod(request):
     fornecedor = request.session['idFornecedor']
     pesq = request.GET.get('produto')
     if cliente == "" and fornecedor == "":
-        return redirect('/inicial/home/')
+        return redirect('/')
     else:
         if cliente:
             all_produtos = []
@@ -149,7 +149,7 @@ def upd_prod(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return redirect('/inicial/home/')
+        return redirect('/')
     elif fornecedor:
         idProduto = request.GET.get('prod')
         produto = Produtos.objects.get(produtoid__exact=idProduto)
@@ -262,7 +262,7 @@ def details(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return redirect('/inicial/home/')
+        return redirect('/')
     elif fornecedor:
         idProduto = request.GET.get('prod')
         produto = Produtos.objects.filter(produtoid__exact=idProduto)

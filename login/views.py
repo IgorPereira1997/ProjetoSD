@@ -41,7 +41,7 @@ def login_fornecedor(request):
             if ((campo['usuario'] == usuarioF) and (campo['senha'] == senhaF)):
                 validoFornecedor = 'Igual'
                 request.session['idFornecedor'] = campo['fornecedorid']
-                return redirect('/listar_transportadoras/listar/')
+                return redirect('/listar_produtos/listar/')
                 break
     else:
         usuarioF = ''
@@ -49,24 +49,3 @@ def login_fornecedor(request):
         validoFornecedor = ''
         request.session['idFornecedor'] = ''
     return render(request, 'fornecedor/index.html', {'loginfornecedor': validoFornecedor,'msg': mensagem})
-
-def login_admin(request):
-    request.session['idCliente'] = ''
-    request.session['idFornecedor'] = ''
-    if request.method == "POST":
-        all_users = User.objects.filter(is_superuser=True)
-        validoFornecedor = 'Diferente'
-        usuarioA = request.POST.get('user_admin')
-        senhaA = request.POST.get('key_password_admin')
-        for campo in all_users:
-            if ((campo['usuario'] == usuarioA) and (campo['senha'] == senhaA)):
-                validoFornecedor = 'Igual'
-                request.session['idFornecedor'] = campo['fornecedorid']
-                return redirect('/listar_transportadoras/listar/')
-                break
-    else:
-        usuarioA = ''
-        senhaA = ''
-        validoFornecedor = ''
-        request.session['idFornecedor'] = ''
-    return render(request, 'admin/index.html', {'loginfornecedor': validoFornecedor,'msg': mensagem})

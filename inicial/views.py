@@ -11,7 +11,7 @@ def sair(request):
     if request.method == "POST":
         request.session['idFornecedor'] = ''
         request.session['idCliente'] = ''
-        return redirect('/inicial/home/')
+        return redirect('/')
     else:
         return render(request, 'sair/sair.html', {'forn': forncedor, 'cli': cliente})
 
