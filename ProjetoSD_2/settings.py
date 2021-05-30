@@ -35,13 +35,12 @@ INSTALLED_APPS = [
     'admin_tools.theming',
     'admin_tools.menu',
     'admin_tools.dashboard',
+    'storages',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'storages',
     'listar_produtos',
     'listar_transportadoras',
     'login',
@@ -155,7 +154,7 @@ DEFAULT_FILE_STORAGE = 'ProjetoSD_2.storage_backends.MediaStorage'
 STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(STATIC_URL, 'static'),
 ]
 
 # Default primary key field type
