@@ -28,7 +28,6 @@ paypalhttp==1.0.0
 Pillow==8.2.0
 psycopg2==2.8.6
 psycopg2-binary==2.8.6
-py-mysql2pgsql==0.1.6
 pycep-correios==5.0.0
 pycparser==2.20
 pyOpenSSL==20.0.1
