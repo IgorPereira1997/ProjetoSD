@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from django.contrib.auth.models import Group
 
 admin.site.site_header = "Transportadora Vietnã"
-admin.site.site_url = "/inicial/home/"
+admin.site.site_url = "/"
 admin.site.site_title  =  "Administração da Transportadora Vietnã"
 
 urlpatterns = [

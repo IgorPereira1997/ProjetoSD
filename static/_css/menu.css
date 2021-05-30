@@ -1,0 +1,31 @@
+nav {
+    display:inline-flex; 
+    width:fit-content; 
+    background-color: #C0C0C0; 
+    float: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+nav ul { 
+    list-style:none; 
+    margin:0; 
+    padding:4px 
+}
+
+nav ul li { 
+    display:inline-block;
+}
+
+nav ul li a { 
+    font-size: 0.85em; 
+    text-decoration: none; 
+    color: #FFF; 
+    padding: 4px 20px;
+}
+
+nav ul li a:hover { 
+    background-color: #B4531A; 
+}
