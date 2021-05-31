@@ -26,7 +26,9 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['transportadora-vietna.herokuapp.com', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = ['transportadora-vietna.herokuapp.com', '127.0.0.1', '0.0.0.0', 'em5805.127.0.0.1', 's1._domainkey.127.0.0.1', 's2._domainkey.127.0.0.1',
+                 'url2753.127.0.0.1', '22076011.127.0.0.1', 'u22076011.wl012.sendgrid.net', 's1.domainkey.u22076011.wl012.sendgrid.net',
+                 's2.domainkey.u22076011.wl012.sendgrid.net', 'sendgrid.net', 'sendgrid.net']
 
 # Application definition
 
@@ -43,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'contato',
     'listar_produtos',
     'listar_transportadoras',
     'login',
@@ -185,3 +188,11 @@ PAYPAL_SECRET_ID  =  "access_token$sandbox$cr2shk6sw2vz3yh4$73cb41d4747ebcee9723
 # Configure Django App for Heroku.
 import django_heroku
 django_heroku.settings(locals(), AWS_S3_CUSTOM_DOMAIN)
+
+#Email Configs
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'transportadoravietna@gmail.com'
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD') #past the key or password app here
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

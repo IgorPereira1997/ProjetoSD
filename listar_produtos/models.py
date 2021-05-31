@@ -11,8 +11,8 @@ class Produtos(models.Model):
     precorevenda = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     precounitario = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     estoque = models.IntegerField(blank=True, null=True)
-    imagemgrande = models.FileField(max_length=100)
-    imagempequena = models.FileField(max_length=100)
+    imagemgrande = models.FileField(upload_to='images/product_images/')
+    imagempequena = models.FileField(upload_to='images/product_images/')
     fornecedorid = models.SmallIntegerField(db_column='fornecedorID', blank=True, null=True)  # Field name made lowercase.
     categoriaid = models.SmallIntegerField(db_column='categoriaID', blank=True, null=True)  # Field name made lowercase.
 
@@ -34,8 +34,8 @@ class ProdutosClientes(models.Model):
     precorevenda = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     precounitario = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     estoque = models.IntegerField(blank=True, null=True)
-    imagemgrande = models.FileField(max_length=100)
-    imagempequena = models.FileField(max_length=100)
+    imagemgrande = models.FileField(upload_to='images/product_images_cliente/')
+    imagempequena = models.FileField(upload_to='images/product_images_cliente/')
     descontinuado = models.SmallIntegerField(blank=True, null=True)
     fornecedorid = models.SmallIntegerField(db_column='fornecedorID', blank=True, null=True)  # Field name made lowercase.
     categoriaid = models.SmallIntegerField(db_column='categoriaID', blank=True, null=True)  # Field name made lowercase.

@@ -18,5 +18,5 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
-    path('', views.fale_conosco, name="faleConosco"),
+    path('email/', views.fale_conosco, name="faleConosco"),
 ]

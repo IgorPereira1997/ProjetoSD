@@ -24,7 +24,7 @@ from django.core.files import File
 from PIL import Image
 
 
-def resize_image(image, size, switch):
+def resize_image(image, size):
     """Resize image of given size from given image"""
     im = Image.open(image)
     im.load()
@@ -32,8 +32,5 @@ def resize_image(image, size, switch):
     im = im.resize(size) # resize image
     output = BytesIO() # create a BytesIO object
     im.save(output, 'JPEG', quality=100) # save image to BytesIO object
-    if switch:
-        new_image = File(output, name=('images/product_images_cliente/'+gerarCodigoUnico(image.name))) # create a django friendly File object (create new name)
-    else:
-        new_image = File(output, name=('images/product_images/'+gerarCodigoUnico(image.name))) # create a django friendly File object (create new name)
+    new_image = File(output, name=(gerarCodigoUnico(image.name))) # create a django friendly File object (create new name)
     return new_image

@@ -1,0 +1,75 @@
+{% include 'standard/base.html' %}
+{% load static %}
+
+<html>
+    <head>
+        <title>Fale Conosco</title>
+        <link href="{% static '_css/contato.css' %}" rel="stylesheet">
+    </head>
+    <div style="margin: 10%;" class="marg">
+            <form class="form-contact contact_form container" action="/contato/email/" method="post" id="contactForm"
+                novalidate="novalidate">
+                <h1 class="text-center">Fale Conosco</h1>
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="first_name">Primeiro Nome:</label>
+                            {{ form.first_name }}
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="last_name">Último Nome:</label>
+                            {{ form.last_name }}
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            {{ form.emailid }}
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="phone_number">Telefone: </label>
+                            {{form.phone_number}}
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="subject">Assunto:</label>
+                            {{form.subject}}
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="Message">Mensagem:</label>
+                            {{form.message}}
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="text-center form-group mt-lg-3">
+                    <button type="submit" class="btn btn-outline-success">Enviar Mensagem</button>
+                </div>
+            </form>
+            <br>
+            <form class="text-center form-contact contact_form container" action="/">
+                <div class="form-group mt-lg-3">
+                    <button type="submit" class="btn btn-outline-success">Voltar</button>
+                </div>
+            <form>
+            <br>
+            {% if msg %}
+                <h2 style="color:green;">Mensagem enviada com sucesso!</h2>
+            {% endif %}
+        </div>
+</html>
+
+{% include 'standard/footer.html' %}
