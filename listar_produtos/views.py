@@ -39,8 +39,8 @@ def add_prod(request):
                                     precorevenda=float(str(request.POST.get('precorevenda')).replace(',', '.')), 
                                     precounitario=float(str(request.POST.get('precounitario')).replace(',', '.')),
                                     estoque=int(request.POST.get('estoque')), 
-                                    imagemgrande=func.resize_image(request.FILES.get('foto_grande'), (225, 225)),  
-                                    imagempequena=func.resize_image(request.FILES.get('foto_pequena'), (73, 73)), 
+                                    imagemgrande=func.resize_image(image=request.FILES.get('foto_grande'), size=(225, 225), switch=False),  
+                                    imagempequena=func.resize_image(image=request.FILES.get('foto_pequena'), size=(73, 73), switch=False), 
                                     fornecedorid=int(request.POST.get('fornecedorid')), 
                                     categoriaid=int(request.POST.get('categoriaid'))
                                     )
@@ -179,10 +179,10 @@ def upd_prod(request):
                     produto.estoque       = int(request.POST.get('estoque'))
                     flagChange = True
                 if request.FILES.get('foto_grande') != None:
-                    produto.imagemgrande  = func.resize_image(request.FILES.get('foto_grande'), (225, 225))
+                    produto.imagemgrande  = func.resize_image(image=request.FILES.get('foto_grande'), size=(225, 225), switch=False)
                     flagChange = True
                 if request.FILES.get('foto_pequena') != None:
-                    produto.imagempequena = func.resize_image(request.FILES.get('foto_pequena'), (73, 73))
+                    produto.imagempequena = func.resize_image(image=request.FILES.get('foto_pequena'), size=(73, 73), switch=False)
                     flagChange = True
                 if produto.fornecedorid  != int(request.POST.get('fornecedorid')):
                     produto.fornecedorid  = int(request.POST.get('fornecedorid'))
@@ -237,10 +237,10 @@ def upd_prod(request):
                     produto.estoque       = int(request.POST.get('estoque'))
                     flagChange = True
                 if request.FILES.get('foto_grande') != None:
-                    produto.imagemgrande  = func.resize_image(request.FILES.get('foto_grande'), (225, 225))
+                    produto.imagemgrande  = func.resize_image(image=request.FILES.get('foto_grande'), size=(225, 225), switch=True)
                     flagChange = True
                 if request.FILES.get('foto_pequena') != None:
-                    produto.imagempequena = func.resize_image(request.FILES.get('foto_pequena'), (73, 73))
+                    produto.imagempequena = func.resize_image(image=request.FILES.get('foto_pequena'), size=(73, 73), switch=True)
                     flagChange = True
                 if produto.fornecedorid  != int(request.POST.get('fornecedorid')):
                     produto.fornecedorid  = int(request.POST.get('fornecedorid'))
