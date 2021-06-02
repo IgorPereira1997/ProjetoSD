@@ -1,17 +1,16 @@
 /* estilos da listagem */
 main div#listagem_produtos {
-    width:80%;
-    justify-content: center;
-    align-items: center;
-    margin:50px auto 30px;
+    width:100%;/*80%;*/
+    /*justify-content: center;
+    align-items: center;*/
+    margin:0 auto;/*50px auto 30px*/;
 }
 
 main div#listagem_produtos ul {
     float:left;
-    margin:5px 10px 5px;
-    padding:0;
     width:30%;
-    height: 235px;
+    margin:5px 5px 5px;
+    text-align: center;
 }
 
 main div#listagem_produtos li {
@@ -21,8 +20,10 @@ main div#listagem_produtos li {
 }
 
 main div#listagem_produtos li.imagem {
-    float:left;
-    margin-right: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
 }
 
 main div#listagem_produtos li h3 {
@@ -30,7 +31,8 @@ main div#listagem_produtos li h3 {
 }
 
 main div#listagem_produtos li img {
-    border:1px solid #ddd;   
+    border:1px solid #ddd;
+    height: fit-content;   
 }
 
 main div#listagem_produtos h2{

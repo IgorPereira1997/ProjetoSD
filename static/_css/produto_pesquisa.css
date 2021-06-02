@@ -13,7 +13,7 @@ main div#janela_pesquisa form {
 }
 
 main div#janela_pesquisa form input[type="text"] {
-    width:80%;
+    width:70%;
     padding:4.5px;
     border:1px solid #CDC99B;
     border-top-left-radius: 5px;
