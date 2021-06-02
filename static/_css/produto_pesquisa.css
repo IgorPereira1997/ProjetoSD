@@ -1,6 +1,6 @@
 /* estilos da pesquisa */
 main div#janela_pesquisa {
-    width:80%;
+    width:70%;
     height: 70px;
     padding: 7px;
     margin:0 auto 30px;
@@ -8,7 +8,7 @@ main div#janela_pesquisa {
 }
 
 main div#janela_pesquisa form {
-    width:40%;
+    width:80%;
     margin:10px auto;
 }
 

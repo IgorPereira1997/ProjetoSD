@@ -7,7 +7,7 @@ main div#janela_formulario {
 }
 
 main div#janela_formulario form {
-    width:50%;
+    width:65%;
     justify-content: center;
     text-align: center;
     margin:0px auto;
@@ -44,6 +44,7 @@ main div#janela_formulario form label {
 main div#janela_formulario form input[type="text"] {
     justify-content: center;
     align-items: center;
+    width: 100%;
     padding:10px;
     border:1px solid #CDC99B;
     border-radius: 5px;
