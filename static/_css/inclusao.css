@@ -63,6 +63,7 @@ main div#janela_formulario form input[type="file"] {
     outline: none;
     margin-bottom: 25px;
     font-size: 0.87rem;
+    text-align-last: center;
 }
 
 main div#janela_formulario form h4 a {

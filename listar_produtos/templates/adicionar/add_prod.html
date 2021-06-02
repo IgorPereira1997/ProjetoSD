@@ -64,7 +64,7 @@
                     <h5>{{ form.foto_pequena.errors }}</h5>
                     <h4> {{ form.foto_pequena.label_tag}} {{ form.foto_pequena }} </h4>
 
-                    <input type="submit" value="Inserir novo produto">
+                    <input type="submit" value="Inserir produto">
                 </form>
                 <form action="/listar_produtos/listar/" method="POST">
                     {% csrf_token %}
