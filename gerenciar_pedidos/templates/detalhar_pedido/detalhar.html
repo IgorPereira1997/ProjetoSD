@@ -39,7 +39,7 @@
                                     <li class="list-group-item col-md-2 text-center"><strong>Data do Pedido:</strong>{{ pedidos.data_pedido }}</li>
                                     {% for tipo in status %}
                                         {% if pedidos.status_pedido == tipo.statusid %}
-                                        <li class="list-group-item col-md-2 text-center"><strong>Status:</strong>{{ tipo.nomestatus }}</li>
+                                        <li class="list-group-item col-md-3 text-center"><strong>Status:</strong>{{ tipo.nomestatus }}</li>
                                         {% endif %}
                                     {% endfor %}
                                     {% if pedidos.status_pedido != 2 %}

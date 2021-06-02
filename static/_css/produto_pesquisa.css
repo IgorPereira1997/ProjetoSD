@@ -1,15 +1,16 @@
 /* estilos da pesquisa */
 main div#janela_pesquisa {
     width:70%;
-    height: 70px;
     padding: 7px;
-    margin:0 auto 30px;
-    border-bottom:1px dotted #ddd;
+    margin:0 auto;
+    text-align-last: auto;
 }
 
 main div#janela_pesquisa form {
     width:80%;
-    margin:10px auto;
+    margin-left: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 main div#janela_pesquisa form input[type="text"] {

@@ -34,7 +34,7 @@ def listar(request):
             for item in all_items:
                 for pedido in pedidos:
                     for produto in produtos:
-                        if item.get('pedidoid') == pedido.get('pedidoid') and produto.produtoid == item.get('produtoid'):
+                        if item.get('pedidoid') == pedido.get('pedidoid') and produto.produtoid == item.get('produtoid') and all_pedidos.count(pedido) < 1:
                             all_pedidos.append(pedido)
         else:
             all_clientes = Clientes.objects.filter(clienteid__exact=cliente)
