@@ -72,7 +72,7 @@ def del_prod(request):
     elif cliente:
         idProduto = request.GET.get('prod')
         produto = ProdutosClientes.objects.get(produtoid__exact=idProduto)
-        msg = "Você tem certeza que deseja apagar o produto ?"
+        msg = "Você tem certeza que deseja apagar o produto?"
         if request.method == "POST":
             produto.delete()
             return redirect('/listar_produtos/listar/')
@@ -97,7 +97,7 @@ def list_prod(request):
                 all_pedidos_item = PedidosItem.objects.values()
                 for linha in all_pedidos:
                     for linha2 in all_pedidos_item:
-                        if linha.pedidoid == linha2['pedidoid'] and linha.status_pedido == 1: # verifica se o cliente tem produtos
+                        if linha.pedidoid == linha2['pedidoid'] and linha.status_pedido == 7: # verifica se o cliente tem produtos
                             list_items.append((linha2['produtoid'],linha2['quantidade']))
                 if len(list_items) == 0:
                     all_pedidos = None
@@ -105,19 +105,23 @@ def list_prod(request):
                     return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq, 'flag': True, 'fornecedor': fornecedor, 'cliente': cliente})
                 else:
                     list_items.sort()
-                    for i in range(1, len(list_items)):
-                        if i == 1:
-                            qtd = list_items[i-1][1]
-                        if list_items[i-1][0] == list_items[i][0]:
-                            qtd += list_items[i][1]
-                        else:
-                            aux.append((list_items[i-1][0], qtd))
-                            if i == len(list_items) - 1:
-                                aux.append((list_items[i][0], qtd))
+                    if len(list_items) == 1:
+                        aux = list_items
+                    else:
+                        for i in range(1, len(list_items)):
+                            if i == 1:
+                                qtd = list_items[i-1][1]
+                            if list_items[i-1][0] == list_items[i][0]:
+                                qtd += list_items[i][1]
                             else:
-                                qtd = list_items[i][1]
+                                aux.append((list_items[i-1][0], qtd))
+                                if i == len(list_items) - 1:
+                                    aux.append((list_items[i][0], qtd))
+                                else:
+                                    qtd = list_items[i][1]
                     for i in range(0, len(aux)):
-                        all_produtos.append(Produtos.objects.get(produtoid=aux[i][0]))
+                        print(ProdutosClientes.objects.get(produtoid=aux[i][0]))
+                        all_produtos.append(ProdutosClientes.objects.get(produtoid=aux[i][0]))
                     all_produtos.sort(key=lambda x: x.nomeproduto)
                     if pesq is None:
                         aux = all_produtos
@@ -184,9 +188,6 @@ def upd_prod(request):
                 if request.FILES.get('foto_pequena') != None:
                     produto.imagempequena = func.resize_image(image=request.FILES.get('foto_pequena'), size=(73, 73))
                     flagChange = True
-                if produto.fornecedorid  != int(request.POST.get('fornecedorid')):
-                    produto.fornecedorid  = int(request.POST.get('fornecedorid'))
-                    flagChange = True
                 if produto.categoriaid   != int(request.POST.get('categoriaid')):
                     produto.categoriaid   = int(request.POST.get('categoriaid'))
                     flagChange = True
@@ -208,7 +209,7 @@ def upd_prod(request):
             all_pedidos_item = PedidosItem.objects.values()
             for linha in all_pedidos:
                 for linha2 in all_pedidos_item:
-                    if linha.pedidoid == linha2['pedidoid'] and linha.status_pedido == 1: # verifica se o cliente tem produtos
+                    if linha.pedidoid == linha2['pedidoid'] and linha.status_pedido == 7: # verifica se o cliente tem produtos
                         if int(linha2['produtoid']) == int(idProduto):
                             qtd += linha2['quantidade']
         flagChange = False
@@ -242,9 +243,6 @@ def upd_prod(request):
                 if request.FILES.get('foto_pequena') != None:
                     produto.imagempequena = func.resize_image(image=request.FILES.get('foto_pequena'), size=(73, 73))
                     flagChange = True
-                if produto.fornecedorid  != int(request.POST.get('fornecedorid')):
-                    produto.fornecedorid  = int(request.POST.get('fornecedorid'))
-                    flagChange = True
                 if produto.categoriaid   != int(request.POST.get('categoriaid')):
                     produto.categoriaid   = int(request.POST.get('categoriaid'))
                     flagChange = True
@@ -276,7 +274,7 @@ def details(request):
             all_pedidos_item = PedidosItem.objects.values()
             for linha in all_pedidos:
                 for linha2 in all_pedidos_item:
-                    if linha.pedidoid == linha2['pedidoid'] and linha.status_pedido == 1: # verifica se o cliente tem produtos
+                    if linha.pedidoid == linha2['pedidoid'] and linha.status_pedido == 7: # verifica se o cliente tem produtos
                         if int(linha2['produtoid']) == int(idProduto):
                             qtd += linha2['quantidade']
         return render(request, 'detalhar/details.html', {'prod': produto, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente, 'qtd': qtd})

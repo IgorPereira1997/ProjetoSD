@@ -42,11 +42,10 @@
                     <h5>{{ form.tempoentrega.errors }}</h5>
                     <h4> {{ form.tempoentrega.label_tag }} {{ form.tempoentrega }} </h4>
 
-                    <h5>{{ form.categaoria.errors }}</h5>
-                    <h4> {{ form.categaoria.label_tag }} {{ form.categoriaid }}  </h4>
+                    <h5>{{ form.categoriaid.errors }}</h5>
+                    <h4> {{ form.categoriaid.label_tag }} {{ form.categoriaid }}  </h4>
 
-                    <h5>{{ form.fornecedorid.errors }}</h5>
-                    <h4> {{ form.fornecedorid.label_tag }} {{ form.fornecedorid }} </h4>
+                    <input type="hidden" name="fornecedorid" value="{{fornecedor}}">
 
                     <h5>{{ form.precorevenda.errors }}</h5>
                     <h4> {{ form.precorevenda }} </h4>

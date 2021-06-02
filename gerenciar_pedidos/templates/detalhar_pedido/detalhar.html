@@ -3,7 +3,7 @@
 
 <html>
     <head>
-        <title>Listagem dos pedidos</title>
+        <title>Detalhe do pedido</title>
         <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
         <link href="{% static '_css/pedidos.css' %}" rel="stylesheet">
     </head>
@@ -32,31 +32,61 @@
                     {% for linha3 in clientes %}
                         {% if linha3.clienteid == pedidos.clienteid and pedidos.transportadoraid == linha2.transportadoraid %}
                                 <ul class="list-group list-group-horizontal-md justify-content-center">
+                                {% if forn %}
                                     <li class="list-group-item col-md-2 text-center"><strong>Cliente:</strong>{{ linha3.nomecompleto }}</li>
+                                {% endif %}
                                     <li class="list-group-item col-md-3 text-center"><strong>Transportadora:</strong>{{ linha2.nometransportadora }}</li>
                                     <li class="list-group-item col-md-2 text-center"><strong>Data do Pedido:</strong>{{ pedidos.data_pedido }}</li>
-                                    <li class="list-group-item col-md-2 text-center"><strong>Data de Saída:</strong>{{ pedidos.data_saida }}</li>
                                     {% for tipo in status %}
-                                        {% if linha.status_pedido == tipo.statusid %}
+                                        {% if pedidos.status_pedido == tipo.statusid %}
                                         <li class="list-group-item col-md-2 text-center"><strong>Status:</strong>{{ tipo.nomestatus }}</li>
                                         {% endif %}
                                     {% endfor %}
-                                    {% if pedidos.status_pedido == 3 or pedidos.status_pedido == 4 %}
-                                        <li class="list-group-item col-md-2 text-center"><strong>Data de Cancelamento:</strong> 
-                                    {% else %}
-                                        <li class="list-group-item col-md-2 text-center"><strong>Data de Entrega:</strong>
+                                    {% if pedidos.status_pedido != 2 %}
+                                        {% if pedidos.status_pedido > 5 %}
+                                            <li class="list-group-item col-md-2 text-center"><strong>Data de Saída:</strong>{{ pedidos.data_saida }}</li>
+                                        {% endif %}
+                                        {% if pedidos.status_pedido == 3 or pedidos.status_pedido == 4 %}
+                                            <li class="list-group-item col-md-2 text-center"><strong>Data de Cancelamento:</strong>{{ pedidos.data_entrega }}</li>
+                                        {% elif pedidos.status_pedido == 7 %}
+                                            <li class="list-group-item col-md-2 text-center"><strong>Data de Entrega:</strong>{{ pedidos.data_entrega }}</li>
+                                        {% endif %}
                                     {% endif %}
-                                        {{ pedidos.data_entrega }}</li>
                                     <li class="list-group-item col-md-2 text-center"><strong>Valor do Pedido:</strong> R${{ pedidos.valor_pedido }}</li>
                                 </ul>
+
+                                {% if pedidos.status_pedido != 3 and pedidos.status_pedido != 4 and pedidos.status_pedido != 7 %}
                                 <form action="/gerenciar_pedidos/cancelar_pedido/" method="GET">
                                     <input type="hidden" name="order" value={{id}}>
                                     <input type="submit" value="Cancelar Pedido">
                                 </form>
-                                <form action="/gerenciar_pedidos/modificar_pedido/" method="POST">
-                                {% csrf_token %}
-                                    <input type="submit" value="Modificar Pedido">
-                                </form>
+                                {% endif %}
+
+                                {% if cli %}
+                                    {% if pedidos.status_pedido == 2 %}
+                                    <form action="/gerenciar_pedidos/modificar_pedido/?pedido={{ id }}" method="POST">
+                                        {% csrf_token %}
+                                            <input type="hidden" name="valorPedido" value="{{ pedidos.valor_pedido }}">
+                                            <input type="submit" value="Realizar Pagamento">
+                                    </form>
+                                    {% endif %}
+                                {% endif %}
+                                
+                                {% if forn %}
+                                    {% if pedidos.status_pedido > 4 and pedidos.status_pedido < 7%}
+                                    <form action="/gerenciar_pedidos/modificar_pedido/?pedido={{ id }}" method="POST">
+                                    {% csrf_token %}
+                                        <input type="submit" value="Modificar Pedido">
+                                    </form>
+                                    {% endif %}
+                                    {% if pedidos.status_pedido == 1 %}
+                                    <form action="/gerenciar_pedidos/modificar_pedido/?pedido={{ id }}" method="POST">
+                                    {% csrf_token %}
+                                        <input type="submit" value="Modificar Pedido">
+                                    </form>
+                                    {% endif %}
+                                {% endif %}
+
                                 <form action="/gerenciar_pedidos/lista_pedidos/" method="POST">
                                 {% csrf_token %}
                                     <input type="submit" value="Voltar">

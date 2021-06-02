@@ -20,3 +20,13 @@ class TransportadoraPedidoForm(forms.Form):
         required=True,
         label="Escolha a Transportadora",
     )
+
+class ModificarPedidoForm(forms.Form):
+    def __init__(self, transp, *args, **kwargs):
+        super(ModificarPedidoForm, self).__init__(*args, **kwargs)
+
+    statuspedido = forms.ChoiceField(
+        choices=(),
+        required=True,
+        label="Escolha o novo Status",
+    )

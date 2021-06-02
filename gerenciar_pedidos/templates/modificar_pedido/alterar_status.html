@@ -1,4 +1,112 @@
 {% include 'standard/base.html' %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
 
+<head>
+    <!-- Add meta tags for mobile and IE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    {% if cli %}
+    <title> Pagamento do Pedido </title>
+    {% elif forn %}
+    <title> Modificação do Pedido </title>
+    {% endif %}
+    <link href="{% static '_css/inclusao.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    <div id="janela_formulario">
+        {% if cli %}
+            <div id="paypal-button-container">
+            
+            </div>
+        {% elif forn %}
+            <form method="POST" enctype="multipart/form" action="/gerenciar_pedidos/modificar_pedido/?pedido={{id}}">
+                {% csrf_token %}
+                <h4>{{ msg }}</h4>
+                <input type="submit" value="Modificar Pedido">
+            </form>
+        {% endif %}
+        <form action="/gerenciar_pedidos/detalhar_pedido/?pedido={{id}}" method="POST">
+        {% csrf_token %}
+            <input type="submit" value="Voltar">
+        </form>
+    </div>
+
+    <!-- Include the PayPal JavaScript SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=Ab6hFNG9YafLFy-nYSpgDK7b7H-5X93AT4jGixX2W1vW1AZFYaUKfM6vtEERKM5Ngm9NPBMqrH1Pd4Q1&currency=BRL"></script>
+
+    <script>
+
+        var productPaid = 1
+        var pedidoid = "{{id}}"
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getCookie('csrftoken');
+
+        function completeOrder(){
+            var url = "/gerenciar_pedidos/lista_pedidos/"
+            fetch(url,{
+                method: "POST",
+                headers:{
+                    'Content-type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify({ 'status': productPaid, 'pedidoid': pedidoid , 'msg': 'Pago com Sucesso!'})
+            })
+        }
+
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+
+            style: {
+                color:  'blue',
+                shape:  'pill',
+                label:  'pay',
+                height: 40
+            },
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '{{valor}}'
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Show a success message to the buyer
+                    completeOrder()
+                    alert('Pagamento realizado com sucesso por ' + details.payer.name.given_name + '!');
+                    location.href="/gerenciar_pedidos/lista_pedidos/"
+                });
+            }
+
+
+        }).render('#paypal-button-container');
+    </script>
+</body>
+
+</html>
 {% include 'standard/footer.html' %}

@@ -49,3 +49,26 @@ class ProdutosClientes(models.Model):
     def __str__(self):
         return f"{self.nomeproduto} | {self.codigobarra}"
 
+class ProdutosStandby(models.Model):
+    produtoid = models.IntegerField(db_column='produtoID', primary_key=True)  # Field name made lowercase.
+    nomeproduto = models.CharField(max_length=50, blank=True, null=True)
+    descricao = models.TextField(blank=True, null=True)
+    codigobarra = models.CharField(max_length=15, blank=True, null=True)
+    tempoentrega = models.SmallIntegerField(blank=True, null=True)
+    precorevenda = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    precounitario = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    estoque = models.IntegerField(blank=True, null=True)
+    imagemgrande = models.FileField(upload_to='images/product_images_standby/')
+    imagempequena = models.FileField(upload_to='images/product_images_standby/')
+    fornecedorid = models.SmallIntegerField(db_column='fornecedorID', blank=True, null=True)  # Field name made lowercase.
+    categoriaid = models.SmallIntegerField(db_column='categoriaID', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = True
+        db_table = 'produtos_standby'
+        verbose_name = 'Produto em Negociação'
+        verbose_name_plural  =  "Produtos Disponíveis (Negociações)"
+    
+    def __str__(self):
+        return f"{self.nomeproduto} | {self.codigobarra}"
+

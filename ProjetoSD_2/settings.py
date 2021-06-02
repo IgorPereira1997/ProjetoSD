@@ -158,7 +158,7 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 DEFAULT_FILE_STORAGE = 'ProjetoSD_2.storage_backends.MediaStorage'
 
-STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+#STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
@@ -169,7 +169,7 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder'
 ]
 
-#STATIC_URL = '/static/'
+STATIC_URL = '/static/'
 
 #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
@@ -182,12 +182,12 @@ STATICFILES_FINDERS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-PAYPAL_CLIENT_ID  = "sb-d2uth6329914@business.example.com"
-PAYPAL_SECRET_ID  =  "access_token$sandbox$cr2shk6sw2vz3yh4$73cb41d4747ebcee972351629b1e9883"
+PAYPAL_CLIENT_ID  = config('PAYPAL_CLIENT_ID')
+PAYPAL_SECRET_ID  =  config('PAYPAL_SECRET_ID')
 
 # Configure Django App for Heroku.
 import django_heroku
-django_heroku.settings(locals(), AWS_S3_CUSTOM_DOMAIN)
+#django_heroku.settings(locals(), AWS_S3_CUSTOM_DOMAIN)
 
 #Email Configs
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

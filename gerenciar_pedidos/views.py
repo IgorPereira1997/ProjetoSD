@@ -1,43 +1,55 @@
+import os
 from django.shortcuts import render, redirect
 from login.models import Clientes
 from listar_transportadoras.models import Transportadoras
 from .models import Pedidos, PedidosItem, PedidosStatus
 from ProjetoSD_2 import settings
-from listar_produtos.models import Produtos
+from listar_produtos.models import Produtos, ProdutosStandby, ProdutosClientes
 from .forms import PedidoForm, TransportadoraPedidoForm
 from inicial.funcoes import gerarConhecimento
+import json
+import inicial.funcoes as func
 
 # Create your views here.
 
 list_pedidos = []
 pedido_final = {}
-list_transp = []
-all_transportadoras = Transportadoras.objects.values()
-for campo in all_transportadoras:
-    list_transp.append((campo['transportadoraid'], campo['nometransportadora']),)
 
 def listar(request):
     list_pedidos.clear()
     pedido_final.clear()
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
-    p = settings.PAYPAL_CLIENT_ID
     if fornecedor == '' and cliente == '':
         return redirect('/')
     else:
         all_transportadoras = Transportadoras.objects.all
         all_status = PedidosStatus.objects.all
-        if fornecedor != '':
+        if fornecedor:
+            all_pedidos = []
             all_clientes = Clientes.objects.all
-            all_pedidos = Pedidos.objects.all
+            pedidos = Pedidos.objects.values()
+            all_items = PedidosItem.objects.values()
+            produtos = Produtos.objects.filter(fornecedorid__exact=fornecedor)
+            for item in all_items:
+                for pedido in pedidos:
+                    for produto in produtos:
+                        if item.get('pedidoid') == pedido.get('pedidoid') and produto.produtoid == item.get('produtoid'):
+                            all_pedidos.append(pedido)
         else:
             all_clientes = Clientes.objects.filter(clienteid__exact=cliente)
             all_pedidos = Pedidos.objects.filter(clienteid__exact=cliente)
+            try:
+                body = json.loads(request.body)
+                pedido = Pedidos.objects.get(pedidoid__exact=body['pedidoid'])
+                pedido.status_pedido = body['status']
+                pedido.save(force_update=True)
+            except:
+                pass
         return render(request, 'lista_pedidos/pedidos.html', {'transportadoras': all_transportadoras, 
                                                               'clientes': all_clientes, 
                                                               'pedidos': all_pedidos,
                                                               'status': all_status,
-                                                              'paypal': p,
                                                               'forn': fornecedor,
                                                               'cli': cliente,})
 
@@ -85,7 +97,73 @@ def details(request):
 
 
 def modificar(request):
-    return render(request, 'modificar_pedido/alterar_status.html', {})
+    cliente = request.session['idCliente']
+    fornecedor = request.session['idFornecedor']
+    pedido = request.GET.get('pedido')
+    if cliente == "" and fornecedor == "":
+        return redirect('/')
+    elif fornecedor:
+        list_status = []
+        list_status.clear() 
+        pedido_change = Pedidos.objects.get(pedidoid__exact=pedido)
+        msg = "Deseja confirmar que o pedido foi "
+        if pedido_change.status_pedido == 1:
+            msg += "pago?"
+        elif pedido_change.status_pedido == 5:
+            msg += "enviado?"
+        elif pedido_change.status_pedido == 6:
+            msg += "entregue?"
+        if request.method == "POST":
+            status = pedido_change.status_pedido
+            if status == 1:
+                pedido_change.status_pedido = 5
+            elif status == 5 or status == 6:
+                pedido_change.status_pedido += 1
+                from datetime import datetime
+                if status == 5:
+                    pedido_change.data_saida = datetime.now().strftime('%Y-%m-%d')
+                if status == 6:
+                    pedido_change.data_entrega = datetime.now().strftime('%Y-%m-%d')
+                    pedido_item = PedidosItem.objects.get(pedidoid__exact=pedido_change.pedidoid)
+                    standby = ProdutosStandby.objects.get(produtoid__exact=pedido_item.produtoid)
+                    try:
+                        prod_cliente = ProdutosClientes.objects.get(produtoid__exact=pedido_item.produtoid)
+                        prod_cliente.estoque += int(standby.estoque)
+                        prod_cliente.save(force_update=True)
+                    except:
+
+                        import urllib
+                        imageG = os.path.join(settings.BASE_DIR, "imgg.jpg")
+                        imageP = os.path.join(settings.BASE_DIR, "imgp.jpg")
+                        urllib.request.urlretrieve("https://d27yowdapaejgz.cloudfront.net/media/%s" % (standby.imagemgrande), imageG)
+                        urllib.request.urlretrieve("https://d27yowdapaejgz.cloudfront.net/media/%s" % (standby.imagempequena), imageP)
+
+                        ProdutosClientes.objects.create(produtoid = standby.produtoid,
+                                                            nomeproduto = standby.nomeproduto,
+                                                            descricao =standby.descricao,
+                                                            codigobarra =standby.codigobarra,
+                                                            tempoentrega = standby.tempoentrega,
+                                                            precorevenda =standby.precorevenda,
+                                                            precounitario =standby.precounitario,
+                                                            estoque =standby.estoque,
+                                                            imagemgrande = func.resize_image(image=imageG, size=(225, 225), mod_image=1),
+                                                            imagempequena = func.resize_image(image=imageP, size=(73, 73), mod_image=1),
+                                                            fornecedorid = standby.fornecedorid,
+                                                            categoriaid = standby.categoriaid
+                                                        )
+                    if standby.estoque == int(pedido_item.quantidade):
+                        standby.delete()
+                    else:
+                        standby.estoque -= int(pedido_item.quantidade)
+                        standby.save(force_update=True)
+            pedido_change.save(force_update=True) 
+            return redirect('/gerenciar_pedidos/lista_pedidos/')
+        else:
+            return render(request, 'modificar_pedido/alterar_status.html', {'id': pedido, 'cli': cliente, 'forn': fornecedor, 'msg': msg})
+    elif cliente:
+        valor = request.POST.get('valorPedido')
+        return render(request, 'modificar_pedido/alterar_status.html', {'id': pedido, 'valor': valor.replace(',', '.'), 
+                                                                        'cli': cliente, 'forn': fornecedor})
 
 def finalizar(request):
     cliente = request.session['idCliente']
@@ -93,6 +171,10 @@ def finalizar(request):
     if cliente == "":
         return redirect('/')
     elif cliente:
+        list_transp = []
+        all_transportadoras = Transportadoras.objects.values()
+        for campo in all_transportadoras:
+            list_transp.append((campo['transportadoraid'], campo['nometransportadora']),)
         if request.method == "POST":
             form = TransportadoraPedidoForm(list_transp, request.POST)
             if form.is_valid():
@@ -108,6 +190,37 @@ def finalizar(request):
                                                produtoid=list_pedidos[i].get('produtoid'),
                                                precounitario=list_pedidos[i].get('precounitario'),
                                                quantidade=list_pedidos[i].get('quantidade'),)
+
+                    produto_alvo = Produtos.objects.get(produtoid__exact=list_pedidos[i].get('produtoid'))
+
+                    try:
+                        standby = ProdutosStandby.objects.get(produtoid__exact=list_pedidos[i].get('produtoid'))
+                        standby.estoque += int(list_pedidos[i].get('quantidade'))
+                        standby.save(force_update=True)
+                    except:
+
+                        import urllib
+                        imageG = os.path.join(settings.BASE_DIR, "imgg.jpg")
+                        imageP = os.path.join(settings.BASE_DIR, "imgp.jpg")
+                        urllib.request.urlretrieve("https://d27yowdapaejgz.cloudfront.net/media/%s" % (produto_alvo.imagemgrande), imageG)
+                        urllib.request.urlretrieve("https://d27yowdapaejgz.cloudfront.net/media/%s" % (produto_alvo.imagempequena), imageP)
+                        
+                        ProdutosStandby.objects.create(produtoid = produto_alvo.produtoid,
+                                                       nomeproduto = produto_alvo.nomeproduto,
+                                                       descricao =produto_alvo.descricao,
+                                                       codigobarra =produto_alvo.codigobarra,
+                                                       tempoentrega = produto_alvo.tempoentrega,
+                                                       precorevenda =produto_alvo.precorevenda,
+                                                       precounitario =produto_alvo.precounitario,
+                                                       estoque =produto_alvo.estoque,
+                                                       imagemgrande = func.resize_image(image=imageG, size=(225, 225), mod_image=1),
+                                                       imagempequena = func.resize_image(image=imageP, size=(73, 73), mod_image=1),
+                                                       fornecedorid = produto_alvo.fornecedorid,
+                                                       categoriaid = produto_alvo.categoriaid
+                                                        )
+                    produto_alvo.estoque -= int(list_pedidos[i].get('quantidade'))
+                    produto_alvo.save(force_update=True)
+
                 return redirect('/gerenciar_pedidos/lista_pedidos/')
             else:
                 form = TransportadoraPedidoForm(list_transp, request.POST)
@@ -161,6 +274,19 @@ def cancelar(request):
                 pedido.status_pedido = 3
             else:
                 pedido.status_pedido = 4
+            pedido_items = PedidosItem.objects.get(pedidoid__exact=pedido.pedidoid)
+            for item in pedido_items:
+                standby = ProdutosStandby.objects.get(produtoid__exact=item.produtoid)
+                prod_fornecedor = Produtos.objects.get(produtoid__exact=item.produtoid)
+                prod_fornecedor.estoque += int(standby.estoque)
+                prod_fornecedor.save(force_update=True)
+                if standby.estoque == int(item.quantidade):
+                    standby.delete()
+                else:
+                    standby.estoque -= int(item.quantidade)
+                    standby.save(force_update=True)
+            from datetime import datetime
+            pedido.data_entrega = datetime.now().strftime('%Y-%m-%d')
             pedido.save(force_update=True)
             return redirect('/gerenciar_pedidos/lista_pedidos/')
         else:
@@ -177,6 +303,5 @@ def detalhar(request):
         all_clientes = Clientes.objects.all
         pedido = Pedidos.objects.get(pedidoid=id)
         all_status = PedidosStatus.objects.all
-        return render(request, 'detalhar_pedido/detalhar.html', {'transportadoras': all_transportadoras, 'clientes': all_clientes,
-                                                             'pedidos': pedido, 'id': id,
+        return render(request, 'detalhar_pedido/detalhar.html', {'transportadoras': all_transportadoras, 'clientes': all_clientes, 'pedidos': pedido, 'id': id,
                                                              'status': all_status, 'forn': fornecedor, 'cli': cliente})

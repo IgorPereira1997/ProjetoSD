@@ -34,25 +34,34 @@
             <div id="janela_pedidos">
             {% if pedidos %}
             {% for linha in pedidos %}
-                {% for linha2 in transportadoras %}
                     {% for linha3 in clientes %}
-                        {% if linha3.clienteid == linha.clienteid and linha.transportadoraid == linha2.transportadoraid %}
+                        {% if linha3.clienteid == linha.clienteid %}
                                 <ul class="list-group list-group-horizontal-md justify-content-center">
                                 {% if cli == '' %}
                                     <li class="list-group-item col-md-2 text-center">Cliente:{{ linha3.nomecompleto }}</li>
                                 {% endif %}
-                                    <li class="list-group-item col-md-2 text-center">Transportadora: {{ linha2.nometransportadora }}</li>
-                                    {% for tipo in status %}
-                                        {% if linha.status_pedido == tipo.statusid %}
-                                        <li class="list-group-item col-md-2 text-center"><strong>Status:</strong>{{ tipo.nomestatus }}</li>
-                                        {% endif %}
-                                    {% endfor %}
+                                    <li class="list-group-item col-md-2 text-center"><strong>Status:</strong>
+                                    {% if linha.status_pedido == 1 %}
+                                    Pagamento Confirmado
+                                    {% elif linha.status_pedido == 2 %}
+                                    Aguardando Pagamento
+                                    {% elif linha.status_pedido == 3 %}
+                                    Cancelado pelo Cleinte
+                                    {% elif linha.status_pedido == 4 %}
+                                    Cancelado pela Empresa
+                                    {% elif linha.status_pedido == 5 %}
+                                    Aguardando Envio
+                                    {% elif linha.status_pedido == 6 %}
+                                    Enviado
+                                    {% elif linha.status_pedido == 7 %}
+                                        Entrege
+                                    {% endif %}
+                                    </li>
                                     <li class="list-group-item col-md-2 text-center"><strong>Valor do Pedido:</strong> R${{ linha.valor_pedido }}</li>
                                     <li class="list-group-item col-md-1 text-center"><strong><a href="/gerenciar_pedidos/detalhar_pedido/?pedido={{ linha.pedidoid }}">Ver Detalhes</a></strong></li>
                                 </ul>
                         {% endif %}
                     {% endfor %}
-                {% endfor%}
             {% endfor %}
             {% else %}
                 <h2>Não pedidos registrados para o cliente/fornecedor!</h2>
