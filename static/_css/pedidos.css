@@ -23,11 +23,7 @@ div#janela_pedidos li {
 
 div#janela_pedidos li:nth-child(1) {
     padding:8px 4px;
-}
-
-div#janela_pedidos li:nth-child(2) {
-    padding:5px 2px;
-}    
+}  
 
 div#janela_pedidos form {
     width:50%;
