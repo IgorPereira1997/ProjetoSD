@@ -12,12 +12,12 @@
     </head>
     <body>
         <header>
-            <img class="img-fluid" src="{% static '_assets/capa_transportadora.jpg' %}">
-            
-            <div style="hidden" id="header_saudacao">
-                <h3>Bem vindo, {{nome}}</h3>
+        <img class="img-fluid" src="{% static '_assets/capa_transportadora.jpg' %}">
+            {% if nome %}
+            <div id="header_saudacao">
+                <h3>Bem vindo, {{ nome }}</h3>
             </div>
-            
+            {% endif%}
         </header>
     </body>
 </html>

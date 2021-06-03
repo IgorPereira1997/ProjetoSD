@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from pycep_correios import get_address_from_cep, WebService
 from listar_produtos.models import Produtos
 from listar_transportadoras.models import Transportadoras
+from gerenciar_pedidos.models import Pedidos
 
 def validate_float(value):
     value_test = value.replace(',', '.')
@@ -156,5 +157,22 @@ def validate_nomeTransportadoraUpdate(value):
         raise ValidationError(
             _('A transportadora já existe! Se quiser modificá-la vá em "Atualizar" no menu inicial!')
         )
+    else:
+        return value
+
+def transportadora_uso(value):
+    if Pedidos.objects.filter(transportadoraid__exact=value):
+        flag = False
+        pedidos = Pedidos.objects.filter(transportadoraid__exact=value)
+        for pedido in pedidos:
+            if pedido.status_pedido != 7 or pedido.status_pedido != 3 or pedido.status_pedido != 4:
+                flag=True
+                break
+        if flag:
+            raise ValidationError(
+            _('A transportadora possui pedidos em andamento, não pode ser deletada!')
+            )
+        else:
+            return value
     else:
         return value

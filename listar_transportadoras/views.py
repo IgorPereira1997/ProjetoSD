@@ -1,8 +1,9 @@
+from login.models import Fornecedores
 from django.shortcuts import render, redirect
 from inicial.models import Estados
 from .models import Transportadoras
 import inicial.validators as v
-from .forms import AdicionarTransportadoraForm, AdicionarTransportadoraIniForm, AlterarTransportadoraForm, AlterarTransportadoraIniForm
+from .forms import AdicionarTransportadoraForm, AdicionarTransportadoraIniForm, AlterarTransportadoraForm, AlterarTransportadoraIniForm, DeletarTransportadoraForm
 from pycep_correios import get_address_from_cep, WebService
 
 # Create your views here.
@@ -20,6 +21,7 @@ def add_transp(request):
     if cliente == "" and fornecedor == "":
         redirect('/')
     elif fornecedor:
+        nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         if request.method == "POST":
             form = AdicionarTransportadoraForm(estados_list, dados_preliminares,request.POST)
             if form.is_valid():
@@ -33,10 +35,10 @@ def add_transp(request):
                 return redirect('/listar_transportadoras/listar/')
             else:
                 form = AdicionarTransportadoraForm(estados_list, dados_preliminares,request.POST)
-                return render(request, 'adicionar/add_transp.html', {'form': form})
+                return render(request, 'adicionar/add_transp.html', {'form': form, 'nome': nome.nomefornecedor})
         else:
             form = AdicionarTransportadoraForm(estados_list, dados_preliminares)
-            return render(request, 'adicionar/add_transp.html', {'form': form})
+            return render(request, 'adicionar/add_transp.html', {'form': form, 'nome': nome.nomefornecedor})
     else:
         return redirect('/')
 
@@ -46,6 +48,7 @@ def add_transp_ini(request):
     if cliente == "" and fornecedor == "":
         redirect('/')
     elif fornecedor:
+        nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         if request.method == "POST":
             form = AdicionarTransportadoraIniForm(request.POST)
             if form.is_valid():
@@ -61,10 +64,10 @@ def add_transp_ini(request):
                 return redirect('/listar_transportadoras/adicionar/')
             else:
                 form = AdicionarTransportadoraIniForm(request.POST)
-                return render(request, 'adicionar_ini/add_transp_ini.html', {'form': form})
+                return render(request, 'adicionar_ini/add_transp_ini.html', {'form': form, 'nome': nome.nomefornecedor})
         else:
             form = AdicionarTransportadoraIniForm()
-            return render(request, 'adicionar_ini/add_transp_ini.html', {'form': form})
+            return render(request, 'adicionar_ini/add_transp_ini.html', {'form': form, 'nome': nome.nomefornecedor})
     else:
         return redirect('/')
 
@@ -76,6 +79,7 @@ def upd_transp(request):
     if cliente == "" and fornecedor == "":
         redirect('/')
     elif fornecedor:
+        nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         codigo = request.GET.get('codigo')
         flag = False
         if request.method == "POST":
@@ -109,10 +113,10 @@ def upd_transp(request):
                 return redirect('/listar_transportadoras/listar/')
             else:
                 form = AlterarTransportadoraForm(estados_list, dados_preliminares,request.POST)
-                return render(request, 'atualizar/upd_transp.html', {'form': form, 'cod': codigo})
+                return render(request, 'atualizar/upd_transp.html', {'form': form, 'cod': codigo, 'nome': nome.nomefornecedor})
         else:
             form = AlterarTransportadoraForm(estados_list, dados_preliminares)
-            return render(request, 'atualizar/upd_transp.html', {'form': form, 'cod': codigo})
+            return render(request, 'atualizar/upd_transp.html', {'form': form, 'cod': codigo, 'nome': nome.nomefornecedor})
     else:
         return redirect('/')
 
@@ -122,6 +126,7 @@ def upd_transp_ini(request):
     if cliente == "" and fornecedor == "":
         redirect('/')
     elif fornecedor:
+        nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         codigo = request.GET.get('codigo')
         if request.method == "POST":
             form =  AlterarTransportadoraIniForm(None, request.POST)
@@ -138,11 +143,11 @@ def upd_transp_ini(request):
                 return redirect('/listar_transportadoras/atualizar/?codigo='+codigo)
             else:
                 form = AlterarTransportadoraIniForm(None, request.POST)
-                return render(request, 'atualizar_ini/upd_transp_ini.html', {'form': form, 'cod': codigo})
+                return render(request, 'atualizar_ini/upd_transp_ini.html', {'form': form, 'cod': codigo, 'nome': nome.nomefornecedor})
         else:
             filial = Transportadoras.objects.get(transportadoraid__exact=codigo)
             form = AlterarTransportadoraIniForm(filial)
-            return render(request, 'atualizar_ini/upd_transp_ini.html', {'form': form, 'cod': codigo})
+            return render(request, 'atualizar_ini/upd_transp_ini.html', {'form': form, 'cod': codigo, 'nome': nome.nomefornecedor})
     else:
         return redirect('/')
 
@@ -152,22 +157,20 @@ def del_transp(request):
     if cliente == "" and fornecedor == "":
         redirect('/')
     elif fornecedor:
+        nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         codigo = request.GET.get('codigo')
         filial = Transportadoras.objects.get(transportadoraid__exact=codigo)
         if request.method == "POST":
-            filial.delete()
-            return redirect('/listar_transportadoras/listar/')
+            form = DeletarTransportadoraForm(codigo, request.POST)
+            if form.is_valid():
+                filial.delete()
+                return redirect('/listar_transportadoras/listar/')
+            else:
+                form = DeletarTransportadoraForm(codigo, request.POST)
+                return render(request, 'deletar/del_transp.html', {'form': form, 'cod': codigo, 'nome': nome.nomefornecedor})
         else:
-            dados_preliminares.clear()
-            dados_preliminares['nome']     = filial.nometransportadora
-            dados_preliminares['cnpj']     = filial.cnpj
-            dados_preliminares['cep']      = filial.cep
-            dados_preliminares['telefone'] = filial.telefone
-            dados_preliminares['estado']   = (Estados.objects.get(estadoid__exact=filial.estadoid)).nome
-            dados_preliminares['endereco'] = filial.endereco
-            dados_preliminares['cidade']   = filial.cidade
-            form = AdicionarTransportadoraForm(estados_list, dados_preliminares)
-        return render(request, 'deletar/del_transp.html', {'form': form, 'cod': codigo})
+            form = DeletarTransportadoraForm(codigo)
+            return render(request, 'deletar/del_transp.html', {'form': form, 'cod': codigo, 'nome': nome.nomefornecedor})
     else:
         return redirect('/')
 
@@ -177,8 +180,9 @@ def list_transp(request):
     if cliente == "" and fornecedor == "":
         redirect('/')
     elif fornecedor:
+        nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         all_transportadoras = Transportadoras.objects.all
-        return render(request, 'listar/list_transp.html', {'filiais': all_transportadoras})
+        return render(request, 'listar/list_transp.html', {'filiais': all_transportadoras, 'nome': nome.nomefornecedor})
     else:
         return redirect('/')
     

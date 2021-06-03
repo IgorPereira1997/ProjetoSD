@@ -1,4 +1,6 @@
-from inicial.validators import validate_cep, validate_cnpj, validate_cnpjUpdate, validate_nomeTransportadora, validate_nomeTransportadoraUpdate
+from inicial.models import Estados
+from listar_transportadoras.models import Transportadoras
+from inicial.validators import transportadora_uso, validate_cep, validate_cnpj, validate_cnpjUpdate, validate_nomeTransportadora, validate_nomeTransportadoraUpdate, transportadora_uso
 from django import forms
 
 class AdicionarTransportadoraForm(forms.Form):
@@ -200,4 +202,74 @@ class AlterarTransportadoraForm(forms.Form):
             attrs={'readonly': True}
         ),
         label='Cidade',
+    )
+
+class DeletarTransportadoraForm(forms.Form):
+    def __init__(self, id, *args, **kwargs):
+        super(DeletarTransportadoraForm, self).__init__(*args, **kwargs)
+        transp = Transportadoras.objects.get(transportadoraid__exact=id)
+        estado = Estados.objects.get(estadoid__exact=transp.estadoid)
+        self.fields['estados'].choices            = (estado.sigla, estado.nome)
+        self.fields['endereco'].initial           = transp.endereco
+        self.fields['estados'].initial            = estado.nome
+        self.fields['nometransportadora'].initial = transp.nometransportadora
+        self.fields['cep'].initial                = transp.cep
+        self.fields['telefone'].initial           = transp.telefone
+        self.fields['cnpj'].initial               = transp.cnpj
+        self.fields['cidade'].initial             = transp.cidade
+        self.fields['id'].initial                 = id
+
+    nometransportadora = forms.CharField(
+        widget= forms.TextInput(
+            attrs={'readonly': True}
+        ),
+        required=True,
+        label='Nome',
+    )
+
+    endereco = forms.CharField(
+        widget= forms.TextInput(
+            attrs={'readonly': True}
+        ),
+        label='Endereço',
+    )
+
+    cep = forms.CharField(
+        widget= forms.TextInput(
+            attrs={'readonly': True}
+        ),
+        label='CEP',
+    )
+
+    estados = forms.CharField(
+        widget= forms.TextInput(
+            attrs={'readonly': True}
+        ),
+        label="Estado",
+    )
+    
+    telefone = forms.CharField(
+        widget= forms.TextInput(
+            attrs={'readonly': True}
+        ),
+        label='Telefone',
+    )
+
+    cnpj = forms.CharField(
+        widget= forms.TextInput(
+            attrs={'readonly': True}
+        ),
+        label='CNPJ',
+    )
+
+    cidade = forms.CharField(
+        widget= forms.TextInput(
+            attrs={'readonly': True}
+        ),
+        label='Cidade',
+    )
+
+    id = forms.IntegerField(
+        widget=forms.HiddenInput(),
+        validators=[transportadora_uso],
     )

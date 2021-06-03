@@ -13,13 +13,34 @@
     <title> Modificação do Pedido </title>
     {% endif %}
     <link href="{% static '_css/inclusao.css' %}" rel="stylesheet">
-    <link href="{% static '_css/modificar.css' %}" rel="stylesheet">
+    <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
 </head>
 
 <body>
-    <div id="janela_formulario">
+    <main>
+        <div class="topnav">
+            <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="/gerenciar_pedidos/lista_pedidos/">Gerenciar Pedidos</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                <a href="/gerenciar_pedidos/fazer_pedido">Cadastrar Pedido</a>
+                {% if forn %}
+                    <a href="/listar_transportadoras/listar/">Listagem de Filiais</a>
+                {% endif %}
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a href="/listar_produtos/listar/">Listagem de Produtos</a>
+                    <a href="/sair/">Sair</a>
+                </div>
+        </div>
+        <div id="janela_formulario">
         {% if cli %}
-            <div id="paypal-button-container">
+            <h2 style="text-align: center;">Realize o pagamento abaixo:</h2>
+            <br>
+            <h2 style="text-align: center;">Valor: R${{ valor_show }}</h2>
+            <br>
+            <div style="width: 30%;margin-right: auto;margin-left: auto;" id="paypal-button-container">
             
             </div>
         {% elif forn %}
@@ -29,11 +50,11 @@
                 <input type="submit" value="Modificar Pedido">
             </form>
         {% endif %}
-        <form action="/gerenciar_pedidos/detalhar_pedido/?pedido={{id}}" method="POST">
-        {% csrf_token %}
-            <input type="submit" value="Voltar">
-        </form>
-    </div>
+            <form action="/gerenciar_pedidos/detalhar_pedido/?pedido={{id}}" method="POST">
+            {% csrf_token %}
+                <input type="submit" value="Voltar">
+            </form>
+        </div>
 
     <!-- Include the PayPal JavaScript SDK -->
     <script src="https://www.paypal.com/sdk/js?client-id=Ab6hFNG9YafLFy-nYSpgDK7b7H-5X93AT4jGixX2W1vW1AZFYaUKfM6vtEERKM5Ngm9NPBMqrH1Pd4Q1&currency=BRL"></script>
@@ -107,6 +128,7 @@
 
         }).render('#paypal-button-container');
     </script>
+    </main>
 </body>
 
 </html>

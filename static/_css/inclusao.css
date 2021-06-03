@@ -19,7 +19,7 @@ main div#janela_formulario form {
     color: #9A9668;
 }
 
-main div#janela_formulario form h2 {
+main div#janela_formulario h2, main div#janela_formulario form h2 {
     font-family: sans-serif;
     color: #9A9668;
 }

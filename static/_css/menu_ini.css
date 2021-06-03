@@ -1,46 +1,66 @@
-/* Add a black background color to the top navigation */
 .topnav {
     position: relative;
     background-color:#C5996B;
     overflow: hidden;
     margin-top: 45px;
-  }
-  
-  /* Style the links inside the navigation bar */
+    border-radius: 3%;
+    border-radius: 15px;
+}
+
 .topnav a {
     float: left;
-    color: #f2f2f2;
+    color: black;
     text-align: center;
-    padding: 14px 16px;
+    padding: 12px;
     text-decoration: none;
-    font-size: 17px;
-    transition: 0.3s;
-  }
-  
-  /* Change the color of links on hover */
-  .topnav a:hover {
+    font-size: 1.7vw; 
+    line-height: 25px;
+}
+.topnav a:hover {
     background-color: #EDEDDC;
     color: black;
-  }
-  
-  /* Add a color to the active/current link */
-  .topnav a.active {
-    background-color: rgb(111, 192, 100);
-    color: black;
-  }
-  
-  /* Centered section inside the top navigation */
-  .topnav-centered a {
+}
+
+.topnav a.active {
+    background-color: sienna;
+    color: white;
+}
+
+.topnav-centered a {
     float: none;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     transition: 0.3s;
-  }
-  
-  /* Right-aligned section inside the top navigation */
-  .topnav-right {
+}
+
+.topnav-right {
     float: right;
+}
+  
+  * {box-sizing: border-box;}
+
+@media screen and (max-width: 600px) {
+  .topnav a {
+    float: none;
+    display: block;
+    text-align: center;
+    font-size: 12px;
   }
   
+  .topnav-centered a {
+    float: none;
+    position: none;
+    transform: none;
+  }
+
+  .topnav-right {
+    float: none;
+  }
+
+  .topnav a:hover {
+    background-color: #EDEDDC;
+    color: black;
+  }
+}

@@ -29,6 +29,7 @@ def add_prod(request):
     if cliente == "" and fornecedor == "":
         return redirect('/')
     elif fornecedor:
+        nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         if request.method == "POST":
             form = AdicionarProdutoForm(forn_list, cat_list, entrega_list, request.POST, request.FILES)
             if form.is_valid():
@@ -47,10 +48,10 @@ def add_prod(request):
                 return redirect('/listar_produtos/listar/')
             else:
                 form = AdicionarProdutoForm(forn_list, cat_list, entrega_list, request.POST, request.FILES)
-                return render(request, 'adicionar/add_prod.html', {'cat': all_categorias, 'forn': all_fornecedores, 'form': form, 'fornecedor': fornecedor, 'cliente': cliente})
+                return render(request, 'adicionar/add_prod.html', {'cat': all_categorias, 'forn': all_fornecedores, 'form': form, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomefornecedor})
         else:
             form = AdicionarProdutoForm(forn_list, cat_list, entrega_list)
-            return render(request, 'adicionar/add_prod.html', {'cat': all_categorias, 'forn': all_fornecedores, 'form': form, 'fornecedor': fornecedor, 'cliente': cliente})
+            return render(request, 'adicionar/add_prod.html', {'cat': all_categorias, 'forn': all_fornecedores, 'form': form, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomefornecedor})
     else:
         return redirect('/listar_produtos/listar/')
 
@@ -61,6 +62,7 @@ def del_prod(request):
     if cliente == "" and fornecedor == "":
         return redirect('/')
     elif fornecedor:
+        nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         idProduto = request.GET.get('prod')
         produto = Produtos.objects.get(produtoid__exact=idProduto)
         msg = "Você tem certeza que deseja apagar o produto?"
@@ -68,8 +70,9 @@ def del_prod(request):
             produto.delete()
             return redirect('/listar_produtos/listar/')
         else:
-            return render(request, 'deletar/del_prod.html', {'id': idProduto, 'msg': msg, 'fornecedor': fornecedor, 'cliente': cliente})
+            return render(request, 'deletar/del_prod.html', {'id': idProduto, 'msg': msg, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomefornecedor})
     elif cliente:
+        nome = Clientes.objects.get(clienteid__exact=cliente)
         idProduto = request.GET.get('prod')
         produto = ProdutosClientes.objects.get(produtoid__exact=idProduto)
         msg = "Você tem certeza que deseja apagar o produto?"
@@ -77,7 +80,7 @@ def del_prod(request):
             produto.delete()
             return redirect('/listar_produtos/listar/')
         else:
-            return render(request, 'deletar/del_prod.html', {'id': idProduto, 'msg': msg, 'fornecedor': fornecedor, 'cliente': cliente})
+            return render(request, 'deletar/del_prod.html', {'id': idProduto, 'msg': msg, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomecompleto})
 
 
 def list_prod(request):
@@ -88,6 +91,7 @@ def list_prod(request):
         return redirect('/')
     else:
         if cliente:
+            nome = Clientes.objects.get(clienteid__exact=cliente)
             all_produtos = []
             list_items = []
             qtd = 0
@@ -102,7 +106,7 @@ def list_prod(request):
                 if len(list_items) == 0:
                     all_pedidos = None
                     print("Cliente não tem prodtuto em estoque")
-                    return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq, 'flag': True, 'fornecedor': fornecedor, 'cliente': cliente})
+                    return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq, 'flag': True, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomecompleto})
                 else:
                     list_items.sort()
                     if len(list_items) == 1:
@@ -131,22 +135,23 @@ def list_prod(request):
                         for i in range(0, len(all_produtos)):
                             if search(str(pesq).casefold(), str(all_produtos[i].nomeproduto).casefold()):
                                 aux.append(all_produtos[i])
-                    return render(request, 'listar/list_prod.html', {'produtos': aux, 'pesq': pesq, 'flag': False, 'fornecedor': fornecedor, 'cliente': cliente})
+                    return render(request, 'listar/list_prod.html', {'produtos': aux, 'pesq': pesq, 'flag': False, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomecompleto})
             else:
                 all_pedidos = None
                 print("Cliente não tem prodtuto em estoque")
-                return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq, 'flag': True, 'fornecedor': fornecedor, 'cliente': cliente})
+                return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq, 'flag': True, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomecompleto})
         elif fornecedor:
+            nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
             if Produtos.objects.filter(fornecedorid__exact=fornecedor):
                 if pesq is None:
                     all_produtos = Produtos.objects.filter(fornecedorid__exact=fornecedor).order_by('nomeproduto')
                 else:
                     all_produtos = Produtos.objects.filter(fornecedorid__exact=fornecedor).filter(nomeproduto__icontains=pesq).order_by('nomeproduto')
-                return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq,'flag': False, 'fornecedor': fornecedor, 'cliente': cliente})
+                return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq,'flag': False, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomefornecedor})
             else:
                 all_produtos = None
                 print("Fornecedor não tem produtos")
-                return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq,'flag': True, 'fornecedor': fornecedor, 'cliente': cliente})
+                return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq,'flag': True, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomefornecedor})
 
 
 def upd_prod(request):
@@ -155,6 +160,7 @@ def upd_prod(request):
     if cliente == "" and fornecedor == "":
         return redirect('/')
     elif fornecedor:
+        nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         idProduto = request.GET.get('prod')
         produto = Produtos.objects.get(produtoid__exact=idProduto)
         flagChange = False
@@ -196,13 +202,14 @@ def upd_prod(request):
                 return redirect('/listar_produtos/listar/')
             else:
                 form = AlterarProdutoForm(forn_list, cat_list, entrega_list, produto, request.POST, request.FILES)
-                return render(request, 'atualizar/upd_prod.html', {'form': form, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente})
+                return render(request, 'atualizar/upd_prod.html', {'form': form, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomefornecedor})
         else:
             form = AlterarProdutoForm(forn_list, cat_list, entrega_list, produto)
-            return render(request, 'atualizar/upd_prod.html', {'form': form, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente})
+            return render(request, 'atualizar/upd_prod.html', {'form': form, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomefornecedor})
     elif cliente:
         idProduto = request.GET.get('prod')
         produto = ProdutosClientes.objects.get(produtoid__exact=idProduto)
+        nome = Clientes.objects.get(clienteid__exact=cliente)
         qtd = 0
         if Pedidos.objects.filter(clienteid__exact=cliente):
             all_pedidos = Pedidos.objects.filter(clienteid__exact=cliente)
@@ -251,10 +258,10 @@ def upd_prod(request):
                 return redirect('/listar_produtos/listar/')
             else:
                 form = AlterarProdutoCliForm(forn_list, cat_list, entrega_list, produto, qtd, request.POST, request.FILES)
-                return render(request, 'atualizar/upd_prod.html', {'form': form, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente})
+                return render(request, 'atualizar/upd_prod.html', {'form': form, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomecompleto})
         else:
             form = AlterarProdutoCliForm(forn_list, cat_list, entrega_list, produto, qtd)
-            return render(request, 'atualizar/upd_prod.html', {'form': form, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente})
+            return render(request, 'atualizar/upd_prod.html', {'form': form, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomecompleto})
 
 def details(request):
     cliente = request.session['idCliente']
@@ -262,11 +269,13 @@ def details(request):
     if cliente == "" and fornecedor == "":
         return redirect('/')
     elif fornecedor:
+        nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         idProduto = request.GET.get('prod')
         produto = Produtos.objects.filter(produtoid__exact=idProduto)
-        return render(request, 'detalhar/details.html', {'prod': produto, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente})
+        return render(request, 'detalhar/details.html', {'prod': produto, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomefornecedor})
     elif cliente:
         idProduto = request.GET.get('prod')
+        nome = Clientes.objects.get(clienteid__exact=cliente)
         produto = ProdutosClientes.objects.filter(produtoid__exact=idProduto)
         qtd = 0
         if Pedidos.objects.filter(clienteid__exact=cliente):
@@ -277,4 +286,4 @@ def details(request):
                     if linha.pedidoid == linha2['pedidoid'] and linha.status_pedido == 7: # verifica se o cliente tem produtos
                         if int(linha2['produtoid']) == int(idProduto):
                             qtd += linha2['quantidade']
-        return render(request, 'detalhar/details.html', {'prod': produto, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente, 'qtd': qtd})
+        return render(request, 'detalhar/details.html', {'prod': produto, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente, 'qtd': qtd, 'nome': nome.nomecompleto})
