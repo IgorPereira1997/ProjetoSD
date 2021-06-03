@@ -139,9 +139,9 @@ def list_prod(request):
         elif fornecedor:
             if Produtos.objects.filter(fornecedorid__exact=fornecedor):
                 if pesq is None:
-                    all_produtos = Produtos.objects.filter(fornecedorid__exact=fornecedor)
+                    all_produtos = Produtos.objects.filter(fornecedorid__exact=fornecedor).order_by('nomeproduto')
                 else:
-                    all_produtos = Produtos.objects.filter(fornecedorid__exact=fornecedor).filter(nomeproduto__icontains=pesq)
+                    all_produtos = Produtos.objects.filter(fornecedorid__exact=fornecedor).filter(nomeproduto__icontains=pesq).order_by('nomeproduto')
                 return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq,'flag': False, 'fornecedor': fornecedor, 'cliente': cliente})
             else:
                 all_produtos = None

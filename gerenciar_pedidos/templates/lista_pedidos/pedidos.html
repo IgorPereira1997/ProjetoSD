@@ -40,7 +40,7 @@
                                 {% if cli == '' %}
                                     <li class="list-group-item col-md-2 text-center">Cliente:{{ linha3.nomecompleto }}</li>
                                 {% endif %}
-                                    <li class="list-group-item col-md-2 text-center"><strong>Status:</strong>
+                                    <li class="list-group-item col-md-3 text-center"><strong>Status:</strong>
                                     {% if linha.status_pedido == 1 %}
                                     Pagamento Confirmado
                                     {% elif linha.status_pedido == 2 %}
@@ -57,12 +57,12 @@
                                         Entrege
                                     {% endif %}
                                     </li>
-                                    <li class="list-group-item col-md-2 text-center"><strong>Valor do Pedido:</strong> R${{ linha.valor_pedido }}</li>
-                                    <li class="list-group-item col-md-1 text-center"><strong><a href="/gerenciar_pedidos/detalhar_pedido/?pedido={{ linha.pedidoid }}">Ver Detalhes</a></strong></li>
+                                    <li class="list-group-item col-md-3 text-center"><strong>Valor do Pedido:</strong> R${{ linha.valor_pedido }}</li>
+                                    <li class="list-group-item col-md-3 text-center"><strong><a href="/gerenciar_pedidos/detalhar_pedido/?pedido={{ linha.pedidoid }}">Ver Detalhes</a></strong></li>
                                 </ul>
+                                <br>
                         {% endif %}
                     {% endfor %}
-                    <br>
             {% endfor %}
             {% else %}
                 <h2>Não pedidos registrados para o cliente/fornecedor!</h2>
