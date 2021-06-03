@@ -159,7 +159,7 @@ def modificar(request):
                                                             tempoentrega = standby.tempoentrega,
                                                             precorevenda =standby.precorevenda,
                                                             precounitario =standby.precounitario,
-                                                            estoque =standby.estoque,
+                                                            estoque =int(pedido_item.quantidade),
                                                             imagemgrande = func.resize_image(image=imageG, size=(225, 225), mod_image=1),
                                                             imagempequena = func.resize_image(image=imageP, size=(73, 73), mod_image=1),
                                                             fornecedorid = standby.fornecedorid,
@@ -228,7 +228,7 @@ def finalizar(request):
                                                        tempoentrega = produto_alvo.tempoentrega,
                                                        precorevenda =produto_alvo.precorevenda,
                                                        precounitario =produto_alvo.precounitario,
-                                                       estoque =produto_alvo.estoque,
+                                                       estoque =int(list_pedidos[i].get('quantidade')),
                                                        imagemgrande = func.resize_image(image=imageG, size=(225, 225), mod_image=1),
                                                        imagempequena = func.resize_image(image=imageP, size=(73, 73), mod_image=1),
                                                        fornecedorid = produto_alvo.fornecedorid,
@@ -291,12 +291,33 @@ def cancelar(request):
                 pedido.status_pedido = 3
             else:
                 pedido.status_pedido = 4
-            pedido_items = PedidosItem.objects.get(pedidoid__exact=pedido.pedidoid)
+            pedido_items = PedidosItem.objects.filter(pedidoid__exact=pedido.pedidoid)
             for item in pedido_items:
                 standby = ProdutosStandby.objects.get(produtoid__exact=item.produtoid)
-                prod_fornecedor = Produtos.objects.get(produtoid__exact=item.produtoid)
-                prod_fornecedor.estoque += int(standby.estoque)
-                prod_fornecedor.save(force_update=True)
+                try:
+                    prod_fornecedor = Produtos.objects.get(produtoid__exact=item.produtoid)
+                    prod_fornecedor.estoque += int(standby.estoque)
+                    prod_fornecedor.save(force_update=True)
+                except:
+                    import urllib
+                    imageG = os.path.join(settings.BASE_DIR, "imgg.jpg")
+                    imageP = os.path.join(settings.BASE_DIR, "imgp.jpg")
+                    urllib.request.urlretrieve("https://d27yowdapaejgz.cloudfront.net/media/%s" % (prod_fornecedor.imagemgrande), imageG)
+                    urllib.request.urlretrieve("https://d27yowdapaejgz.cloudfront.net/media/%s" % (prod_fornecedor.imagempequena), imageP)
+                        
+                    Produtos.objects.create(produtoid = standby.produtoid,
+                                            nomeproduto = standby.nomeproduto,
+                                            descricao =standby.descricao,
+                                            codigobarra =standby.codigobarra,
+                                            tempoentrega = standby.tempoentrega,
+                                            precorevenda =standby.precorevenda,
+                                            precounitario =standby.precounitario,
+                                            estoque =int(item.quantidade),
+                                            imagemgrande = func.resize_image(image=imageG, size=(225, 225), mod_image=1),
+                                            imagempequena = func.resize_image(image=imageP, size=(73, 73), mod_image=1),
+                                            fornecedorid = standby.fornecedorid,
+                                            categoriaid = standby.categoriaid
+                                            )
                 if standby.estoque == int(item.quantidade):
                     standby.delete()
                 else:
