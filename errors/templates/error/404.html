@@ -1,0 +1,22 @@
+{% include 'standard/base.html' %}
+{% load static %}
+
+<html lang="pt-br">
+    <head>
+        <title>Página não Existe</title>
+        <link href="{% static '_css/inclusao.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <main>
+            <div id="janela_formulario">
+                <form action="/" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <h4 style="font-size:40px;">Desculpe, mas o caminho que tentou acessar não existe!</h4>
+                    <input type="submit" value="Voltar para a página Inicial">
+                </form>
+            </div>
+        </main>
+    </body>
+</html>
+
+{% include 'standard/footer.html' %}
