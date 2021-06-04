@@ -8,19 +8,15 @@ main div#listagem_produtos {
 }
 
 main div#listagem_produtos ul {
-    width: 25%;
     text-align: center;
     display: flex;
-    flex-wrap: wrap;
     flex-direction: column;
-    align-content: center;
-    justify-content: flex-start;
-    align-items: center;
 }
 
 main div#listagem_produtos li {
     font-family: sans-serif;
     list-style: none;
+    width: 200px;
 }
 
 main div#listagem_produtos li.imagem {
