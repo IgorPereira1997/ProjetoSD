@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect
-
+from django.core.exceptions import PermissionDenied
 from inicial.models import Categorias
 from login.models import Fornecedores, Clientes
 from .models import Produtos, ProdutosClientes
 from gerenciar_pedidos.models import Pedidos, PedidosItem
 from .forms import AdicionarProdutoForm, AlterarProdutoCliForm, AlterarProdutoForm
-
 import inicial.funcoes as func
 import os
 
@@ -27,7 +26,7 @@ def add_prod(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return redirect('/')
+        raise PermissionDenied()
     elif fornecedor:
         nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         if request.method == "POST":
@@ -53,14 +52,14 @@ def add_prod(request):
             form = AdicionarProdutoForm(forn_list, cat_list, entrega_list)
             return render(request, 'adicionar/add_prod.html', {'cat': all_categorias, 'forn': all_fornecedores, 'form': form, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomefornecedor})
     else:
-        return redirect('/')
+        raise PermissionDenied()
 
 
 def del_prod(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return redirect('/')
+        raise PermissionDenied()
     elif fornecedor:
         nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         idProduto = request.GET.get('prod')
@@ -88,7 +87,7 @@ def list_prod(request):
     fornecedor = request.session['idFornecedor']
     pesq = request.GET.get('produto')
     if cliente == "" and fornecedor == "":
-        return redirect('/')
+        raise PermissionDenied()
     else:
         if cliente:
             nome = Clientes.objects.get(clienteid__exact=cliente)
@@ -162,7 +161,7 @@ def upd_prod(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return redirect('/')
+        raise PermissionDenied()
     elif fornecedor:
         nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         idProduto = request.GET.get('prod')
@@ -271,7 +270,7 @@ def details(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return redirect('/')
+        raise PermissionDenied()
     elif fornecedor:
         nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         idProduto = request.GET.get('prod')

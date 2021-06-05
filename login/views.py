@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect
 from login.models import Clientes, Fornecedores
 from .forms import RecuperarSenhaCliForm, RecuperarSenhaForm, RecuperarSenhaFornForm
@@ -85,7 +86,7 @@ def recuperar_senha(request):
                     messages.success(request, "Mensagem Enviada com sucesso!")
                     return render(request, 'recuperar_senha/index.html', {'form': form, 'sucesso': 1, 'forn': 0})
                 except BadHeaderError:
-                    return HttpResponse("Houve erro no envio da mensagem.")
+                    raise PermissionDenied()
             else:
                 return render(request, 'recuperar_senha/index.html', {'form': form, 'forn': 0})
         else:
@@ -119,7 +120,7 @@ def recuperar_senha(request):
                     form = RecuperarSenhaFornForm()
                     return render(request, 'recuperar_senha/index.html', {'form': form, 'sucesso': 1, 'forn': 1})
                 except BadHeaderError:
-                    return render(request, 'error/500.html', {})
+                    raise PermissionDenied()
             else:
                 return render(request, 'recuperar_senha/index.html', {'form': form, 'forn': 1})
         else:
@@ -130,7 +131,7 @@ def finalizar_recovery(request):
     codC = request.GET.get('codC')
     codF = request.GET.get('codF')
     if codC is None and codF is None:
-        return redirect('/')
+        raise PermissionDenied()
     elif codF is None:
         if request.method == "POST":
             form = RecuperarSenhaForm(request.POST)
@@ -158,6 +159,6 @@ def finalizar_recovery(request):
             form = RecuperarSenhaForm()
             return render(request, 'finalizar_recovery/index.html', {'form': form, 'sucesso': 0, 'forn': 1, 'id': codF})
     else:
-        return redirect('/')
+        raise PermissionDenied()
 
 

@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.http.response import BadHeaderError, HttpResponse
 from django.shortcuts import redirect, render
 from .forms import ContactMeForm
@@ -37,7 +38,7 @@ def fale_conosco(request):
                 form = ContactMeForm()
                 return render(request, 'email/contato.html',{'form':form, 'msg': True})
             except BadHeaderError:
-                return HttpResponse("Houve erro no envio da mensagem.")
+                raise PermissionDenied()
         else:
             form = ContactMeForm(request.POST)
             return render(request, 'email/contato.html',{'form':form, 'msg': False})

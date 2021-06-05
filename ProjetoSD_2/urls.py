@@ -23,10 +23,10 @@ admin.site.site_header = "Transportadora Vietnã"
 admin.site.site_url = "/"
 admin.site.site_title  =  "Administração da Transportadora Vietnã"
 
-"""handler404 = 'errors.views.error_404'
+handler404 = 'errors.views.error_404'
 handler500 = 'errors.views.error_500'
 handler403 = 'errors.views.error_403'
-handler400 = 'errors.views.error_400'"""
+handler400 = 'errors.views.error_400'
 
 urlpatterns = [
     path('admin_tools/', include('admin_tools.urls')),
