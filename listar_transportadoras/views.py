@@ -19,7 +19,7 @@ def add_transp(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
     elif fornecedor:
         nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         if request.method == "POST":
@@ -40,13 +40,13 @@ def add_transp(request):
             form = AdicionarTransportadoraForm(estados_list, dados_preliminares)
             return render(request, 'adicionar/add_transp.html', {'form': form, 'nome': nome.nomefornecedor})
     else:
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
 
 def add_transp_ini(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
     elif fornecedor:
         nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         if request.method == "POST":
@@ -69,7 +69,7 @@ def add_transp_ini(request):
             form = AdicionarTransportadoraIniForm()
             return render(request, 'adicionar_ini/add_transp_ini.html', {'form': form, 'nome': nome.nomefornecedor})
     else:
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
 
     
 
@@ -77,7 +77,7 @@ def upd_transp(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
     elif fornecedor:
         nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         codigo = request.GET.get('codigo')
@@ -118,13 +118,13 @@ def upd_transp(request):
             form = AlterarTransportadoraForm(estados_list, dados_preliminares)
             return render(request, 'atualizar/upd_transp.html', {'form': form, 'cod': codigo, 'nome': nome.nomefornecedor})
     else:
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
 
 def upd_transp_ini(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
     elif fornecedor:
         nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         codigo = request.GET.get('codigo')
@@ -149,13 +149,13 @@ def upd_transp_ini(request):
             form = AlterarTransportadoraIniForm(filial)
             return render(request, 'atualizar_ini/upd_transp_ini.html', {'form': form, 'cod': codigo, 'nome': nome.nomefornecedor})
     else:
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
 
 def del_transp(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
     elif fornecedor:
         nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         codigo = request.GET.get('codigo')
@@ -172,17 +172,17 @@ def del_transp(request):
             form = DeletarTransportadoraForm(codigo)
             return render(request, 'deletar/del_transp.html', {'form': form, 'cod': codigo, 'nome': nome.nomefornecedor})
     else:
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
 
 def list_transp(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
     elif fornecedor:
         nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         all_transportadoras = Transportadoras.objects.all
         return render(request, 'listar/list_transp.html', {'filiais': all_transportadoras, 'nome': nome.nomefornecedor})
     else:
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
     

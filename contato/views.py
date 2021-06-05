@@ -37,7 +37,7 @@ def fale_conosco(request):
                 form = ContactMeForm()
                 return render(request, 'email/contato.html',{'form':form, 'msg': True})
             except BadHeaderError:
-                return render(request, 'error/500.html', {})
+                return HttpResponse("Houve erro no envio da mensagem.")
         else:
             form = ContactMeForm(request.POST)
             return render(request, 'email/contato.html',{'form':form, 'msg': False})

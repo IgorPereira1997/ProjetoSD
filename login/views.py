@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from login.models import Clientes, Fornecedores
 from .forms import RecuperarSenhaCliForm, RecuperarSenhaForm, RecuperarSenhaFornForm
 from django.http.response import BadHeaderError
-from .forms import ContactMeForm
 from django.shortcuts import render
 from django.core.mail import send_mail, BadHeaderError
 from django.contrib import messages
@@ -132,7 +131,7 @@ def finalizar_recovery(request):
     codC = request.GET.get('codC')
     codF = request.GET.get('codF')
     if codC is None and codF is None:
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
     elif codF is None:
         if request.method == "POST":
             form = RecuperarSenhaForm(request.POST)
@@ -160,6 +159,6 @@ def finalizar_recovery(request):
             form = RecuperarSenhaForm()
             return render(request, 'finalizar_recovery/index.html', {'form': form, 'sucesso': 0, 'forn': 1, 'id': codF})
     else:
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
 
 

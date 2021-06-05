@@ -21,7 +21,7 @@ def listar(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if fornecedor == '' and cliente == '':
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
     else:
         all_transportadoras = Transportadoras.objects.all
         all_status = PedidosStatus.objects.all
@@ -68,7 +68,7 @@ def list_prod(request):
     fornecedor = request.session['idFornecedor']
     pesq = request.GET.get('produto')
     if cliente == "" and fornecedor == "":
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
     else:
         if cliente:
             nome = Clientes.objects.get(clienteid=cliente)
@@ -79,13 +79,13 @@ def list_prod(request):
             return render(request, 'produtos_disp/produtos.html', {'produtos': all_produtos, 'pesq': pesq,'flag': False, 'forn': fornecedor, 
                                                                    'cli': cliente, 'nome': nome.nomecompleto})
         elif fornecedor:
-            return render(request, 'errors/403.html', {})
+            return redirect('/')
 
 def details(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "":
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
     elif cliente:
         nome = Clientes.objects.get(clienteid__exact=cliente)
         idProduto = request.GET.get('prod')
@@ -112,7 +112,7 @@ def modificar(request):
     fornecedor = request.session['idFornecedor']
     pedido = request.GET.get('pedido')
     if cliente == "" and fornecedor == "":
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
     elif fornecedor:
         nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         list_status = []
@@ -182,7 +182,7 @@ def finalizar(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "":
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
     elif cliente:
         nome = Clientes.objects.get(clienteid__exact=cliente)
         list_transp = []
@@ -248,7 +248,7 @@ def pedir(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "":
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
     elif cliente:
         nome = Clientes.objects.get(clienteid__exact=cliente)
         msg = "Deseja adicionar outro produto?"
@@ -275,7 +275,7 @@ def cancelar(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
     else:
         msg = "Você tem certeza que deseja cancelar o pedido?"
         idPedido = request.GET.get('order')
@@ -333,7 +333,7 @@ def detalhar(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
     else:
         id = request.GET.get('pedido')
         all_transportadoras = Transportadoras.objects.all

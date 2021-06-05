@@ -121,7 +121,7 @@ def editarPerfilIni(request):
     fornecedor = request.session['idFornecedor']
     cliente = request.session['idCliente']
     if cliente == "" and fornecedor == "":
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
     elif cliente:
         nome = Clientes.objects.get(clienteid__exact=cliente)
         if request.method == "POST":
@@ -160,7 +160,7 @@ def editarPerfil(request):
     cliente = request.session['idCliente']
     flag = False
     if cliente == "" and fornecedor == "":
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
     elif cliente:
         nome = Clientes.objects.get(clienteid__exact=cliente)
         if request.method == "POST":
@@ -264,7 +264,7 @@ def excluirPerfil(request):
     cliente = request.session['idCliente']
     flag = False
     if cliente == "" and fornecedor == "":
-        return render(request, 'errors/403.html', {})
+        return redirect('/')
     elif cliente:
         nome = Clientes.objects.get(clienteid__exact=cliente)
         if request.method == "POST":
