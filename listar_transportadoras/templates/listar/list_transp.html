@@ -27,12 +27,13 @@
             </div>
             <div id="janela_transportadoras">
             {% for linha in filiais %}
-                <ul>
-                    <li>{{ linha.nometransportadora }}</li>
-                    <li>{{ linha.cidade }}</li>
-                    <li><a href="/listar_transportadoras/atualizar_ini/?codigo={{ linha.transportadoraid }}">Alterar</a> </li>
-                    <li><a href="/listar_transportadoras/deletar/?codigo={{ linha.transportadoraid }}">Excluir</a> </li>
+                <ul class="list-group list-group-horizontal-md justify-content-center">
+                    <li class="list-group-item col-md-3 text-center">Nome: {{ linha.nometransportadora }}</li>
+                    <li class="list-group-item col-md-3 text-center">Sede: {{ linha.cidade }}</li>
+                    <li class="list-group-item col-md-3 text-center"><a href="/listar_transportadoras/atualizar_ini/?codigo={{ linha.transportadoraid }}">Alterar</a> </li>
+                    <li class="list-group-item col-md-3 text-center"><a href="/listar_transportadoras/deletar/?codigo={{ linha.transportadoraid }}">Excluir</a> </li>
                 </ul>
+                <br>
             {% endfor %}
             </div>
         </main>
