@@ -26,10 +26,10 @@
                 </div>
             </div>
             <div id="janela_formulario">
-            <form action="/criar_perfil_ini/" method="POST" enctype="multipart/form-data">
+            <form action="/criar_perfil_ini/" method="POST">
                 {% csrf_token %}
-                <h2>Criar novo {%if forn %} Fornecedor {%else%} Cliente {% endif %}</h2>
-                {%if forn %}
+                <h2>Dados iniciais do novo {%if forn %} Fornecedor {%else%} Cliente {% endif %}</h2>
+                {% if forn %}
 
                     <h5> {{ form.nomefornecedor.errors  }} </h5>
                     <h4> {{ form.nomefornecedor.label_tag }}{{ form.nomefornecedor }} </h4>
@@ -65,7 +65,7 @@
                     <input type="hidden" name="op" value="1">
 
                 {% endif %}
-                
+                <input type="hidden" name="flag" value="1">
                 <input type="submit" value="Próximo">
             </form>
             {%if forn %} 

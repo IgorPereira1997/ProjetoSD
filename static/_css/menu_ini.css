@@ -2,7 +2,6 @@
     position: relative;
     background-color:#C5996B;
     overflow: hidden;
-    margin-top: 85px;
     border-radius: 3%;
     border-radius: 15px;
 }
@@ -41,7 +40,7 @@
   
   * {box-sizing: border-box;}
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
   .topnav a {
     float: none;
     display: block;
@@ -67,7 +66,7 @@
   }
 }
 
-@media screen and (max-width: 850px) and (min-width: 601px) {
+@media screen and (max-width: 850px) and (min-width: 701px) {
   .topnav a {
     font-size: 10px;
   }

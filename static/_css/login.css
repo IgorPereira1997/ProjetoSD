@@ -2,15 +2,15 @@
 main div#janela_login {
     width:80%;
     margin:8% auto 30px;
-    justify-content: center;
-    align-items: center;
+    height: 400px;
 }
 
 main div#janela_login form {
+    display: flex;
     width:70%;
     margin:0px auto;
-    justify-content: center;
-    text-align: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 main div#janela_login form h2  {
@@ -20,6 +20,8 @@ main div#janela_login form h2  {
 }
 
 main div#janela_login form p {
+    margin-bottom: -5px;
+    margin-top: 10px;
     font-family: sans-serif;
     font-size: 12px;
     font-weight: 500;
@@ -27,8 +29,6 @@ main div#janela_login form p {
     color: #FFF;
     padding: 10px;
     border-radius: 5px;
-    width:120px;
-    text-align: center;
 }
 
 main div#janela_login form input[type="text"] {

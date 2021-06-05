@@ -35,6 +35,12 @@
                     <p>{{ msg }}</p>
                 {% endif %}
             </form>
+            <form action="/criar_perfil_ini/" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="flag" value="0">
+                <input type="hidden" name="op" value="2"> 
+                <input type="submit" value="Criar Fornecedor">
+            </form>
         </div>
         </main>
     </body>

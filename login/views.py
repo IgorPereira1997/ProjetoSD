@@ -20,13 +20,14 @@ def login_cliente(request):
                 request.session['idFornecedor'] = ''
                 request.session['idAdmin'] = ''
                 return redirect('/listar_produtos/listar/')
-                break
+        if validoCliente == 'Diferente':
+            return render(request, 'cliente/index.html', {'logincliente': validoCliente, 'msg': mensagem,})
     else:
         usuarioC = ''
         senhaC = ''
         validoCliente = ''
         request.session['idCliente'] = ''
-    return render(request, 'cliente/index.html', {'logincliente': validoCliente, 'msg': mensagem, 'sessao': request.session['idCliente']})
+        return render(request, 'cliente/index.html', {'logincliente': validoCliente,})
 
 
 def login_fornecedor(request):
@@ -42,10 +43,11 @@ def login_fornecedor(request):
                 validoFornecedor = 'Igual'
                 request.session['idFornecedor'] = campo['fornecedorid']
                 return redirect('/listar_produtos/listar/')
-                break
+        if validoFornecedor == 'Diferente':
+            return render(request, 'fornecedor/index.html', {'loginfornecedor': validoFornecedor,'msg': mensagem})
     else:
         usuarioF = ''
         senhaF = ''
         validoFornecedor = ''
         request.session['idFornecedor'] = ''
-    return render(request, 'fornecedor/index.html', {'loginfornecedor': validoFornecedor,'msg': mensagem})
+        return render(request, 'fornecedor/index.html', {'loginfornecedor': validoFornecedor})

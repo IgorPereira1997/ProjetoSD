@@ -14,11 +14,16 @@
         <header>
         <img class="img-fluid" src="{% static '_assets/capa_transportadora.jpg' %}">
             {% if nome %}
-            <div id="header_saudacao">
+            <div style="display:contents;" id="header_saudacao">
                 <h3>Bem vindo, {{ nome }}</h3>
-                <form method="GET" action="/editar_perfil_ini/">
-                    <input type="submit" value="Editar perfil">
-                </form>
+                <div id="inline">
+                    <form method="GET" action="/editar_perfil_ini/">
+                        <input type="submit" value="Editar perfil">
+                    </form>
+                    <form method="GET" action="/excluir_perfil/">
+                        <input type="submit" value="Excluir Conta">
+                    </form>
+                </div>
             </div>
             {% endif%}
         </header>

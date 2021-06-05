@@ -29,7 +29,8 @@
             <div id="janela_formulario">
             <form action="/editar_perfil/" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <h2>Por favor confirme se os dados estão corretos e modifique o endereço se for necessário</h2>
+                <h2>Por favor confirme se os dados estão corretos, modificando o endereço, 
+                    usuário e/ou senha para a conta, se for necessário </h2>
 
                     {% if forn %}
 

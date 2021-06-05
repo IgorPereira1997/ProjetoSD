@@ -5,13 +5,13 @@ body {
 header {
     width:100%;
     height:10%;
-    background-color:#EDEDDC;
-    border-bottom:1px solid #666;
+    margin-bottom: 5px;
 }
 
 header img {
     position: relative;
     min-height: 45px;
+    border-bottom: 1px solid #666;
 }
 
 main{
@@ -37,11 +37,6 @@ div#historia h1{
 }
 
 div#header_saudacao {
-    position: absolute;
-    margin-top:15px;
-    right:0px;
-    text-align: right;
-    width: 100%;
     text-align-last: center;
 }
 
@@ -52,11 +47,22 @@ div#header_saudacao h3 {
     margin:2px 0 0 0; 
     padding:0; 
 }
-div#header_saudacao form input[type="submit"] {
+
+div#header_saudacao div#inline {
+    display: flex;
+    justify-content: center;
+    margin-top: 2px;
+
+}
+
+div#header_saudacao div#inline form input[type="submit"] {
     justify-content: center;
     align-items: center;
     padding:5px 10px;
     margin-top:5px;
+    margin-left: 3px;
+    margin-right: 3px;
+    width: 130px;
     color: #FFF;
     border:0;
     border-radius: 5px;

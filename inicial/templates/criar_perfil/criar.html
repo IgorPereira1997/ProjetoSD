@@ -3,33 +3,32 @@
 
 <html>
     <head>
-        <title>Alterar {%if forn %} Fornecedor {%else%} Cliente {% endif %}</title>
+        <title>Criar {%if forn %} Fornecedor {%else%} Cliente {% endif %}</title>
         <link href="{% static '_css/alteracao.css' %}" rel="stylesheet">
         <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
     </head>
     <body>
         <main>
-        <!-- Top navigation -->
+         <!-- Top navigation -->
             <div class="topnav">
                 <!-- Centered link -->
                 <div class="topnav-centered">
-                    <a class="active" href="#">Alterar {%if forn %} Fornecedor {%else%} Cliente {% endif %}</a>
+                    <a class="active" href="#">Criar {%if forn %} Fornecedor {%else%} Cliente {% endif %}</a>
                 </div>
                 <!-- Left-aligned links (default) -->
-                    <a href="/gerenciar_pedidos/lista_pedidos/">Gerenciar Pedidos</a>
-                {% if forn %}
-                    <a class="nav-link" href="/listar_transportadoras/listar/">Listar Filiais</a>
-                {% endif %}
+                <a class="nav-link" href="/login/cliente/">Entrar como Cliente</a>
+                <a class="nav-link" href="/login/fornecedor/">Entrar como Fornecedor</a>
                 <!-- Right-aligned links -->
                 <div class="topnav-right">
-                    <a href="/listar_produtos/listar/">Listar Produtos</a>
-                    <a href="/sair/">Sair</a>
+                    <a class="nav-link" href="/admin/">Entrar como Administrador</a>
+                    <a class="nav-link" href="/contato/email/">Fale Conosco</a>
                 </div>
             </div>
             <div id="janela_formulario">
-            <form action="/editar_perfil/" method="POST" enctype="multipart/form-data">
+            <form action="/criar_perfil/" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <h2>Por favor confirme se os dados estão corretos e modifique o endereço se for necessário</h2>
+                <h2>Por favor confirme se os dados estão corretos, modificando o endereço se for necessário 
+                    e adicione um usuário e senha para a conta</h2>
 
                     {% if forn %}
 
@@ -73,6 +72,12 @@
                     <h5> {{ form.endereco.errors  }} </h5>
                     <h4> {{ form.endereco.label_tag }}{{ form.endereco }} </h4>
 
+                    <h5> {{ form.complemento.errors  }} </h5>
+                    <h4> {{ form.complemento.label_tag }}{{ form.complemento }} </h4>
+
+                    <h5> {{ form.numero.errors  }} </h5>
+                    <h4> {{ form.numero.label_tag }}{{ form.numero }} </h4>
+
                     <h5> {{ form.cidade.errors  }} </h5>
                     <h4> {{ form.cidade.label_tag }}{{ form.cidade }} </h4>
 
@@ -80,7 +85,7 @@
                     <h4> {{ form.estado.label_tag }}{{ form.estado }} </h4>
 
                     <h5> {{ form.ddd.errors  }} </h5>
-                    <h4> {{ form.dddlabel_tag }}{{ form.ddd }} </h4>
+                    <h4> {{ form.ddd.label_tag }}{{ form.ddd }} </h4>
 
                     <h5> {{ form.telefone.errors  }} </h5>
                     <h4> {{ form.telefone.label_tag }}{{ form.telefone }} </h4>
@@ -98,7 +103,7 @@
 
                 {% endif %}
 
-                    <input type="submit" value="Atualizar">
+                    <input type="submit" value="Criar">
             </form>
             {%if forn %} 
             <form action="/login/fornecedor/" method="POST">

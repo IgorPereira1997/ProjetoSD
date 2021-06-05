@@ -1,8 +1,15 @@
-from inicial.models import Estados
-from pycep_correios.client import get_address_from_cep, WebService
-from inicial.validators import (validate_nomeCliente, validate_cep, validate_nomeClienteUpdate, validadeTelefone,
-                                validate_nomeFornecedor, validate_nomeFornecedorUpdate, validade_NumeroEndereco)
 from django import forms
+from pycep_correios.client import WebService, get_address_from_cep
+
+from inicial.models import Estados
+from inicial.validators import (validade_NumeroEndereco, validadeTelefone,
+                                validarUserCliente, validarUserClienteUpdate,
+                                validarUserForn, validarUserFornUpdate,
+                                validate_cep, validate_nomeCliente,
+                                validate_nomeClienteUpdate,
+                                validate_nomeFornecedor,
+                                validate_nomeFornecedorUpdate)
+
 
 class AdicionarClienteIniForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -138,6 +145,7 @@ class AdicionarClienteForm(forms.Form):
     usuario = forms.CharField(
         required=True,
         label='Usuário para acesso',
+        validators=[validarUserCliente]
     )
 
     senha = forms.CharField(
@@ -288,6 +296,7 @@ class AlterarClienteForm(forms.Form):
     usuario = forms.CharField(
         required=True,
         label='Usuário para acesso',
+        validators=[validarUserClienteUpdate]
     )
 
     senha = forms.CharField(
@@ -400,6 +409,7 @@ class AdicionarFornecedorForm(forms.Form):
     usuario = forms.CharField(
         required=True,
         label='Usuário para acesso',
+        validators=[validarUserForn]
     )
 
     senha = forms.CharField(
@@ -525,5 +535,6 @@ class AlterarFornecedorForm(forms.Form):
     senha = forms.CharField(
         required=True,
         label='Senha',
+         validators=[validarUserFornUpdate]
     )
 

@@ -28,11 +28,9 @@ def sair(request):
         return render(request, 'sair/sair.html', {'forn': forncedor, 'cli': cliente})
 
 def criarPerfilIni(request):
-    fornecedor = request.session['idFornecedor']
-    cliente = request.session['idCliente']
-    op = request.GET.get('op')
-    if op == 1: #cliente
-        if request.method == "POST":
+    op = request.POST.get('op')
+    if op == '1': #cliente
+        if request.method == "POST" and request.POST.get('flag') == "1":
             form = AdicionarClienteIniForm(request.POST)
             if form.is_valid():
                 dados_preliminares['nomecompleto'] = request.POST.get('nomecompleto')
@@ -40,32 +38,36 @@ def criarPerfilIni(request):
                 dados_preliminares['ddd'] = request.POST.get('ddd')
                 dados_preliminares['telefone'] = validadeTelefone(request.POST.get('telefone'))
                 dados_preliminares['email'] = request.POST.get('email')
-                return redirect('/inicial/criar_perfil/')
+                dados_preliminares['flag'] = '1'
+                return redirect('/criar_perfil/')
             else:
-                return render(request, 'criar_perfil_ini/criar.html', {'forn': fornecedor, 'cli': cliente, 'form': form})
+                dados_preliminares.clear()
+                return render(request, 'criar_perfil_ini/criarini.html', {'forn': 0, 'cli': 1, 'form': form})
         else:
-            form = AdicionarClienteIniForm(request.POST)
-            return render(request, 'criar_perfil_ini/criar.html', {'forn': fornecedor, 'cli': cliente, 'form': form})
-    elif op == 2: #fornecedor
-        if request.method == "POST":
+            dados_preliminares.clear()
+            form = AdicionarClienteIniForm()
+            return render(request, 'criar_perfil_ini/criarini.html', {'forn': 0, 'cli': 1, 'form': form})
+    elif op == '2': #fornecedor
+        if request.method == "POST" and request.POST.get('flag') == "1":
             form = AdicionarFornecedorIniForm(request.POST)
             if form.is_valid():
                 dados_preliminares['nomefornecedor'] = request.POST.get('nomefornecedor')
                 dados_preliminares['cep'] = request.POST.get('cep')
                 dados_preliminares['ddd'] = request.POST.get('ddd')
                 dados_preliminares['telefone'] = validadeTelefone(request.POST.get('telefone'))
-                return redirect('/inicial/criar_perfil/')
+                dados_preliminares['flag'] = '2'
+                return redirect('/criar_perfil/')
             else:
-                return render(request, 'criar_perfil_ini/criar.html', {'forn': fornecedor, 'cli': cliente, 'form': form})
+                dados_preliminares.clear()
+                return render(request, 'criar_perfil_ini/criarini.html', {'forn': 1, 'cli': 0, 'form': form})
         else:
+            dados_preliminares.clear()
             form = AdicionarFornecedorIniForm()
-            return render(request, 'criar_perfil_ini/criar.html', {'forn': fornecedor, 'cli': cliente, 'form': form})
+            return render(request, 'criar_perfil_ini/criarini.html', {'forn': 1, 'cli': 0, 'form': form})
 
 def criarPerfil(request):
-    fornecedor = request.session['idFornecedor']
-    cliente = request.session['idCliente']
-    op = request.POST.get('op')
-    if op == 1:
+    op = dados_preliminares.get('flag')
+    if op == '1':
         if request.method == "POST":
             form = AdicionarClienteForm(dados_preliminares, request.POST)
             if form.is_valid():
@@ -86,11 +88,11 @@ def criarPerfil(request):
                 dados_preliminares.clear()
                 return redirect('/login/cliente/')
             else:
-                return render(request, 'criar_perfil/criar.html', {'forn': fornecedor, 'cli': cliente, 'form': form})
+                return render(request, 'criar_perfil/criar.html', {'forn': 0, 'cli': 1, 'form': form})
         else:
             form = AdicionarClienteForm(dados_preliminares)
-            return render(request, 'criar_perfil/criar.html', {'forn': fornecedor, 'cli': cliente, 'form': form})
-    elif op == 2:
+            return render(request, 'criar_perfil/criar.html', {'forn': 0, 'cli': 1, 'form': form})
+    elif op == '2':
         if request.method == "POST":
             form = AdicionarFornecedorForm(dados_preliminares, request.POST)
             if form.is_valid():
@@ -108,10 +110,10 @@ def criarPerfil(request):
                 dados_preliminares.clear()
                 return redirect('/login/fornecedor/')
             else:
-                return render(request, 'criar_perfil/criar.html', {'forn': fornecedor, 'cli': cliente, 'form': form})
+                return render(request, 'criar_perfil/criar.html', {'forn': 1, 'cli': 0, 'form': form})
         else:
             form = AdicionarFornecedorForm(dados_preliminares)
-            return render(request, 'criar_perfil/criar.html', {'forn': fornecedor, 'cli': cliente, 'form': form})
+            return render(request, 'criar_perfil/criar.html', {'forn': 1, 'cli': 0, 'form': form})
 
 def editarPerfilIni(request):
     fornecedor = request.session['idFornecedor']
@@ -265,15 +267,17 @@ def excluirPerfil(request):
                 msg = "O(a) Cliente tem pedidos em aberto, não pode ser excluído(a)!"
                 return render(request, 'excluir_perfil/excluir.html', {'forn': fornecedor, 'cli': cliente, 'nome': nome.nomecompleto, 'msg': msg})
             else:
-                for pedido in pedidos_cliente:
-                    items = PedidosItem.objects.filter(pedidoid__exact=pedido.pedidoid)
-                    for item in items:
-                        if pedido.status_pedido == 7: # já foi entrege
-                            prod_cliente = ProdutosClientes.objects.get(produtoid__exact=item.produtoid)
-                            prod_cliente.estoque -= int(item.quantidade)
-                        elif pedido.status == 2: # não foi pago
-                            prod_standby = ProdutosStandby.objects.get(produtoid=item.produtoid)
-                            prod_standby -= int(item.quantidade)
+                pedidos_cliente = Pedidos.objects.filter(status_pedido__in=[2, 7]).filter(clienteid__exact=cliente)
+                if pedidos_cliente:
+                    for pedido in pedidos_cliente:
+                        items = PedidosItem.objects.filter(pedidoid__exact=pedido.pedidoid)
+                        for item in items:
+                            if pedido.status_pedido == 7: # já foi entrege
+                                prod_cliente = ProdutosClientes.objects.get(produtoid__exact=item.produtoid)
+                                prod_cliente.estoque -= int(item.quantidade)
+                            elif pedido.status == 2: # não foi pago
+                                prod_standby = ProdutosStandby.objects.get(produtoid=item.produtoid)
+                                prod_standby -= int(item.quantidade)
                 nome.delete()
                 return redirect('/')
         else:
@@ -281,31 +285,34 @@ def excluirPerfil(request):
     elif fornecedor:
         nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         if request.method == "POST":
-            pedidos_fornecedor = Pedidos.objects.filter(status_pedido__in=[1, 5, 6])
             produtos_fornecedor = Produtos.objects.filter(fornecedorid__exact=fornecedor)
             produtos_standby_forn = ProdutosStandby.objects.filter(fornecedorid__exact=fornecedor)
-            for pedido in pedidos_fornecedor:
-                break1 = False
-                items = PedidosItem.objects.filter(pedidoid__exact=pedido.pedidoid)
-                for item in items:
-                    break2 = False
-                    for produto in produtos_standby_forn:
-                        if item.produtoid == produto.produtoid:
-                            flag = True
-                            break2 = True
+            if produtos_standby_forn:
+                pedidos_aberto = Pedidos.objects.filter(status_pedido__in=[1, 5, 6])
+                for pedido in pedidos_aberto:
+                    break1 = False
+                    items = PedidosItem.objects.filter(pedidoid__exact=pedido.pedidoid)
+                    for item in items:
+                        break2 = False
+                        for produto in produtos_standby_forn:
+                            if item.produtoid == produto.produtoid:
+                                flag = True
+                                break2 = True
+                                break
+                        if break2:
+                            break1 = True
                             break
-                    if break2:
-                        break1 = True
+                    if break1:
                         break
-                if break1:
-                    break
             if flag:
                 msg = "Produtos do fornecedor presentes em pedidos pendentes, não pode ser excluído!"
-                return render(request, 'excluir_perfil/excluir.html', {'forn': fornecedor, 'cli': cliente, 'nome': nome.nomecompleto})
+                return render(request, 'excluir_perfil/excluir.html', {'forn': fornecedor, 'cli': cliente, 'nome': nome.nomefornecedor})
             else:
-                produtos_fornecedor.delete()
-                produtos_standby_forn.delete()
+                if produtos_fornecedor:
+                    produtos_fornecedor.delete()
+                if produtos_standby_forn:
+                    produtos_standby_forn.delete()
                 nome.delete()
                 return redirect('/')
         else:
-            return render(request, 'excluir_perfil/excluir.html', {'forn': fornecedor, 'cli': cliente, 'nome': nome.nomecompleto})
+            return render(request, 'excluir_perfil/excluir.html', {'forn': fornecedor, 'cli': cliente, 'nome': nome.nomefornecedor})

@@ -207,6 +207,42 @@ def validade_NumeroEndereco(value):
     else:
         return value
 
+def validarUserCliente(valor):
+    if Clientes.objects.filter(usuario__iexact=valor):
+        raise ValidationError(
+            _('Usuário não disponível!')
+        )
+    return valor
+
+def validarUserClienteUpdate(valor):
+    if Clientes.objects.filter(usuario__iexact=valor):
+        try:
+            Clientes.objects.get(usuario__iexact=valor)
+            return valor
+        except:
+            raise ValidationError(
+                _('Usuário não disponível!')
+            )
+    return valor
+
+def validarUserForn(valor):
+    if Fornecedores.objects.filter(usuario__iexact=valor):
+        raise ValidationError(
+            _('Usuário não disponível!')
+        )
+    return valor
+
+def validarUserFornUpdate(valor):
+    if Fornecedores.objects.filter(usuario__iexact=valor):
+        try:
+            Fornecedores.objects.get(usuario__iexact=valor)
+            return valor
+        except:
+            raise ValidationError(
+                _('Usuário não disponível!')
+            )
+    return valor
+
 def validadeTelefone(value):
     valor_Preformatado = value.replace('-', '')
     try:

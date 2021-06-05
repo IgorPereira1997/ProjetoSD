@@ -105,7 +105,6 @@ def list_prod(request):
                             list_items.append((linha2['produtoid'],linha2['quantidade']))
                 if len(list_items) == 0:
                     all_pedidos = None
-                    print("Cliente não tem prodtuto em estoque")
                     return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq, 'flag': True, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomecompleto})
                 else:
                     list_items.sort()
@@ -123,22 +122,28 @@ def list_prod(request):
                                     aux.append((list_items[i][0], qtd))
                                 else:
                                     qtd = list_items[i][1]
+                    flagFindProduct = False
                     for i in range(0, len(aux)):
-                        print(ProdutosClientes.objects.get(produtoid=aux[i][0]))
-                        all_produtos.append(ProdutosClientes.objects.get(produtoid=aux[i][0]))
-                    all_produtos.sort(key=lambda x: x.nomeproduto)
-                    if pesq is None:
-                        aux = all_produtos
+                        try:
+                            all_produtos.append(ProdutosClientes.objects.get(produtoid=aux[i][0]))
+                            flagFindProduct = True
+                        except:
+                            continue
+                    if flagFindProduct:
+                        all_produtos.sort(key=lambda x: x.nomeproduto)
+                        if pesq is None:
+                            aux = all_produtos
+                        else:
+                            aux = []
+                            from re import search
+                            for i in range(0, len(all_produtos)):
+                                if search(str(pesq).casefold(), str(all_produtos[i].nomeproduto).casefold()):
+                                    aux.append(all_produtos[i])
+                        return render(request, 'listar/list_prod.html', {'produtos': aux, 'pesq': pesq, 'flag': False, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomecompleto})
                     else:
-                        aux = []
-                        from re import search
-                        for i in range(0, len(all_produtos)):
-                            if search(str(pesq).casefold(), str(all_produtos[i].nomeproduto).casefold()):
-                                aux.append(all_produtos[i])
-                    return render(request, 'listar/list_prod.html', {'produtos': aux, 'pesq': pesq, 'flag': False, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomecompleto})
+                        return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq, 'flag': True, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomecompleto})
             else:
                 all_pedidos = None
-                print("Cliente não tem prodtuto em estoque")
                 return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq, 'flag': True, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomecompleto})
         elif fornecedor:
             nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
@@ -150,7 +155,6 @@ def list_prod(request):
                 return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq,'flag': False, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomefornecedor})
             else:
                 all_produtos = None
-                print("Fornecedor não tem produtos")
                 return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq,'flag': True, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomefornecedor})
 
 

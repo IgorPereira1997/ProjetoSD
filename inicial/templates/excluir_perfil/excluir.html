@@ -1,0 +1,49 @@
+{% include 'standard/base.html' %}
+{% load static %}
+
+<html>
+    <head>
+        <title>Deletar Produto</title>
+        <link href="{% static '_css/inclusao.css' %}" rel="stylesheet">
+        <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <main>
+            <div class="topnav">
+                <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="#">Deletar Perfil</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                {% if fornecedor %}
+                    <a href="/listar_produtos/adicionar/">Adicionar Produto</a>
+                {% endif %}
+                <a href="/listar_produtos/listar/">Listagem de Produtos</a>
+                <a href="/gerenciar_pedidos/lista_pedidos/">Gerenciar Pedidos</a>
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                {% if fornecedor %}
+                    <a href="/listar_transportadoras/listar/">Listar Filiais</a>
+                {% endif %}
+                    <a href="/sair/">Sair</a>
+                </div>
+            </div>
+            <div id="janela_formulario">
+                <form action="/excluir_perfil/" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <h4>Você tem certeza que deseja deletar a conta?</h4>
+                    <input type="submit" value="Deletar produto">
+                </form>
+                <form action="/listar_produtos/listar/" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="Voltar">
+                </form>
+                {% if msg %}
+                    <p>{{ msg }}</p>
+                {% endif%}
+            </div>
+        </main>
+    </body>
+</html>
+
+{% include 'standard/footer.html' %}
