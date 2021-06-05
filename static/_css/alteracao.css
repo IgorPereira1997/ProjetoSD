@@ -41,7 +41,10 @@ main div#janela_formulario form label {
     color: #9A9668;    
 }
 
-main div#janela_formulario form input[type="text"] {
+main div#janela_formulario form input[type="text"], 
+main div#janela_formulario form input[type="number"],
+main div#janela_formulario form input[type="email"],
+main div#janela_formulario form input[type="password"]{  
     justify-content: center;
     align-items: center;
     width: 100%;

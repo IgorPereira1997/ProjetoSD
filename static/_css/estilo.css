@@ -52,6 +52,18 @@ div#header_saudacao h3 {
     margin:2px 0 0 0; 
     padding:0; 
 }
+div#header_saudacao form input[type="submit"] {
+    justify-content: center;
+    align-items: center;
+    padding:5px 10px;
+    margin-top:5px;
+    color: #FFF;
+    border:0;
+    border-radius: 5px;
+    background-color: #C5996B;
+    outline: none;
+    cursor: pointer;
+}
 
 main {
     width:90%;

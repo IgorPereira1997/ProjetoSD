@@ -1,0 +1,79 @@
+
+{% include 'standard/base.html' %}
+{% load static %}
+
+<html>
+    <head>
+        <title>Alterar {%if forn %} Fornecedor {%else%} Cliente {% endif %}</title>
+        <link href="{% static '_css/alteracao.css' %}" rel="stylesheet">
+        <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <main>
+        <!-- Top navigation -->
+            <div class="topnav">
+                <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="#">Alterar {%if forn %} Fornecedor {%else%} Cliente {% endif %}</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                    <a href="/gerenciar_pedidos/lista_pedidos/">Gerenciar Pedidos</a>
+                {% if forn %}
+                    <a class="nav-link" href="/listar_transportadoras/listar/">Listar Filiais</a>
+                {% endif %}
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a href="/listar_produtos/listar/">Listar Produtos</a>
+                    <a href="/sair/">Sair</a>
+                </div>
+            </div>
+            <div id="janela_formulario">
+            <form action="/editar_perfil_ini/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h2>Altere os dados iniciais, se for necessário</h2>
+                {%if forn %}
+
+                    <h5> {{ form.nomefornecedor.errors  }} </h5>
+                    <h4> {{ form.nomefornecedor.label_tag }}{{ form.nomefornecedor }} </h4>
+
+                    <h5> {{ form.cep.errors  }} </h5>
+                    <h4> {{ form.cep.label_tag }}{{ form.cep }} </h4>
+
+                    <h5> {{ form.ddd.errors  }} </h5>
+                    <h4> {{ form.ddd.label_tag }}{{ form.ddd }} </h4>
+
+                    <h5> {{ form.telefone.errors  }} </h5>
+                    <h4> {{ form.telefone.label_tag }}{{ form.telefone }} </h4>
+
+                {% elif cli %}
+
+                    <h5> {{ form.nomecompleto.errors  }} </h5>
+                    <h4> {{ form.nomecompleto.label_tag }}{{ form.nomecompleto }} </h4>
+
+                    <h5> {{ form.cep.errors  }} </h5>
+                    <h4> {{ form.cep.label_tag }}{{ form.cep }} </h4>
+
+                    <h5> {{ form.ddd.errors  }} </h5>
+                    <h4> {{ form.dddlabel_tag }}{{ form.ddd }} </h4>
+
+                    <h5> {{ form.telefone.errors  }} </h5>
+                    <h4> {{ form.telefone.label_tag }}{{ form.telefone }} </h4>
+
+                    <h5> {{ form.email.errors  }} </h5>
+                    <h4> {{ form.email.label_tag }}{{ form.email }} </h4>
+
+                {% endif %}
+                
+                <input type="submit" value="Próximo">
+            </form>
+                <form action="/listar_produtos/listar/" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="Cancelar">
+                </form>
+            </form>
+        </div>
+        </main>
+    </body>
+</html>
+
+{% include 'standard/footer.html' %}

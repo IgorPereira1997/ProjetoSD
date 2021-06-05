@@ -1,0 +1,85 @@
+
+{% include 'standard/base.html' %}
+{% load static %}
+
+<html>
+    <head>
+        <title>Criar novo {%if forn %} Fornecedor {%else%} Cliente {% endif %}</title>
+        <link href="{% static '_css/alteracao.css' %}" rel="stylesheet">
+        <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <main>
+        <!-- Top navigation -->
+            <div class="topnav">
+                <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="#">Criar novo {%if forn %} Fornecedor {%else%} Cliente {% endif %}</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                <a class="nav-link" href="/login/cliente/">Entrar como Cliente</a>
+                <a class="nav-link" href="/login/fornecedor/">Entrar como Fornecedor</a>
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a class="nav-link" href="/admin/">Entrar como Administrador</a>
+                    <a class="nav-link" href="/contato/email/">Fale Conosco</a>
+                </div>
+            </div>
+            <div id="janela_formulario">
+            <form action="/criar_perfil_ini/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h2>Criar novo {%if forn %} Fornecedor {%else%} Cliente {% endif %}</h2>
+                {%if forn %}
+
+                    <h5> {{ form.nomefornecedor.errors  }} </h5>
+                    <h4> {{ form.nomefornecedor.label_tag }}{{ form.nomefornecedor }} </h4>
+
+                    <h5> {{ form.cep.errors  }} </h5>
+                    <h4> {{ form.cep.label_tag }}{{ form.cep }} </h4>
+
+                    <h5> {{ form.ddd.errors  }} </h5>
+                    <h4> {{ form.ddd.label_tag }}{{ form.ddd }} </h4>
+
+                    <h5> {{ form.telefone.errors  }} </h5>
+                    <h4> {{ form.telefone.label_tag }}{{ form.telefone }} </h4>
+
+                    <input type="hidden" name="op" value="2">
+
+                {% elif cli %}
+
+                    <h5> {{ form.nomecompleto.errors  }} </h5>
+                    <h4> {{ form.nomecompleto.label_tag }}{{ form.nomecompleto }} </h4>
+
+                    <h5> {{ form.cep.errors  }} </h5>
+                    <h4> {{ form.cep.label_tag }}{{ form.cep }} </h4>
+
+                    <h5> {{ form.ddd.errors  }} </h5>
+                    <h4> {{ form.dddlabel_tag }}{{ form.ddd }} </h4>
+
+                    <h5> {{ form.telefone.errors  }} </h5>
+                    <h4> {{ form.telefone.label_tag }}{{ form.telefone }} </h4>
+
+                    <h5> {{ form.email.errors  }} </h5>
+                    <h4> {{ form.email.label_tag }}{{ form.email }} </h4>
+
+                    <input type="hidden" name="op" value="1">
+
+                {% endif %}
+                
+                <input type="submit" value="Próximo">
+            </form>
+            {%if forn %} 
+                <form action="/login/fornecedor/" method="POST">
+            {%else%}
+                <form action="/login/cliente/" method="POST">
+            {% endif %}
+                    {% csrf_token %}
+                    <input type="submit" value="Cancelar">
+                </form>
+            </form>
+        </div>
+        </main>
+    </body>
+</html>
+
+{% include 'standard/footer.html' %}

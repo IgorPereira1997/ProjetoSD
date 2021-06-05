@@ -36,6 +36,7 @@ class Fornecedores(models.Model):
     telefone = models.CharField(max_length=14, blank=True, null=True)
     usuario = models.CharField(max_length=20, blank=True, null=True)
     senha = models.CharField(max_length=20, blank=True, null=True)
+    cep = models.CharField(max_length=9, blank=True, null=True)
 
     class Meta:
         managed = True

@@ -1,3 +1,4 @@
+from login.models import Clientes, Fornecedores
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from pycep_correios import get_address_from_cep, WebService
@@ -159,6 +160,67 @@ def validate_nomeTransportadoraUpdate(value):
         )
     else:
         return value
+
+def validate_nomeCliente(value):
+    if Clientes.objects.filter(nomecompleto__icontains=value).count() != 0:
+        raise ValidationError(
+            _('O(a) Cliente já existe! Se quiser modificá-lo(a) vá em "Editar Perfil"!')
+        )
+    else:
+        return value
+
+def validate_nomeClienteUpdate(value):
+    if Clientes.objects.filter(nomecompleto__icontains=value).count() > 1:
+        raise ValidationError(
+            _('O(a) cliente já existe! Se quiser modificá-lo(a) vá em "Editar Perfil"!')
+        )
+    else:
+        return value
+
+def validate_nomeFornecedor(value):
+    if Fornecedores.objects.filter(nomefornecedor__icontains=value).count() != 0:
+        raise ValidationError(
+            _('O(a) fornecedor(a) já existe! Se quiser modificá-lo(a) vá em "Editar Perfil"!')
+        )
+    else:
+        return value
+
+def validate_nomeFornecedorUpdate(value):
+    if Clientes.objects.filter(nomecompleto__icontains=value).count() > 1:
+        raise ValidationError(
+            _('O(a) fornecedor(a) já existe! Se quiser modificá-lo(a) vá em "Editar Perfil"!')
+        )
+    else:
+        return value
+
+def validade_NumeroEndereco(value):
+    try:
+        valor_int = int(value)
+    except:
+        raise ValidationError(
+            _('Não foi fornecido um número!')
+        )
+    if valor_int < 1:
+        raise ValidationError(
+            _('O número fornecido não é válido!')
+        )
+    else:
+        return value
+
+def validadeTelefone(value):
+    valor_Preformatado = value.replace('-', '')
+    try:
+        valor_formatado = int(valor_Preformatado)
+    except:
+        raise ValidationError(
+            _('Não foi fornecido um telefone!')
+        )
+    if valor_formatado < 10000000 or valor_formatado >= 1000000000:
+        raise ValidationError(
+            _('Telefone fornecido é inválido!')
+        )
+    else:
+        return valor_formatado
 
 def transportadora_uso(value):
     if Pedidos.objects.filter(transportadoraid__exact=value):

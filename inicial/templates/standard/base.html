@@ -16,6 +16,9 @@
             {% if nome %}
             <div id="header_saudacao">
                 <h3>Bem vindo, {{ nome }}</h3>
+                <form method="GET" action="/editar_perfil_ini/">
+                    <input type="submit" value="Editar perfil">
+                </form>
             </div>
             {% endif%}
         </header>

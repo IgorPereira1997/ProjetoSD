@@ -1,0 +1,107 @@
+{% include 'standard/base.html' %}
+{% load static %}
+
+<html>
+    <head>
+        <title>Alterar {%if forn %} Fornecedor {%else%} Cliente {% endif %}</title>
+        <link href="{% static '_css/alteracao.css' %}" rel="stylesheet">
+        <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <main>
+        <!-- Top navigation -->
+            <div class="topnav">
+                <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="#">Alterar {%if forn %} Fornecedor {%else%} Cliente {% endif %}</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                    <a href="/gerenciar_pedidos/lista_pedidos/">Gerenciar Pedidos</a>
+                {% if forn %}
+                    <a class="nav-link" href="/listar_transportadoras/listar/">Listar Filiais</a>
+                {% endif %}
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a href="/listar_produtos/listar/">Listar Produtos</a>
+                    <a href="/sair/">Sair</a>
+                </div>
+            </div>
+            <div id="janela_formulario">
+            <form action="/editar_perfil/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h2>Por favor confirme se os dados estão corretos e modifique o endereço se for necessário</h2>
+
+                    {% if forn %}
+
+                    <h5> {{ form.nomefornecedor.errors  }} </h5>
+                    <h4> {{ form.nomefornecedor.label_tag }}{{ form.nomefornecedor }} </h4>
+
+                    <h5> {{ form.cep.errors  }} </h5>
+                    <h4> {{ form.cep.label_tag }}{{ form.cep }} </h4>
+
+                    <h5> {{ form.endereco.errors  }} </h5>
+                    <h4> {{ form.endereco.label_tag }}{{ form.endereco }} </h4>
+
+                    <h5> {{ form.cidade.errors  }} </h5>
+                    <h4> {{ form.cidade.label_tag }}{{ form.cidade }} </h4>
+
+                    <h5> {{ form.estado.errors  }} </h5>
+                    <h4> {{ form.estado.label_tag }}{{ form.estado }} </h4>
+
+                    <h5> {{ form.ddd.errors  }} </h5>
+                    <h4> {{ form.ddd.label_tag }}{{ form.ddd }} </h4>
+
+                    <h5> {{ form.telefone.errors  }} </h5>
+                    <h4> {{ form.telefone.label_tag }}{{ form.telefone }} </h4>
+
+                    <h5> {{ form.usuario.errors  }} </h5>
+                    <h4> {{ form.usuario.label_tag }}{{ form.usuario }} </h4>
+
+                    <h5> {{ form.senha.errors  }} </h5>
+                    <h4> {{ form.senha.label_tag }}{{ form.senha }} </h4>
+
+                {% elif cli %}
+
+                    <h5> {{ form.nomecompleto.errors  }} </h5>
+                    <h4> {{ form.nomecompleto.label_tag }}{{ form.nomecompleto }} </h4>
+
+                    <h5> {{ form.cep.errors  }} </h5>
+                    <h4> {{ form.cep.label_tag }}{{ form.cep }} </h4>
+
+                    <h5> {{ form.endereco.errors  }} </h5>
+                    <h4> {{ form.endereco.label_tag }}{{ form.endereco }} </h4>
+
+                    <h5> {{ form.cidade.errors  }} </h5>
+                    <h4> {{ form.cidade.label_tag }}{{ form.cidade }} </h4>
+
+                    <h5> {{ form.estado.errors  }} </h5>
+                    <h4> {{ form.estado.label_tag }}{{ form.estado }} </h4>
+
+                    <h5> {{ form.ddd.errors  }} </h5>
+                    <h4> {{ form.dddlabel_tag }}{{ form.ddd }} </h4>
+
+                    <h5> {{ form.telefone.errors  }} </h5>
+                    <h4> {{ form.telefone.label_tag }}{{ form.telefone }} </h4>
+
+                    <h5> {{ form.email.errors  }} </h5>
+                    <h4> {{ form.email.label_tag }}{{ form.email }} </h4>
+
+                    <h5> {{ form.usuario.errors  }} </h5>
+                    <h4> {{ form.usuario.label_tag }}{{ form.usuario }} </h4>
+
+                    <h5> {{ form.senha.errors  }} </h5>
+                    <h4> {{ form.senha.label_tag }}{{ form.senha }} </h4>
+
+                {% endif %}
+
+                    <input type="submit" value="Atualizar">
+            </form>
+            <form action="/listar_produtos/listar/" method="GET">
+                <input type="submit" value="Cancelar">
+            </form>
+        </div>
+        </main>
+    </body>
+</html>
+
+{% include 'standard/footer.html' %}
