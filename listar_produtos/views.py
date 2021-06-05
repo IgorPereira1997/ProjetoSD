@@ -27,7 +27,7 @@ def add_prod(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return redirect('/')
+        return render(request, 'errors/403.html', {})
     elif fornecedor:
         nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         if request.method == "POST":
@@ -53,14 +53,14 @@ def add_prod(request):
             form = AdicionarProdutoForm(forn_list, cat_list, entrega_list)
             return render(request, 'adicionar/add_prod.html', {'cat': all_categorias, 'forn': all_fornecedores, 'form': form, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomefornecedor})
     else:
-        return redirect('/listar_produtos/listar/')
+        return render(request, 'errors/403.html', {})
 
 
 def del_prod(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return redirect('/')
+        return render(request, 'errors/403.html', {})
     elif fornecedor:
         nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         idProduto = request.GET.get('prod')
@@ -88,7 +88,7 @@ def list_prod(request):
     fornecedor = request.session['idFornecedor']
     pesq = request.GET.get('produto')
     if cliente == "" and fornecedor == "":
-        return redirect('/')
+        return render(request, 'errors/403.html', {})
     else:
         if cliente:
             nome = Clientes.objects.get(clienteid__exact=cliente)
@@ -162,7 +162,7 @@ def upd_prod(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return redirect('/')
+        return render(request, 'errors/403.html', {})
     elif fornecedor:
         nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         idProduto = request.GET.get('prod')
@@ -271,7 +271,7 @@ def details(request):
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
-        return redirect('/')
+        return render(request, 'errors/403.html', {})
     elif fornecedor:
         nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         idProduto = request.GET.get('prod')

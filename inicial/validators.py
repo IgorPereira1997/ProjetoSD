@@ -274,3 +274,53 @@ def transportadora_uso(value):
             return value
     else:
         return value
+
+def validarEmailCli(value):
+    if Clientes.objects.filter(email__iexact=value):
+        raise ValidationError(
+            _('Email já está em uso!')
+        )
+    return value
+
+def validarEmailForn(value):
+    if Fornecedores.objects.filter(email__iexact=value):
+        raise ValidationError(
+            _('Email já está em uso!')
+        )
+    return value
+
+def validarEmailCliUpd(value):
+    if Clientes.objects.filter(email__iexact=value):
+        try:
+            Clientes.objects.get(email__iexact=value)
+            return value
+        except:
+            raise ValidationError(
+                _('Email já está em uso!')
+            )
+
+def validarEmailFornUpd(value):
+    if Fornecedores.objects.filter(email__iexact=value):
+        try:
+            Fornecedores.objects.get(email__iexact=value)
+            return value
+        except:
+            raise ValidationError(
+                _('Email já está em uso!')
+            )
+
+def validarRecuperarCli(value):
+    if Clientes.objects.filter(email__iexact=value):
+        return value
+    else:
+        raise ValidationError(
+            _('Email não cadastrado')
+        )
+
+def validarRecuperarForn(value):
+    if Clientes.objects.filter(email__iexact=value):
+        return value
+    else:
+        raise ValidationError(
+            _('Email não cadastrado')
+        )

@@ -2,7 +2,7 @@ from django import forms
 from pycep_correios.client import WebService, get_address_from_cep
 
 from inicial.models import Estados
-from inicial.validators import (validade_NumeroEndereco, validadeTelefone,
+from inicial.validators import (validade_NumeroEndereco, validadeTelefone, validarEmailCli, validarEmailCliUpd, validarEmailForn, validarEmailFornUpd,
                                 validarUserCliente, validarUserClienteUpdate,
                                 validarUserForn, validarUserFornUpdate,
                                 validate_cep, validate_nomeCliente,
@@ -42,6 +42,7 @@ class AdicionarClienteIniForm(forms.Form):
     email = forms.EmailField(
         required=True,
         label='E-mail',
+        validators=[validarEmailCli]
     )
 
 class AdicionarClienteForm(forms.Form):
@@ -190,6 +191,7 @@ class AlterarClienteIniForm(forms.Form):
     email = forms.EmailField(
         required=True,
         label='E-mail',
+        validators=[validarEmailCliUpd]
     )
 
 class AlterarClienteForm(forms.Form):
@@ -332,6 +334,12 @@ class AdicionarFornecedorIniForm(forms.Form):
         validators=[validadeTelefone]
     )
 
+    email = forms.EmailField(
+        required=True,
+        label='Senha',
+        validators=[validarEmailForn]
+    )
+
 class AdicionarFornecedorForm(forms.Form):
     def __init__(self, dados, *args, **kwargs):
         super(AdicionarFornecedorForm, self).__init__(*args, **kwargs)
@@ -344,6 +352,7 @@ class AdicionarFornecedorForm(forms.Form):
         self.fields['estado'].initial = estado.nome
         self.fields['ddd'].initial = dados.get('ddd')
         self.fields['telefone'].initial = dados.get('telefone')
+        self.fields['email'].initial        = dados.get('email')
         self.fields['senha'] = forms.CharField(widget=forms.PasswordInput)
         
 
@@ -406,6 +415,14 @@ class AdicionarFornecedorForm(forms.Form):
         validators=[validadeTelefone]
     )
 
+    email = forms.EmailField(
+        widget= forms.TextInput(
+            attrs={'readonly': True}
+        ),
+        required=True,
+        label='Email',
+    )
+
     usuario = forms.CharField(
         required=True,
         label='Usuário para acesso',
@@ -425,6 +442,7 @@ class AlterarFornecedorIniForm(forms.Form):
         self.fields['cep'].initial            = dados.cep
         self.fields['ddd'].initial            = int(dados.ddd)
         self.fields['telefone'].initial       = dados.telefone
+        self.fields['email'].initial          = dados.email
 
 
     nomefornecedor = forms.CharField(
@@ -450,6 +468,12 @@ class AlterarFornecedorIniForm(forms.Form):
         validators=[validadeTelefone]
     )
 
+    email = forms.EmailField(
+        required=True,
+        label='Email',
+        validators=[validarEmailFornUpd]
+    )
+
 class AlterarFornecedorForm(forms.Form):
     def __init__(self, dados, atual, *args, **kwargs):
         super(AlterarFornecedorForm, self).__init__(*args, **kwargs)
@@ -463,7 +487,7 @@ class AlterarFornecedorForm(forms.Form):
         self.fields['ddd'].initial            = dados.get('ddd')
         self.fields['telefone'].initial       = dados.get('telefone')
         self.fields['usuario'].initial        = atual.usuario
-        
+        self.fields['email'].initial          = dados.get('email')
         self.fields['senha'].initial          = atual.senha
         self.fields['senha'] = forms.CharField(widget=forms.PasswordInput)
         
@@ -527,6 +551,15 @@ class AlterarFornecedorForm(forms.Form):
         validators=[validadeTelefone]
     )
 
+    email = forms.EmailField(
+        widget= forms.TextInput(
+            attrs={'readonly': True}
+        ),
+        required=True,
+        label='E-mail',
+        validators=[validarEmailFornUpd]
+    )
+
     usuario = forms.CharField(
         required=True,
         label='Usuário para acesso',
@@ -535,6 +568,5 @@ class AlterarFornecedorForm(forms.Form):
     senha = forms.CharField(
         required=True,
         label='Senha',
-         validators=[validarUserFornUpdate]
     )
 

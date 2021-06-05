@@ -11,8 +11,6 @@ def fale_conosco(request):
     if request.method == 'POST':
         form = ContactMeForm(request.POST)
         if form.is_valid():
-            # form.save()
-            # send_mail(subject, message[fname, lname, email, phonenumber, subject, message], sedner, recipient)
 
             subject = "Fale Conosco da Transportadora"
             body = {
@@ -39,7 +37,7 @@ def fale_conosco(request):
                 form = ContactMeForm()
                 return render(request, 'email/contato.html',{'form':form, 'msg': True})
             except BadHeaderError:
-                return HttpResponse("Invalid header found.")
+                return render(request, 'error/500.html', {})
         else:
             form = ContactMeForm(request.POST)
             return render(request, 'email/contato.html',{'form':form, 'msg': False})

@@ -1,0 +1,37 @@
+from typing import Tuple
+from inicial.validators import validarEmailCliUpd, validarEmailFornUpd, validarRecuperarCli, validarRecuperarForn
+from django import forms
+
+class RecuperarSenhaCliForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(RecuperarSenhaCliForm, self).__init__(*args, **kwargs)
+
+    email = forms.EmailField(
+        required=True,
+        label='E-mail',
+        validators=[validarRecuperarCli]
+    )
+
+class RecuperarSenhaFornForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(RecuperarSenhaFornForm, self).__init__(*args, **kwargs)
+
+    email = forms.EmailField(
+        required=True,
+        label='E-mail',
+        validators=[validarRecuperarForn]
+    )
+
+class RecuperarSenhaForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(RecuperarSenhaFornForm, self).__init__(*args, **kwargs)
+        self.fields['novasenha'] = forms.CharField(widget=forms.PasswordInput)
+
+
+    novasenha = forms.CharField(
+        widget= forms.TextInput(
+            attrs={'placeholder': 'Insira a nova senha'}
+        ),
+        label="Nova Senha",
+        required=True,
+    )

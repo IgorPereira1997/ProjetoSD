@@ -37,6 +37,7 @@ class Fornecedores(models.Model):
     usuario = models.CharField(max_length=20, blank=True, null=True)
     senha = models.CharField(max_length=20, blank=True, null=True)
     cep = models.CharField(max_length=9, blank=True, null=True)
+    email = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = True

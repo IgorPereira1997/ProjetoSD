@@ -1,0 +1,54 @@
+{% include 'standard/base.html' %}
+{% load static %}
+
+<html>
+    <head>
+        <title>Login</title>
+        <link href="{% static '_css/login.css' %}" rel="stylesheet">
+        <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <main>
+        <!-- Top navigation -->
+            <div class="topnav">
+                <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="#">Recuperar Senha</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                <a href="/">Home</a>
+                <a href="/login/cliente/">Entrar como Cliente</a>
+                <a href="/login/fornecedor/">Entrar como Fornecedor</a>
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a href="/admin/">Entrar como Administrador</a>
+                    <a href="#">Fale Conosco</a>
+                </div>
+            </div>
+            <div id="janela_login">
+            {% if forn %}
+                <form action="/login/finalizar_recovery/?codF={{id}}" method="POST">
+            {% else %}
+                <form action="/login/finalizar_recovery/?codC={{id}}" method="POST">
+            {% endif %}
+                {% csrf_token %}
+                <h2>Digite a nova senha para o {%if forn %} Fornecedor {%else%} Cliente {% endif %}</h2>
+                {{ form.email.errors }}
+                {{ form.email.label_tag }}{{ form.email }}
+
+                {%if sucesso == 1 %}
+                    <p>Senha modificada com sucesso!</p>
+                {% endif %}
+
+            </form>
+            {%if forn %} 
+            <form action="/login/fornecedor/" method="POST">
+            {% else %}
+            <form action="/login/cliente/" method="POST">
+            {% endif %}
+                <input type="submit" value="Voltar">
+            </form>
+        </div>
+        </main>
+    </body>
+</html>

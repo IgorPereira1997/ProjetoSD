@@ -55,6 +55,7 @@ def criarPerfilIni(request):
                 dados_preliminares['cep'] = request.POST.get('cep')
                 dados_preliminares['ddd'] = request.POST.get('ddd')
                 dados_preliminares['telefone'] = validadeTelefone(request.POST.get('telefone'))
+                dados_preliminares['email'] = request.POST.get('email')
                 dados_preliminares['flag'] = '2'
                 return redirect('/criar_perfil/')
             else:
@@ -105,7 +106,8 @@ def criarPerfil(request):
                                             telefone = request.POST.get('telefone'),
                                             usuario = request.POST.get('usuario'),
                                             senha = request.POST.get('senha'),
-                                            cep = request.POST.get('cep')
+                                            cep = request.POST.get('cep'),
+                                            email = request.POST.get('email'),
                                             )
                 dados_preliminares.clear()
                 return redirect('/login/fornecedor/')
@@ -119,7 +121,7 @@ def editarPerfilIni(request):
     fornecedor = request.session['idFornecedor']
     cliente = request.session['idCliente']
     if cliente == "" and fornecedor == "":
-        return redirect('/')
+        return render(request, 'errors/403.html', {})
     elif cliente:
         nome = Clientes.objects.get(clienteid__exact=cliente)
         if request.method == "POST":
@@ -145,6 +147,7 @@ def editarPerfilIni(request):
                 dados_preliminares['cep'] = request.POST.get('cep')
                 dados_preliminares['ddd'] = request.POST.get('ddd')
                 dados_preliminares['telefone'] = validadeTelefone(request.POST.get('telefone'))
+                dados_preliminares['email'] = request.POST.get('email')
                 return redirect('/editar_perfil/')
             else:
                 return render(request, 'editar_perfil_ini/editarini.html', {'forn': fornecedor, 'cli': cliente, 'nome': nome.nomefornecedor, 'form': form})
@@ -157,7 +160,7 @@ def editarPerfil(request):
     cliente = request.session['idCliente']
     flag = False
     if cliente == "" and fornecedor == "":
-        return redirect('/')
+        return render(request, 'errors/403.html', {})
     elif cliente:
         nome = Clientes.objects.get(clienteid__exact=cliente)
         if request.method == "POST":
@@ -233,6 +236,9 @@ def editarPerfil(request):
                 if nome.telefone != request.POST.get('telefone'):
                     nome.telefone = request.POST.get('telefone')
                     flag = True
+                if nome.email != request.POST.get('email'):
+                    nome.email = request.POST.get('email')
+                    flag = True
                 if nome.usuario != request.POST.get('usuario'):
                     nome.usuario = request.POST.get('usuario')
                     flag = True
@@ -258,7 +264,7 @@ def excluirPerfil(request):
     cliente = request.session['idCliente']
     flag = False
     if cliente == "" and fornecedor == "":
-        return redirect('/')
+        return render(request, 'errors/403.html', {})
     elif cliente:
         nome = Clientes.objects.get(clienteid__exact=cliente)
         if request.method == "POST":

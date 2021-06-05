@@ -35,6 +35,12 @@
                     <p>{{ msg }}</p>
                 {% endif %}
             </form>
+            <form action="/login/recuperar_senha/" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="flag" value="0">
+                <input type="hidden" name="op" value="1"> 
+                <input type="submit" value="Recuperar Senha">
+            </form>
             <form action="/criar_perfil_ini/" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="flag" value="0">
