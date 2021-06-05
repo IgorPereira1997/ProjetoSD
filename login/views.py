@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from login.models import Clientes, Fornecedores
 from .forms import RecuperarSenhaCliForm, RecuperarSenhaForm, RecuperarSenhaFornForm
-from django.http.response import BadHeaderError
+from django.http.response import BadHeaderError, HttpResponse
 from django.shortcuts import render
 from django.core.mail import send_mail, BadHeaderError
 from django.contrib import messages
@@ -68,7 +68,7 @@ def recuperar_senha(request):
                     'Nome': cliente.nomecompleto,
                     'phonenumber': cliente.telefone,
                     'subject': form.cleaned_data['subject'],
-                    'message': "Por favor, acesse o link 'http://127.0.0.1:8000/login/finalizar_recovery/?codC="+ cliente.clienteid + "' para " +
+                    'message': "Por favor, acesse o link 'http://transportadora-vietna.herokuapp.com//login/finalizar_recovery/?codC="+ cliente.clienteid + "' para " +
                                "\nconfigurar uma nova senha.",
                 }
 
@@ -83,10 +83,9 @@ def recuperar_senha(request):
                 try:
                     send_mail(subject, message, sender, recipient, fail_silently=True)
                     messages.success(request, "Mensagem Enviada com sucesso!")
-                    form = ContactMeForm()
                     return render(request, 'recuperar_senha/index.html', {'form': form, 'sucesso': 1, 'forn': 0})
                 except BadHeaderError:
-                    return render(request, 'error/500.html', {})
+                    return HttpResponse("Houve erro no envio da mensagem.")
             else:
                 return render(request, 'recuperar_senha/index.html', {'form': form, 'forn': 0})
         else:
