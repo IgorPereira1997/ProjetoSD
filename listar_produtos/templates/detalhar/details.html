@@ -49,6 +49,7 @@
                     {% endif %}
                 </ul>
                 <br><br>
+                {% if fornecedor %}
                 <form action="/listar_produtos/atualizar/" method="GET">
                     <input type="hidden" name="prod" value="{{ linha.produtoid }}">
                     <input type="submit" value="Atualizar Informações">
@@ -59,6 +60,7 @@
                     <input type="submit" value="Deletar Produto">
                 </form>
                 <span><br></span>
+                {% endif %}
                 <form action="/listar_produtos/listar/" method="GET">
                     <input type="submit" value="Voltar">
                 </form>

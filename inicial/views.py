@@ -14,11 +14,13 @@ from gerenciar_pedidos.models import Pedidos, PedidosItem
 dados_preliminares = {}
 
 def padrao(request):
+    # renderiza a página principal, removendo os logins ativos como medida de segurança.
     request.session['idFornecedor'] = ""
     request.session['idCliente'] = ""
     return render(request, 'home/index.html', {})
 
 def sair(request):
+    # faz o logout do cliente/fornecedor, a pedido do cliente/fornecedor
     forncedor = request.session['idFornecedor']
     cliente = request.session['idCliente']
     if request.method == "POST":
@@ -29,6 +31,9 @@ def sair(request):
         return render(request, 'sair/sair.html', {'forn': forncedor, 'cli': cliente})
 
 def criarPerfilIni(request):
+    # inicia o processo de criação do cliente ou fornecedor, requisitando nome, cep, ddd, telefone email para geração dos outros dados do fornecedor/cliente
+    # para uso da API pycep-correios para geração dos dados da localização referentes ao cliente/fornecedor e redireciona para a pŕoxima página, com os resultados
+    # da requisição alimentando o formulário da criação.
     op = request.POST.get('op')
     if op == '1': #cliente
         if request.method == "POST" and request.POST.get('flag') == "1":
@@ -68,6 +73,9 @@ def criarPerfilIni(request):
             return render(request, 'criar_perfil_ini/criarini.html', {'forn': 1, 'cli': 0, 'form': form})
 
 def criarPerfil(request):
+    # Aqui o processo de criação do perfil, utilizando dos dados retornados pela api via cep e permitindo mudanças mais finas no endereço, complemento
+    # e número referentes ao endereço que o via cep possa não conseguir, além de disponibilizar a criação do login e senha para o cliente/fornecedor. Ao
+    # final do processo, o requisitante é redirecionando para a página de login específica do perfil criado (cliente/fornecedor).
     op = dados_preliminares.get('flag')
     if op == '1':
         if request.method == "POST":
@@ -119,6 +127,8 @@ def criarPerfil(request):
             return render(request, 'criar_perfil/criar.html', {'forn': 1, 'cli': 0, 'form': form})
 
 def editarPerfilIni(request):
+    # página de edição dos dados do cliente/fornecedor, alimentando a página de coleta de dados inicial de acordo com os dados do cliente/fornecedor
+    # cadastrado, e aprovisionando para a operação da api pycep-correios para gerar os dados de localização referentes ao CEP em específico.
     fornecedor = request.session['idFornecedor']
     cliente = request.session['idCliente']
     if cliente == "" and fornecedor == "":
@@ -157,6 +167,8 @@ def editarPerfilIni(request):
             return render(request, 'editar_perfil_ini/editarini.html', {'forn': fornecedor, 'cli': cliente, 'nome': nome.nomefornecedor, 'form': form})
 
 def editarPerfil(request):
+    # finaliza a edição dos dados do cliente, e verificando cada campo para atualizar apenas os que tiveram modificação para aliviar o banco de dados
+    # e redireciona para a página inicial do perfil, ou seja, a parte de listagem de produtos do usuário.
     fornecedor = request.session['idFornecedor']
     cliente = request.session['idCliente']
     flag = False
@@ -261,6 +273,8 @@ def editarPerfil(request):
     
 
 def excluirPerfil(request):
+    # o usuário pode excluir o seu perfil apenas quando não tem processos pendentes, ou seja, se houverem pedidos abertos o login não pode ser concluído
+    # até que todos os pedidos sejam concluidos ou cancelados com sucesso, para impedir inconsistênias no banco de dados.
     fornecedor = request.session['idFornecedor']
     cliente = request.session['idCliente']
     flag = False

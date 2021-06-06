@@ -1,3 +1,4 @@
+from gerenciar_pedidos.models import Pedidos
 from django.core.exceptions import PermissionDenied
 from login.models import Fornecedores
 from django.shortcuts import render, redirect
@@ -17,6 +18,8 @@ for campo in all_estados:
 dados_preliminares = {}
 
 def add_transp(request):
+    # Com os dados obtidos da etapa inicial e as demais alterações que forem permitidas ao fornecedor fazer, a nova transportadora é salva no banco de dados
+    # fazendo inclusive o "regex" do cnpj para ele ser salvo da forma correta.
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
@@ -44,6 +47,8 @@ def add_transp(request):
         raise PermissionDenied()
 
 def add_transp_ini(request):
+    # Aqui os dados iniciais da nova transportadora que será cadastrado são coletados e enviados para a proóxima etapa, que incluirá dados
+    # fornecidos pela api pycep correios também, grantindo que o usuário terá um endereço válido cadastrado.
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
@@ -75,6 +80,9 @@ def add_transp_ini(request):
     
 
 def upd_transp(request):
+    # aqui a atualização é feita, apresentando os dados fornecidos pelo cliente e os obtidos da api pycep-correios, para garantir 
+    # que os dados estejam coerentes e permitam que o forncedor modifique dados referentes ao pycep-correios que o mesmo não pode
+    # obter, confirmando a atualização depois e a função garante que somente os dados modificados sejam salvos no banco
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
@@ -122,6 +130,8 @@ def upd_transp(request):
         raise PermissionDenied()
 
 def upd_transp_ini(request):
+    # Aqui são coletados os dados iniciais para alteração da transportadora, para utilização da api pycep-correios a fim de obeter 
+    # os dados de localização de acordo com o cep fornecido
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
@@ -153,8 +163,10 @@ def upd_transp_ini(request):
         raise PermissionDenied()
 
 def del_transp(request):
+    # aqui, o fornecedor pode deletar a filial desejada contanto que ela não esteja em algum pedido aberto, pois neste caso a deleção da mesma é interrompida
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
+    flag = False
     if cliente == "" and fornecedor == "":
         raise PermissionDenied()
     elif fornecedor:
@@ -164,18 +176,30 @@ def del_transp(request):
         if request.method == "POST":
             form = DeletarTransportadoraForm(codigo, request.POST)
             if form.is_valid():
-                filial.delete()
-                return redirect('/listar_transportadoras/listar/')
+                pedidos_transp = Pedidos.objects.filter(transportadoraid=codigo)
+                if pedidos_transp:
+                    for pedido in pedidos_transp:
+                        if pedido.status_pedido != 7 and pedido.status_pedido != 3 and pedido.status_pedido != 4:
+                            flag = True
+                            break
+                if flag:
+                    form = DeletarTransportadoraForm(codigo, request.POST)
+                    return render(request, 'deletar/del_transp.html', {'form': form, 'cod': codigo, 'nome': nome.nomefornecedor, 'flag': flag})
+                else:
+                    filial.delete()
+                    return redirect('/listar_transportadoras/listar/')
             else:
                 form = DeletarTransportadoraForm(codigo, request.POST)
-                return render(request, 'deletar/del_transp.html', {'form': form, 'cod': codigo, 'nome': nome.nomefornecedor})
+                return render(request, 'deletar/del_transp.html', {'form': form, 'cod': codigo, 'nome': nome.nomefornecedor, 'flag': flag})
         else:
             form = DeletarTransportadoraForm(codigo)
-            return render(request, 'deletar/del_transp.html', {'form': form, 'cod': codigo, 'nome': nome.nomefornecedor})
+            return render(request, 'deletar/del_transp.html', {'form': form, 'cod': codigo, 'nome': nome.nomefornecedor, 'flag': flag})
     else:
         raise PermissionDenied()
 
 def list_transp(request):
+    # Lista as transportadoras disponíveis para os fornecedores associados e sua localização, ou seja, a cidade que tem sede, disponiblizando a exclusão ou
+    # alteração das listadas, conforme desejo do fornecedor
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":

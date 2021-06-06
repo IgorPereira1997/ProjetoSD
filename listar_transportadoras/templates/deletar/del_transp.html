@@ -54,6 +54,9 @@
                     <h4> {{ form.id }} </h4>
                     <input type="submit" value="Confirmar Exclusão">
                 </form>
+                {% if flag %}
+                    <p>Transportadora utilizada em pedido pendente, impossível excluir!</p>
+                {% endif %}
                 <form action="/listar_transportadoras/listar/" method="GET">
                     <input type="submit" value="Cancelar">
                 </form>

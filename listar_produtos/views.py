@@ -10,6 +10,7 @@ import os
 
 # Create your views here.
 
+# coleta de dados do banco para uso de todas as funções das views, como o banco de categorias disponíveis, dos fornecedores e lista de categorias 
 all_categorias = Categorias.objects.values()
 all_fornecedores = Fornecedores.objects.values()
 forn_list=[]
@@ -23,6 +24,10 @@ for campo in all_categorias:
     cat_list.append((campo['categoriaid'], campo['nomecategoria']))
 
 def add_prod(request):
+    # apenas o fornecedor tem direito de acesso para esta página, já que se um cliente quiser adicionar pedidos, ele deverá realizar um pedido.
+    # Aqui, com todos os dados fornecidos, é criado o novo produto para o fornecedor em específico, com uso de uma api de processamento de imagens
+    # chamada pillow, e aqui a imagem é formatada para os padrões do site de tamanho de imagens. após adição concluída, o fornecedor volta para a página
+    # de listagem de produtos, com o novo produto já adicionado
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
@@ -56,6 +61,8 @@ def add_prod(request):
 
 
 def del_prod(request):
+    # página de deleção de produtos, que pode ser feita pelo fornecedor, removendo o produto específico do banco de dados. E negando o acesso se o mesmo
+    # for um cliente.
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
@@ -71,18 +78,13 @@ def del_prod(request):
         else:
             return render(request, 'deletar/del_prod.html', {'id': idProduto, 'msg': msg, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomefornecedor})
     elif cliente:
-        nome = Clientes.objects.get(clienteid__exact=cliente)
-        idProduto = request.GET.get('prod')
-        produto = ProdutosClientes.objects.get(produtoid__exact=idProduto)
-        msg = "Você tem certeza que deseja apagar o produto?"
-        if request.method == "POST":
-            produto.delete()
-            return redirect('/listar_produtos/listar/')
-        else:
-            return render(request, 'deletar/del_prod.html', {'id': idProduto, 'msg': msg, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomecompleto})
+        raise PermissionDenied()
 
 
 def list_prod(request):
+    # página inicial após o login, faz a listagem de todos os produtos que o cliente ou fornecedor que acessou a aplicação possui, apenas fazendo o fetch
+    # direto nos produtos se for fornecedor e analisando os pedidos finalizados e os items respectivos a eles para preparar a vizualização dos 
+    # produtos exclusivos do cliente, com ambos podendo fazer pesquisas dentre os seus produtos, por um com o nome como informado na pesquisa
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     pesq = request.GET.get('produto')
@@ -158,6 +160,9 @@ def list_prod(request):
 
 
 def upd_prod(request):
+    # O fornecedor pode atualizar os dados de seus produtos, informando novos dados para o produto selecionado ou mesmo atualizando a quantidade do mesmo
+    # em estoque, deixando pelo menos um produto em estoque, já que há a página específica para remoção total do produto. Os dados informados são 
+    # analisados, fazendo a mudança apenas nos campos que foram realmente modificados.
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
@@ -210,63 +215,12 @@ def upd_prod(request):
             form = AlterarProdutoForm(forn_list, cat_list, entrega_list, produto)
             return render(request, 'atualizar/upd_prod.html', {'form': form, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomefornecedor})
     elif cliente:
-        idProduto = request.GET.get('prod')
-        produto = ProdutosClientes.objects.get(produtoid__exact=idProduto)
-        nome = Clientes.objects.get(clienteid__exact=cliente)
-        qtd = 0
-        if Pedidos.objects.filter(clienteid__exact=cliente):
-            all_pedidos = Pedidos.objects.filter(clienteid__exact=cliente)
-            all_pedidos_item = PedidosItem.objects.values()
-            for linha in all_pedidos:
-                for linha2 in all_pedidos_item:
-                    if linha.pedidoid == linha2['pedidoid'] and linha.status_pedido == 7: # verifica se o cliente tem produtos
-                        if int(linha2['produtoid']) == int(idProduto):
-                            qtd += linha2['quantidade']
-        flagChange = False
-        if request.method == "POST":
-            form = AlterarProdutoCliForm(forn_list, cat_list, entrega_list, produto, qtd, request.POST, request.FILES)
-            if form.is_valid():
-                if produto.nomeproduto   != str(request.POST.get('nomeproduto')):
-                    produto.nomeproduto   = str(request.POST.get('nomeproduto'))
-                    flagChange = True
-                if produto.descricao     != str(request.POST.get('descricao')):
-                    produto.descricao     = str(request.POST.get('descricao'))
-                    flagChange = True
-                if produto.codigobarra   != str(request.POST.get('codigobarra')):
-                    produto.codigobarra   = str(request.POST.get('codigobarra'))
-                    flagChange = True
-                if produto.tempoentrega  != int(request.POST.get('tempoentrega')):
-                    produto.tempoentrega  = int(request.POST.get('tempoentrega'))
-                    flagChange = True
-                if produto.precorevenda  != float(str(request.POST.get('precorevenda')).replace(',', '.')):
-                    produto.precorevenda  = float(str(request.POST.get('precorevenda')).replace(',', '.'))
-                    flagChange = True
-                if produto.precounitario != float(str(request.POST.get('precounitario')).replace(',', '.')):
-                    produto.precounitario = float(str(request.POST.get('precounitario')).replace(',', '.'))
-                    flagChange = True
-                if produto.estoque       != int(request.POST.get('estoque')):
-                    produto.estoque       = int(request.POST.get('estoque'))
-                    flagChange = True
-                if request.FILES.get('foto_grande') != None:
-                    produto.imagemgrande  = func.resize_image(image=request.FILES.get('foto_grande'), size=(225, 225))
-                    flagChange = True
-                if request.FILES.get('foto_pequena') != None:
-                    produto.imagempequena = func.resize_image(image=request.FILES.get('foto_pequena'), size=(73, 73))
-                    flagChange = True
-                if produto.categoriaid   != int(request.POST.get('categoriaid')):
-                    produto.categoriaid   = int(request.POST.get('categoriaid'))
-                    flagChange = True
-                if flagChange:
-                    produto.save(force_update=True)
-                return redirect('/listar_produtos/listar/')
-            else:
-                form = AlterarProdutoCliForm(forn_list, cat_list, entrega_list, produto, qtd, request.POST, request.FILES)
-                return render(request, 'atualizar/upd_prod.html', {'form': form, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomecompleto})
-        else:
-            form = AlterarProdutoCliForm(forn_list, cat_list, entrega_list, produto, qtd)
-            return render(request, 'atualizar/upd_prod.html', {'form': form, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomecompleto})
+        raise PermissionDenied()
 
 def details(request):
+    # Retorna os dados do produto previamente selecionado, fazendo seu detalhamento. É apenas uma nova busca no banco de produtos, se for um fornecedor 
+    # acessando a página, e se como cliente, fazendo uma busca mais complexa, envolvendo os pedidos concluídos e seus respectivos itens para mostrar os 
+    # detalhes e quantidades específicos para o cliente
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":

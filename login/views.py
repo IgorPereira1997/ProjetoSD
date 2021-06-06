@@ -11,8 +11,9 @@ from django.contrib import messages
 mensagem = 'Usuário ou senha incorretos!'
 
 def login_cliente(request):
+    # O login do cliente é feito aqui, fazendo a verificação dos dados de usuário e senha para redirecioná-lo para a listagem de seus produtos 
+    # e garantindo a deleção de qualquer outra sessão de fornecedores ativa.
     request.session['idFornecedor'] = ''
-    request.session['idAdmin'] = ''
     if request.method == "POST":
         all_clientes = Clientes.objects.values('usuario', 'senha', 'clienteid')
         validoCliente = 'Diferente'
@@ -23,7 +24,6 @@ def login_cliente(request):
                 validoCliente = 'Igual'
                 request.session['idCliente'] = campo['clienteid']
                 request.session['idFornecedor'] = ''
-                request.session['idAdmin'] = ''
                 return redirect('/listar_produtos/listar/')
         if validoCliente == 'Diferente':
             return render(request, 'cliente/index.html', {'logincliente': validoCliente, 'msg': mensagem,})
@@ -36,8 +36,9 @@ def login_cliente(request):
 
 
 def login_fornecedor(request):
+    # Aqui o login do fornecedor é realizado, desativando a sessão do usuário cliente para não haver problemas de um fornecedor acessar a 
+    # página de clientes, o redirecionando para a listagem de seus produtos.
     request.session['idCliente'] = ''
-    request.session['idAdmin'] = ''
     if request.method == "POST":
         all_fornecedores = Fornecedores.objects.values('usuario', 'senha', 'fornecedorid')
         validoFornecedor = 'Diferente'

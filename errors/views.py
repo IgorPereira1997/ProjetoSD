@@ -2,6 +2,8 @@ from django.shortcuts import render
 
 # Create your views here.
 
+# Páginas customizadas de error da aplicação
+
 def error_400(request, exception):
     return render(request, 'error/400.html', status=400)
 

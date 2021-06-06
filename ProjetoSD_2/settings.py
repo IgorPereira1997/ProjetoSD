@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+# Faz com que possa ser possível salvar dados essenciais em um arquivo .env, que pode ser configurado no ambiente que o site é disponibilizado 
+# para proteção de dados sensíveis.
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,9 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['transportadora-vietna.herokuapp.com', '127.0.0.1', '0.0.0.0', 'em5805.127.0.0.1', 's1._domainkey.127.0.0.1', 's2._domainkey.127.0.0.1',
-                 'url2753.127.0.0.1', '22076011.127.0.0.1', 'u22076011.wl012.sendgrid.net', 's1.domainkey.u22076011.wl012.sendgrid.net',
-                 's2.domainkey.u22076011.wl012.sendgrid.net', 'sendgrid.net', 'sendgrid.net']
+ALLOWED_HOSTS = ['transportadora-vietna.herokuapp.com', '127.0.0.1', '0.0.0.0', '192.168.100.10']
 
 # Application definition
 
@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'inicial',
     'django_cleanup',
 ]
+# django cleanup faz a limpeza de qualquer resquício de dados estáticos inválidos ou não mais utilizados para otimização do código,
+# principalmente por limpar imagens que também não tenham mais referências válidas.
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -148,6 +150,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# Configuração do S3 para guardar e servir os arquivos estáticos do projeto, utilizando para isso a biblioteca S3Boto3
+# para fazer a conexão da aplicação com o servidor AWS S3 que fora configurado para tal fim.
+
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
 
@@ -171,6 +176,8 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder'
 ]
 
+# caminho padrão dos arquivos estáticos, modificado para ser resolvido pelo Amazon Web Services S3 
+
 #STATIC_URL = '/static/'
 
 #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -180,20 +187,26 @@ STATICFILES_FINDERS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# dados da sandbox do paypal para permitir o teste de transações e pagamentos
 PAYPAL_CLIENT_ID  = config('PAYPAL_CLIENT_ID')
 PAYPAL_SECRET_ID  =  config('PAYPAL_SECRET_ID')
 
-# Configure Django App for Heroku.
-import django_heroku
+# Configura a aplicação django para o Heroku, no deploy inicial e/ou utilizando whitenoise para 
+# # servir os arquivos estáticos. Neste código, foi modificado para ser utilizado AWS S3 para este fim.
+
+#import django_heroku
 #django_heroku.settings(locals(), AWS_S3_CUSTOM_DOMAIN)
 
-#Email Configs
+#Email Configs para o fale conosco e para a recuperação de senha
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'transportadoravietna@gmail.com'
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD') #past the key or password app here
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+# session timeout é utilizada para colocar um timestamp nas sessões, garatindo que, sem qualquer operação em um determinado tempo, a sessão
+# seja finalizada e o usuário redirecionado para a página que o mesmo especificar
 
 SESSION_EXPIRE_SECONDS = 600  # 10 minutes
 

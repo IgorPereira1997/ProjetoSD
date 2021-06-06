@@ -23,10 +23,14 @@ def listar(request):
     fornecedor = request.session['idFornecedor']
     if fornecedor == '' and cliente == '':
         raise PermissionDenied()
+    # Procura saber se realmente o usuário está logado ao acessar a página, em caso de erro ele é redirecionado para a página de acesso proibido.
     else:
+        # Coleta de todas as transportadoras e dos status do pedido, por servir para ambos fornecedor e cliente.
         all_transportadoras = Transportadoras.objects.all
         all_status = PedidosStatus.objects.all
         if fornecedor:
+            # percorre todos os pedidos e seus itens, formando uma lista que será enviada para a página com os pedidos exclusivos envolvendo
+            # produtos do fornecedor
             empresa = Fornecedores.objects.get(fornecedorid=fornecedor)
             all_pedidos = []
             all_clientes = Clientes.objects.all
@@ -46,6 +50,9 @@ def listar(request):
                                                               'cli': cliente,
                                                               'nome': empresa.nomefornecedor})
         else:
+            # Como a página de redirecionamento após pagamento, tenta ver se houve envio de dados pela API do paypal informando o pagamento
+            # para fazer a modificação do status. Caso não tenha, o código procede normalmente, fazendo a busca de pedidos referente ao cliente
+            # acessando a aplicação.
             nome = Clientes.objects.get(clienteid__exact=cliente)
             all_clientes = Clientes.objects.filter(clienteid__exact=cliente)
             all_pedidos = Pedidos.objects.filter(clienteid__exact=cliente)
@@ -65,6 +72,9 @@ def listar(request):
                                                               'nome': nome.nomecompleto})
 
 def list_prod(request):
+    # Verificação se há um login válido para um cliente, caso contrário levanta um acesso negado. Caso seja um cliente,
+    # há o fetch para todos os produtos disponíveis para compra, com filtro se o cliente procurar por um produto
+    # com nome específico pela janela de pesquisa.
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     pesq = request.GET.get('produto')
@@ -83,6 +93,9 @@ def list_prod(request):
             raise PermissionDenied()
 
 def details(request):
+    # Continuação do pedido, novamente apenas o cliente pode acessar a página. Ela é acessada ao se clicar em um produto específico, mostrando
+    # Seus dados completos e perguntando a quantidade que poderá ser requisitada, e depois disso redireciona para a página de 
+    # finalização do pedido, guardando os dados daquele pedido em uma lista que funciona com carrinho.
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "":
@@ -109,6 +122,9 @@ def details(request):
 
 
 def modificar(request):
+    # Primeiro verifica-se se um login válido está ativo. O fornecedor acessa a página a partir do pedido pago, onde confirma o pagamento alterando
+    # o status para aguardando envio e assim por diante até a entrega. O dia de cada operação é salvo no pedido, e se concluído, faz a transferência
+    # do banco de produtos reservados para o cliente final.
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     pedido = request.GET.get('pedido')
@@ -180,6 +196,9 @@ def modificar(request):
                                                                         'cli': cliente, 'forn': fornecedor, 'nome': nome.nomecompleto, 'valor_show': valor})
 
 def finalizar(request):
+    # Apenas o cliente pode acessar a página, quando ele finaliza o pedido, a lista "carrinho" é analisada para fazer a reserva de produtos, tirando
+    # a quantidade do produto da lista do fornecedor dono de cada produto e estocando na lista de produtos reservados, cirando o produto ou apenas
+    # aumentando o estoque total e a função redireciona para a página de pedidos do cliente.
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "":
@@ -246,6 +265,9 @@ def finalizar(request):
 
 
 def pedir(request):
+    # somente o cliente pode acessar essa paǵina, e nela o pedido é então finalizado, contabilizando o valor total de todos os produtos na lista
+    # emulando o carrinho e criando o pedido final, gerando seus dados e redirecionando para a página de finalização para processamento da transportadora
+    # que fará a entrega do pedido e outros processamentos pós-pedido
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "":
@@ -273,6 +295,8 @@ def pedir(request):
 
 
 def cancelar(request):
+    # Aqui, como o próprio nome diz, o pedido pode ser cancelado e é "fechado", mudando seu status para cancelado pelo cliente ou pela empresa,
+    # Dependendo de quem requisitou o cancelamento do mesmo e então, a página redireciona para a listagem dos pedidos do cliente/fornecedor
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
@@ -331,6 +355,9 @@ def cancelar(request):
                 return render(request, 'cancelar_pedido/cancelar.html', {'id': idPedido, 'msg': msg, 'forn': fornecedor, 'cli': cliente, 'nome': nome.nomefornecedor})
 
 def detalhar(request):
+    # pode ser acessado por ambos fornecedor e cliente, e aqui o pedido que fez o 'trigger' desta página tem todos os seus detalhes mostrado, como
+    # data de criação, data de envio e/ou data de cancelamento/entrega, entre outros, e em tal página tem o redirecionamentos para cancelar o pedido,
+    # realizar o pagamento (disponível apenas para clientes) ou voltar para página principal dos pedidos.
     cliente = request.session['idCliente']
     fornecedor = request.session['idFornecedor']
     if cliente == "" and fornecedor == "":
