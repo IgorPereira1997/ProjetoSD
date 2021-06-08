@@ -24,4 +24,4 @@ class Transportadoras(models.Model):
         return estado.sigla
 
     def __str__(self):
-        return f"{self.nometransportadora} | {self.cnpj}"
+        return f"Nome da Transportadora: {self.nometransportadora} | CNPJ: {self.cnpj}"

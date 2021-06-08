@@ -47,7 +47,7 @@ class Pedidos(models.Model):
 
     def __str__(self):
         nome = PedidosStatus.objects.get(statusid=self.status_pedido)
-        return f"Data do Pedido: {self.data_pedido} | Status: {nome.nomestatus} | Valor: {self.valor_pedido}"
+        return f"Data do Pedido: {self.data_pedido} | Status: {nome.nomestatus} | Valor: {self.valor}"
 
 
 class PedidosItem(models.Model):
@@ -88,8 +88,7 @@ class PedidosItem(models.Model):
         return "R$ "+str(self.precounitario).replace('.', ',')
 
     def __str__(self):
-        nome = Produtos.objects.get(produtoid__exact=self.produtoid)
-        return f"Número do Pedido: {self.pedidoid} | Produto: {nome.nomeproduto} | QTD: {self.quantidade}"
+        return f"Número do Pedido: {self.pedidoid} | Produto: {self.produto_tag} | QTD: {self.quantidade}"
 
 
 

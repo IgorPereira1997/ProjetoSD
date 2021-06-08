@@ -53,7 +53,7 @@ class Produtos(models.Model):
 
     def __str__(self):
         categoria = Categorias.objects.get(categoriaid=self.categoriaid)
-        return f"Nome do Produto: {self.nomeproduto} | Código de Barra: {self.codigobarra} | Categoria: {categoria.nomecategoria}"
+        return f"Nome do Produto: {self.nomeproduto} | Código de Barra: {self.codigobarra} | Categoria: {self.categoria_tag}"
 
 class ProdutosClientes(models.Model):
     produtoid = models.AutoField(db_column='produtoID', primary_key=True)  # Field name made lowercase.
@@ -102,8 +102,7 @@ class ProdutosClientes(models.Model):
         return "R$ "+str(self.precorevenda).replace('.', ',')
 
     def __str__(self):
-        categoria = Categorias.objects.get(categoriaid=self.categoriaid)
-        return f"Nome do Produto: {self.nomeproduto} | Código de Barra: {self.codigobarra} | Categoria: {categoria.nomecategoria}"
+        return f"Nome do Produto: {self.nomeproduto} | Código de Barra: {self.codigobarra} | Categoria: {self.categoria_tag}"
 
 class ProdutosStandby(models.Model):
     produtoid = models.IntegerField(db_column='produtoID', primary_key=True)  # Field name made lowercase.
@@ -151,6 +150,5 @@ class ProdutosStandby(models.Model):
         return "R$ "+str(self.precorevenda).replace('.', ',')
 
     def __str__(self):
-        categoria = Categorias.objects.get(categoriaid=self.categoriaid)
-        return f"Nome do Produto: {self.nomeproduto} | Código de Barra: {self.codigobarra} | Categoria: {categoria.nomecategoria}"
+        return f"Nome do Produto: {self.nomeproduto} | Código de Barra: {self.codigobarra} | Categoria: {self.categoria_tag}"
 

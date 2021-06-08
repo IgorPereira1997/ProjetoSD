@@ -29,7 +29,7 @@ class Clientes(models.Model):
 
 
     def __str__(self):
-        return self.nomecompleto + ' | '+ self.email
+        return "Nome: " + self.nomecompleto + ' | Email: '+ self.email
 
 class Fornecedores(models.Model):
     fornecedorid = models.AutoField(db_column='fornecedorID', primary_key=True)  # Field name made lowercase.
@@ -55,7 +55,7 @@ class Fornecedores(models.Model):
         return estado.sigla
 
     def __str__(self):
-        return self.nomefornecedor
+        return "Nome do Fornecedor: "+ self.nomefornecedor + " | Email: " + self.email
 
 
 class FornecedoresContatos(models.Model):
@@ -81,4 +81,4 @@ class FornecedoresContatos(models.Model):
         return dep.nomedepartamento
 
     def __str__(self):
-        return self.nome + " | " + self.email
+        return "Nome do Funcionário: " + self.nome + " | Empresa: " + self.empresa + " | Email: "+ self.email
