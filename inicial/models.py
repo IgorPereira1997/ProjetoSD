@@ -14,7 +14,7 @@ class Categorias(models.Model):
         verbose_name_plural  =  "Categorias"
     
     def __str__(self):
-        return f"{self.nomecategoria}"
+        return f"Nome da categoria: {self.nomecategoria}"
 
 class Departamentos(models.Model):
     departamentoid = models.AutoField(db_column='departamentoID', primary_key=True)  # Field name made lowercase.
@@ -27,7 +27,7 @@ class Departamentos(models.Model):
         verbose_name_plural  =  "Departamentos"
 
     def __str__(self):
-        return f"{self.nomedepartamento}"
+        return f"Departamento: {self.nomedepartamento}"
 
 
 class Estados(models.Model):
@@ -42,4 +42,4 @@ class Estados(models.Model):
         verbose_name_plural  =  "Lista de Estados"
 
     def __str__(self):
-        return f"{self.nome} | UF = {self.sigla}"
+        return f"Estado: {self.nome} | UF: {self.sigla}"

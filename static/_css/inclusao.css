@@ -4,19 +4,21 @@ main div#janela_formulario {
     width:70%;
     justify-content: center;
     align-items: center;
-    margin:50px auto 30px;
+    margin:10% auto 30px;
 }
 
 main div#janela_formulario form {
-    width:65%;
+    width: 85%;
+    display: flex;
     justify-content: center;
     text-align: center;
-    margin:0px auto;
+    margin: 0px auto;
     font-family: sans-serif;
     font-size: 12px;
     font-weight: 500;
     margin-bottom: 3px;
     color: #9A9668;
+    flex-direction: column;
 }
 
 main div#janela_formulario h2, main div#janela_formulario form h2 {
@@ -81,8 +83,9 @@ main div#janela_formulario form input[type="submit"] {
     background-color: #C5996B;
     outline: none;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 13px;
     font-weight: 500;
+    margin: 0 auto;
 }
 
 span.resposta {

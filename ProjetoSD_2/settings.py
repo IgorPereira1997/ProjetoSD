@@ -34,10 +34,6 @@ ALLOWED_HOSTS = ['transportadora-vietna.herokuapp.com', '127.0.0.1', '0.0.0.0', 
 
 INSTALLED_APPS = [
     #'whitenoise.runserver_nostatic',
-    'admin_tools',
-    'admin_tools.theming',
-    'admin_tools.menu',
-    'admin_tools.dashboard',
     'storages',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -89,7 +85,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
             'loaders': [
-                'admin_tools.template_loaders.Loader',
                 'django.template.loaders.filesystem.Loader',
                 'django.template.loaders.app_directories.Loader',
             ]

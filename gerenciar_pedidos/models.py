@@ -1,5 +1,9 @@
+import os
 from django.db import models
+from django.utils.safestring import mark_safe
 from listar_produtos.models import Produtos
+from login.models import Clientes
+from listar_transportadoras.models import Transportadoras
 # Create your models here.
 
 class Pedidos(models.Model):
@@ -20,8 +24,30 @@ class Pedidos(models.Model):
         verbose_name = 'Pedido'
         verbose_name_plural  =  "Pedidos"
 
+    def cliente_tag(self):
+        try:
+            cli = Clientes.objects.get(clienteid=self.clienteid)
+            return cli.nomecompleto
+        except:
+            return "Cliente não mais associado"
+    
+    def transportadora_tag(self):
+        try:
+            transp = Transportadoras.objects.get(transportadoraid=self.transportadoraid)
+            return transp.nometransportadora
+        except:
+            return "Transportadora não mais associada"
+
+    def valor(self):
+        return "R$ "+str(self.valor_pedido).replace('.', ',')
+
+    def status_tag(self):
+        status = PedidosStatus.objects.get(statusid=self.status_pedido)
+        return status.nomestatus
+
     def __str__(self):
-        return f"{self.data_pedido} | Status:{self.status_pedido} | Valor: {self.valor_pedido}"
+        nome = PedidosStatus.objects.get(statusid=self.status_pedido)
+        return f"Data do Pedido: {self.data_pedido} | Status: {nome.nomestatus} | Valor: {self.valor_pedido}"
 
 
 class PedidosItem(models.Model):
@@ -36,8 +62,34 @@ class PedidosItem(models.Model):
         verbose_name = 'Item do Pedido'
         verbose_name_plural  =  "Items dos Pedidos"  
 
+    def produto_tag(self):
+        try:
+            produto = Produtos.objects.get(produtoid=self.produtoid)
+            return produto.nomeproduto
+        except:
+            return "Nome do Produto indisponível"
+
+    def image_tag(self):
+        from django.utils.html import escape
+        try:
+            imagem = Produtos.objects.get(produtoid=self.produtoid)
+            return mark_safe('<img src="%s" />' % escape(os.path.join('https://d27yowdapaejgz.cloudfront.net/media',str(imagem.imagempequena))))
+        except:
+            return 'Imagem indisponível'
+    image_tag.short_description = 'Image'
+
+    def quantidade_str(self):
+        if self.quantidade > 1:
+            return str(self.quantidade)+" unidades"
+        else:
+            return str(self.quantidade)+" unidade"
+
+    def precounitario_tag(self):
+        return "R$ "+str(self.precounitario).replace('.', ',')
+
     def __str__(self):
-        return f"{self.pedidoid} | {Produtos.objects.filter(produtoid__exact=self.produtoid).values('nomeproduto')} | QTD: {self.quantidade}"
+        nome = Produtos.objects.get(produtoid__exact=self.produtoid)
+        return f"Número do Pedido: {self.pedidoid} | Produto: {nome.nomeproduto} | QTD: {self.quantidade}"
 
 
 
@@ -52,4 +104,4 @@ class PedidosStatus(models.Model):
         verbose_name_plural  =  "Status dos Pedidos"
 
     def __str__(self):
-        return f"ID: {self.statusid} | {self.nomestatus}"
+        return f"ID: {self.statusid} | Status: {self.nomestatus}"

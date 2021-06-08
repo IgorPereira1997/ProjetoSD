@@ -1,3 +1,4 @@
+from inicial.models import Estados
 from django.db import models
 
 # Create your models here.
@@ -17,6 +18,10 @@ class Transportadoras(models.Model):
         db_table = 'transportadoras'
         verbose_name = 'Transportadora'
         verbose_name_plural  =  "Transportadoras Disponíveis"
+
+    def estado_tag(self):
+        estado = Estados.objects.get(estadoid=self.estadoid)
+        return estado.sigla
 
     def __str__(self):
         return f"{self.nometransportadora} | {self.cnpj}"

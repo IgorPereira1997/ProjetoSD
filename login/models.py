@@ -1,5 +1,5 @@
 from django.db import models
-
+from inicial.models import Departamentos, Estados
 # Create your models here.
 
 class Clientes(models.Model):
@@ -23,6 +23,11 @@ class Clientes(models.Model):
         verbose_name = 'Cliente'
         verbose_name_plural  =  "Lista de Clientes"
 
+    def estado_tag(self):
+        estado = Estados.objects.get(estadoid=self.estadoid)
+        return estado.sigla
+
+
     def __str__(self):
         return self.nomecompleto + ' | '+ self.email
 
@@ -45,6 +50,10 @@ class Fornecedores(models.Model):
         verbose_name = 'Fornecedor'
         verbose_name_plural  =  "Lista de Fornecedores"
     
+    def estado_tag(self):
+        estado = Estados.objects.get(estadoid=self.estadoid)
+        return estado.sigla
+
     def __str__(self):
         return self.nomefornecedor
 
@@ -62,6 +71,14 @@ class FornecedoresContatos(models.Model):
         db_table = 'fornecedores_contatos'
         verbose_name = 'Contato do Fornecedor'
         verbose_name_plural  =  "Contatos dos Fornecedores"
+
+    def empresa(self):
+        forn = Fornecedores.objects.get(fornecedorid=self.fornecedorid)
+        return forn.nomefornecedor
+    
+    def departamento(self):
+        dep = Departamentos.objects.get(departamentoid=self.departamentoid)
+        return dep.nomedepartamento
 
     def __str__(self):
         return self.nome + " | " + self.email

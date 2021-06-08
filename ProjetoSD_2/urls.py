@@ -29,7 +29,6 @@ handler403 = 'errors.views.error_403'
 handler400 = 'errors.views.error_400'
 
 urlpatterns = [
-    path('admin_tools/', include('admin_tools.urls')),
     path('admin/', admin.site.urls),
     path('contato/', include('contato.urls')),
     path('franquias/', include('franquias.urls')),
