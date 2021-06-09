@@ -5,16 +5,31 @@ Projeto do site da "Transportadora Vietnã"
 2° Instale as dependências do programa, entre na raiz do protejo e utilize o comando:
     
     pip install -r requirements.txt
+    
+3º Crie um super usuário para acessar o campo Administrador, com o seguinte comando e seguindo as instruções que 
+   virão com o mesmo, também detalhado abaixo:
 
-3º Via terminal, para visualizar o programa em execução digite o comando, estando no diretório raiz do projeto:
+    python manage.py createsuperuser
+    
+    Username: nomedousuario
+    Email address: (opcional)
+    Password: digitesuasenha
+    Password (again): digitesuasenha
+    
+    Caso apareça algum warning, dependendo de sua senha, ignore a sugestão (digite y) ou faça a modificação.
+    
+    Superuser created successfully.
+    
+
+4º Via terminal, para visualizar o programa em execução digite o comando, estando no diretório raiz do projeto:
     
     python manage.py runserver
     
-4º Para visualizar a aplicação, acesse no seu navegador: http://127.0.0.1:8000/
+5º Para visualizar a aplicação, acesse no seu navegador: http://127.0.0.1:8000/
 
 Passos Opcionais caso queira utilizar um banco de dados local para o projeto:
    
-5º (Opcional) Instale o PosgreSQL se quiser utilizar um banco de dados local (O banco de dados padrão do programa está na nuvem)
+6º (Opcional) Instale o PosgreSQL se quiser utilizar um banco de dados local (O banco de dados padrão do programa está na nuvem)
 
     Windows: https://www.postgresql.org/download/windows/
     Linux: Digite os seguintes comandos: 
@@ -23,7 +38,7 @@ Passos Opcionais caso queira utilizar um banco de dados local para o projeto:
         sudo apt-get update
         sudo apt-get -y install postgresql
 
-6º (Opcional) Crie um usuário caso não queira utilizar o padrão, e crie sua base de dados para 
+7º (Opcional) Crie um usuário caso não queira utilizar o padrão, e crie sua base de dados para 
     o projeto e modifique o arquivo "settings.py" colocando os dados do banco criado. O processo
     para toda esse processo pode ser feito acessando o terminal e digitando os seguintes comandos:
     
@@ -34,12 +49,12 @@ Passos Opcionais caso queira utilizar um banco de dados local para o projeto:
     ALTER USER "nomedousuario" PASSWORD 'senha';
     GRANT ALL PRIVILEGES ON DATABASE "nomedobanco" TO "nomedousuario";
     
-7º (Opcional) Após isto, adicione os dados iniciais para o banco de dados que fora criado utilizando o seguinte comando, 
+8º (Opcional) Após isto, adicione os dados iniciais para o banco de dados que fora criado utilizando o seguinte comando, 
     estando no diretório raiz do projeto:
 
     psql "nomedobanco" < transportadora_vietna
     
-8º (Opcional) No arquivo "settings.py" modifique o campo "DATABASES" da seguinte forma:
+9º (Opcional) No arquivo "settings.py" modifique o campo "DATABASES" da seguinte forma:
 
     DATABASES = {
         'default':{
@@ -52,7 +67,7 @@ Passos Opcionais caso queira utilizar um banco de dados local para o projeto:
         }
     }
  
-9º Salve o arquivo, e siga os passos 3 e 4 para visualizar a aplicação em funcionamento.
+10º (Opcional) Salve o arquivo, e siga os passos 3 à 5 para visualizar a aplicação em funcionamento.
 
 
 
