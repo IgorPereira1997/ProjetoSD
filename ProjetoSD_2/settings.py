@@ -15,7 +15,8 @@ import os
 from decouple import config, Csv
 
 # Faz com que possa ser possível salvar dados essenciais em um arquivo .env, que pode ser configurado no ambiente que o site é disponibilizado 
-# para proteção de dados sensíveis.
+# para proteção de dados sensíveis. Para saber mais sobre, acesse o site: 
+# https://simpleisbetterthancomplex.com/2015/11/26/package-of-the-week-python-decouple.html
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
