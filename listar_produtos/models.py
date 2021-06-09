@@ -1,3 +1,4 @@
+from ProjetoSD_2 import settings
 from login.models import Fornecedores
 from django.utils.safestring import mark_safe
 from inicial.models import Categorias
@@ -28,7 +29,7 @@ class Produtos(models.Model):
     
     def image_tag(self):
         from django.utils.html import escape
-        return mark_safe('<img src="%s" />' % escape(os.path.join('https://d27yowdapaejgz.cloudfront.net/media',str(self.imagempequena))))
+        return mark_safe('<img src="%s" />' % escape(os.path.join(settings.MEDIA_LINK ,str(self.imagempequena))))
     image_tag.short_description = 'Image'
 
     def categoria_tag(self):
@@ -78,7 +79,7 @@ class ProdutosClientes(models.Model):
     
     def image_tag(self):
         from django.utils.html import escape
-        return mark_safe('<img src="%s" />' % escape(os.path.join('https://d27yowdapaejgz.cloudfront.net/media',str(self.imagempequena))))
+        return mark_safe('<img src="%s" />' % escape(os.path.join(settings.MEDIA_LINK ,str(self.imagempequena))))
     image_tag.short_description = 'Image'
 
     def categoria_tag(self):
@@ -126,7 +127,7 @@ class ProdutosStandby(models.Model):
     
     def image_tag(self):
         from django.utils.html import escape
-        return mark_safe('<img src="%s" />' % escape(os.path.join('https://d27yowdapaejgz.cloudfront.net/media',str(self.imagempequena))))
+        return mark_safe('<img src="%s" />' % escape(os.path.join(settings.MEDIA_LINK, str(self.imagempequena))))
     image_tag.short_description = 'Image'
 
     def categoria_tag(self):

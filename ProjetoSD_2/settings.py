@@ -167,11 +167,15 @@ DEFAULT_FILE_STORAGE = 'ProjetoSD_2.storage_backends.MediaStorage'
 
 STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
-# Comente o bloco de cima, da 155 à 167 e descomente as linhas 171 e 173 para usar arquivos locais
+MEDIA_LINK = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, 'media')
+
+# Comente o bloco de cima, da 156 à 170 e descomente as linhas 174 à 178 para usar arquivos locais
 
 #STATIC_URL = '/static/'
 
 #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+#MEDIA_LINK = '/media/'
 
 
 STATICFILES_DIRS = [

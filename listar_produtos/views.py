@@ -1,3 +1,4 @@
+import urllib
 from django.shortcuts import render, redirect
 from django.core.exceptions import PermissionDenied
 from inicial.models import Categorias
@@ -6,8 +7,7 @@ from .models import Produtos, ProdutosClientes
 from gerenciar_pedidos.models import Pedidos, PedidosItem
 from .forms import AdicionarProdutoForm, AlterarProdutoCliForm, AlterarProdutoForm
 import inicial.funcoes as func
-import os
-
+from ProjetoSD_2 import settings
 # Create your views here.
 
 # coleta de dados do banco para uso de todas as funções das views, como o banco de categorias disponíveis, dos fornecedores e lista de categorias 
@@ -106,7 +106,8 @@ def list_prod(request):
                             list_items.append((linha2['produtoid'],linha2['quantidade']))
                 if len(list_items) == 0:
                     all_pedidos = None
-                    return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq, 'flag': True, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomecompleto})
+                    return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq, 'flag': True, 'fornecedor': fornecedor, 
+                                                                     'cliente': cliente, 'nome': nome.nomecompleto, 'link': settings.MEDIA_LINK})
                 else:
                     list_items.sort()
                     if len(list_items) == 1:
@@ -140,12 +141,15 @@ def list_prod(request):
                             for i in range(0, len(all_produtos)):
                                 if search(str(pesq).casefold(), str(all_produtos[i].nomeproduto).casefold()):
                                     aux.append(all_produtos[i])
-                        return render(request, 'listar/list_prod.html', {'produtos': aux, 'pesq': pesq, 'flag': False, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomecompleto})
+                        return render(request, 'listar/list_prod.html', {'produtos': aux, 'pesq': pesq, 'flag': False, 'link': settings.MEDIA_LINK,
+                                                                         'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomecompleto})
                     else:
-                        return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq, 'flag': True, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomecompleto})
+                        return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq, 'flag': True, 'fornecedor': fornecedor, 
+                                                                         'cliente': cliente, 'nome': nome.nomecompleto, 'link': settings.MEDIA_LINK})
             else:
                 all_pedidos = None
-                return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq, 'flag': True, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomecompleto})
+                return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq, 'flag': True, 'fornecedor': fornecedor, 
+                                                                 'cliente': cliente, 'nome': nome.nomecompleto, 'link': settings.MEDIA_LINK})
         elif fornecedor:
             nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
             if Produtos.objects.filter(fornecedorid__exact=fornecedor):
@@ -153,10 +157,12 @@ def list_prod(request):
                     all_produtos = Produtos.objects.filter(fornecedorid__exact=fornecedor).order_by('nomeproduto')
                 else:
                     all_produtos = Produtos.objects.filter(fornecedorid__exact=fornecedor).filter(nomeproduto__icontains=pesq).order_by('nomeproduto')
-                return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq,'flag': False, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomefornecedor})
+                return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq,'flag': False, 'fornecedor': fornecedor, 
+                                                                 'cliente': cliente, 'nome': nome.nomefornecedor, 'link': settings.MEDIA_LINK})
             else:
                 all_produtos = None
-                return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq,'flag': True, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomefornecedor})
+                return render(request, 'listar/list_prod.html', {'produtos': all_produtos, 'pesq': pesq,'flag': True, 'fornecedor': fornecedor, 
+                                                                 'cliente': cliente, 'nome': nome.nomefornecedor, 'link': settings.MEDIA_LINK})
 
 
 def upd_prod(request):
@@ -229,7 +235,8 @@ def details(request):
         nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         idProduto = request.GET.get('prod')
         produto = Produtos.objects.filter(produtoid__exact=idProduto)
-        return render(request, 'detalhar/details.html', {'prod': produto, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente, 'nome': nome.nomefornecedor})
+        return render(request, 'detalhar/details.html', {'prod': produto, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente, 
+                                                         'nome': nome.nomefornecedor, 'link': settings.MEDIA_LINK})
     elif cliente:
         idProduto = request.GET.get('prod')
         nome = Clientes.objects.get(clienteid__exact=cliente)
@@ -243,4 +250,5 @@ def details(request):
                     if linha.pedidoid == linha2['pedidoid'] and linha.status_pedido == 7: # verifica se o cliente tem produtos
                         if int(linha2['produtoid']) == int(idProduto):
                             qtd += linha2['quantidade']
-        return render(request, 'detalhar/details.html', {'prod': produto, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente, 'qtd': qtd, 'nome': nome.nomecompleto})
+        return render(request, 'detalhar/details.html', {'prod': produto, 'id': idProduto, 'fornecedor': fornecedor, 'cliente': cliente, 
+                                                         'qtd': qtd, 'nome': nome.nomecompleto, 'link': settings.MEDIA_LINK})

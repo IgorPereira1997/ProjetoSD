@@ -1,3 +1,4 @@
+from ProjetoSD_2 import settings
 import os
 from django.db import models
 from django.utils.safestring import mark_safe
@@ -73,7 +74,7 @@ class PedidosItem(models.Model):
         from django.utils.html import escape
         try:
             imagem = Produtos.objects.get(produtoid=self.produtoid)
-            return mark_safe('<img src="%s" />' % escape(os.path.join('https://d27yowdapaejgz.cloudfront.net/media',str(imagem.imagempequena))))
+            return mark_safe('<img src="%s" />' % escape(os.path.join(settings.MEDIA_LINK,str(imagem.imagempequena))))
         except:
             return 'Imagem indisponível'
     image_tag.short_description = 'Image'

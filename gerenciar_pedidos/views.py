@@ -88,7 +88,7 @@ def list_prod(request):
             else:
                 all_produtos = Produtos.objects.filter(estoque__gt=0).filter(nomeproduto__icontains=pesq).order_by('nomeproduto')
             return render(request, 'produtos_disp/produtos.html', {'produtos': all_produtos, 'pesq': pesq,'flag': False, 'forn': fornecedor, 
-                                                                   'cli': cliente, 'nome': nome.nomecompleto})
+                                                                   'cli': cliente, 'nome': nome.nomecompleto, 'link': settings.MEDIA_LINK})
         elif fornecedor:
             raise PermissionDenied()
 
@@ -115,10 +115,12 @@ def details(request):
                 return redirect('/gerenciar_pedidos/fazer_pedido/')
             else:
                 form = PedidoForm(produto.estoque, request.POST)
-                return render(request, 'produtos_det/detalhe.html', {'form':form, 'prod': produto, 'id': idProduto, 'cli': cliente,'forn': fornecedor,'nome': nome.nomecompleto})
+                return render(request, 'produtos_det/detalhe.html', {'form':form, 'prod': produto, 'id': idProduto, 'cli': cliente,'forn': fornecedor,
+                                                                     'nome': nome.nomecompleto,})
         else:
             form = PedidoForm(produto.estoque)
-            return render(request, 'produtos_det/detalhe.html', {'form':form, 'prod': produto, 'id': idProduto, 'cli': cliente,'forn': fornecedor,'nome': nome.nomecompleto})
+            return render(request, 'produtos_det/detalhe.html', {'form':form, 'prod': produto, 'id': idProduto, 'cli': cliente,'forn': fornecedor,
+                                                                 'nome': nome.nomecompleto,})
 
 
 def modificar(request):
@@ -164,8 +166,8 @@ def modificar(request):
                         import urllib
                         imageG = os.path.join(settings.BASE_DIR, "imgg.jpg")
                         imageP = os.path.join(settings.BASE_DIR, "imgp.jpg")
-                        urllib.request.urlretrieve("https://d27yowdapaejgz.cloudfront.net/media/%s" % (standby.imagemgrande), imageG)
-                        urllib.request.urlretrieve("https://d27yowdapaejgz.cloudfront.net/media/%s" % (standby.imagempequena), imageP)
+                        urllib.request.urlretrieve("%s%s" % (settings.MEDIA_LINK, standby.imagemgrande), imageG)
+                        urllib.request.urlretrieve("%s%s" % (settings.MEDIA_LINK, standby.imagempequena), imageP)
 
                         ProdutosClientes.objects.create(produtoid = standby.produtoid,
                                                             nomeproduto = standby.nomeproduto,
@@ -236,8 +238,8 @@ def finalizar(request):
                         import urllib
                         imageG = os.path.join(settings.BASE_DIR, "imgg.jpg")
                         imageP = os.path.join(settings.BASE_DIR, "imgp.jpg")
-                        urllib.request.urlretrieve("https://d27yowdapaejgz.cloudfront.net/media/%s" % (produto_alvo.imagemgrande), imageG)
-                        urllib.request.urlretrieve("https://d27yowdapaejgz.cloudfront.net/media/%s" % (produto_alvo.imagempequena), imageP)
+                        urllib.request.urlretrieve("%s%s" % (settings.MEDIA_LINK, produto_alvo.imagemgrande), imageG)
+                        urllib.request.urlretrieve("%s%s" % (settings.MEDIA_LINK, produto_alvo.imagempequena), imageP)
                         
                         ProdutosStandby.objects.create(produtoid = produto_alvo.produtoid,
                                                        nomeproduto = produto_alvo.nomeproduto,
@@ -321,8 +323,8 @@ def cancelar(request):
                     import urllib
                     imageG = os.path.join(settings.BASE_DIR, "imgg.jpg")
                     imageP = os.path.join(settings.BASE_DIR, "imgp.jpg")
-                    urllib.request.urlretrieve("https://d27yowdapaejgz.cloudfront.net/media/%s" % (prod_fornecedor.imagemgrande), imageG)
-                    urllib.request.urlretrieve("https://d27yowdapaejgz.cloudfront.net/media/%s" % (prod_fornecedor.imagempequena), imageP)
+                    urllib.request.urlretrieve("%s%s" % (settings.MEDIA_LINK, prod_fornecedor.imagemgrande), imageG)
+                    urllib.request.urlretrieve("%s%s" % (settings.MEDIA_LINK, prod_fornecedor.imagempequena), imageP)
                         
                     Produtos.objects.create(produtoid = standby.produtoid,
                                             nomeproduto = standby.nomeproduto,
@@ -371,8 +373,10 @@ def detalhar(request):
         if cliente:
             nome = Clientes.objects.get(clienteid__exact=cliente)
             return render(request, 'detalhar_pedido/detalhar.html', {'transportadoras': all_transportadoras, 'clientes': all_clientes, 'pedidos': pedido, 'id': id,
-                                                             'status': all_status, 'forn': fornecedor, 'cli': cliente, 'nome': nome.nomecompleto})
+                                                             'status': all_status, 'forn': fornecedor, 'cli': cliente, 'nome': nome.nomecompleto,
+                                                             'link': settings.MEDIA_LINK})
         elif fornecedor:
             nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
             return render(request, 'detalhar_pedido/detalhar.html', {'transportadoras': all_transportadoras, 'clientes': all_clientes, 'pedidos': pedido, 'id': id,
-                                                             'status': all_status, 'forn': fornecedor, 'cli': cliente, 'nome': nome.nomefornecedor})
+                                                             'status': all_status, 'forn': fornecedor, 'cli': cliente, 'nome': nome.nomefornecedor,
+                                                             'link': settings.MEDIA_LINK})
