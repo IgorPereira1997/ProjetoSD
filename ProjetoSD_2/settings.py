@@ -12,6 +12,13 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from typing import cast
+#import environ
+from decouple import config, Csv
+
+#env = environ.Env()
+#environ.Env.read_env()
+
 # Faz com que possa ser possível salvar dados essenciais em um arquivo .env, que pode ser configurado no ambiente que o site é disponibilizado 
 # para proteção de dados sensíveis.
 #from decouple import config
@@ -23,12 +30,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['SECRET_KEY']#config('SECRET_KEY')
+
+SECRET_KEY = config('SECRET_KEY')#env.str('SECRET_KEY')#os.environ['SECRET_KEY']#config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ['DEBUG']#config('DEBUG', cast=bool)
+DEBUG = config('DEBUG', cast=bool)#env.bool('DEBUG', default=False)#os.environ['DEBUG']#
 
-ALLOWED_HOSTS = ['transportadora-vietna.herokuapp.com', '127.0.0.1', '0.0.0.0', '192.168.100.10']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 # Application definition
 
@@ -101,11 +109,11 @@ WSGI_APPLICATION = 'ProjetoSD_2.wsgi.application'
 DATABASES = {
     'default':{
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ddi6bisncdt0sf',
-        'USER': 'vtliqlvhugzosr',
-        'PASSWORD': '8baf43986ded0c32fb633b1ddcc9a38c71a062ce19aedcd293ce0c2e783b78f8',
-        'HOST': 'ec2-18-214-140-149.compute-1.amazonaws.com',
-        'PORT': '5432',
+        'NAME': config('DATABASE_NAME', cast=str),
+        'USER': config('DATABASE_USER', cast=str),
+        'PASSWORD': config('DATABASE_PASSWORD', cast=str),
+        'HOST': config('DATABASE_HOST', cast=str),
+        'PORT': config('DATABASE_PORT', cast=str),
     }
 }
 
@@ -148,11 +156,11 @@ USE_TZ = True
 # Configuração do S3 para guardar e servir os arquivos estáticos do projeto, utilizando para isso a biblioteca S3Boto3
 # para fazer a conexão da aplicação com o servidor AWS S3 que fora configurado para tal fim.
 
-AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']#config('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']#config('AWS_SECRET_ACCESS_KEY')
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')#env.str('AWS_ACCESS_KEY_ID', default='')#os.environ['AWS_ACCESS_KEY_ID']#config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')#env.str('AWS_SECRET_ACCESS_KEY', default='')#os.environ['AWS_SECRET_ACCESS_KEY']#config('AWS_SECRET_ACCESS_KEY')
 
-AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']#config('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_CUSTOM_DOMAIN = os.environ['AWS_S3_CUSTOM_DOMAIN']#config('AWS_S3_CUSTOM_DOMAIN')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')#env.str('AWS_STORAGE_BUCKET_NAME', default='')#os.environ['AWS_STORAGE_BUCKET_NAME']#config('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_CUSTOM_DOMAIN = config('AWS_S3_CUSTOM_DOMAIN')#env.str('AWS_S3_CUSTOM_DOMAIN', default='')#os.environ['AWS_S3_CUSTOM_DOMAIN']#config('AWS_S3_CUSTOM_DOMAIN')
 
 AWS_LOCATION = 'static'
 
@@ -183,8 +191,8 @@ STATICFILES_FINDERS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # dados da sandbox do paypal para permitir o teste de transações e pagamentos
-PAYPAL_CLIENT_ID  = os.environ['PAYPAL_CLIENT_ID']#config('PAYPAL_CLIENT_ID')
-PAYPAL_SECRET_ID  =  os.environ['PAYPAL_SECRET_ID']#config('PAYPAL_SECRET_ID')
+PAYPAL_CLIENT_ID  = config('PAYPAL_CLIENT_ID')#env.str('PAYPAL_CLIENT_ID', default='')#os.environ['PAYPAL_CLIENT_ID']#config('PAYPAL_CLIENT_ID')
+PAYPAL_SECRET_ID  =  config('PAYPAL_SECRET_ID')#env.str('PAYPAL_SECRET_ID', default='')#os.environ['PAYPAL_SECRET_ID']
 
 # Configura a aplicação django para o Heroku, no deploy inicial e/ou utilizando whitenoise para 
 # # servir os arquivos estáticos. Neste código, foi modificado para ser utilizado AWS S3 para este fim.
@@ -196,7 +204,7 @@ PAYPAL_SECRET_ID  =  os.environ['PAYPAL_SECRET_ID']#config('PAYPAL_SECRET_ID')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'transportadoravietna@gmail.com'
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']#config('EMAIL_HOST_PASSWORD') #past the key or password app here
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')#env.str('EMAIL_HOST_PASSWORD', default='')#os.environ['EMAIL_HOST_PASSWORD']# #past the key or password app here
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
