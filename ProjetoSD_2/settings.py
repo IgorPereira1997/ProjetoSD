@@ -202,11 +202,11 @@ PAYPAL_SECRET_ID  =  config('PAYPAL_SECRET_ID')#env.str('PAYPAL_SECRET_ID', defa
 
 #Email Configs para o fale conosco e para a recuperação de senha
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'transportadoravietna@gmail.com'
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')#env.str('EMAIL_HOST_PASSWORD', default='')#os.environ['EMAIL_HOST_PASSWORD']# #past the key or password app here
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 
 # session timeout é utilizada para colocar um timestamp nas sessões, garatindo que, sem qualquer operação em um determinado tempo, a sessão
 # seja finalizada e o usuário redirecionado para a página que o mesmo especificar
