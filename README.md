@@ -16,8 +16,46 @@ surga, ou sugestões de melhorias, podem ser feitas a qualquer momento via githu
 2° Instale as dependências do programa, entre na raiz do protejo e utilize o comando:
     
     pip install -r requirements.txt
+   
+3º Instale o PosgreSQL se quiser utilizar um banco de dados local (O banco de dados padrão do programa está na nuvem)
+
+    Windows: https://www.postgresql.org/download/windows/
+    Linux: Digite os seguintes comandos: 
+        sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+        wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+        sudo apt-get update
+        sudo apt-get -y install postgresql
+
+4º Crie um usuário caso não queira utilizar o padrão, e crie sua base de dados para 
+    o projeto e modifique o arquivo "settings.py" colocando os dados do banco criado. O processo
+    para toda esse processo pode ser feito acessando o terminal e digitando os seguintes comandos:
     
-3º Crie um super usuário para acessar o campo Administrador, com o seguinte comando e seguindo as instruções que 
+    (Windows):psql -U postgres
+    (Linux): sudo -u postgres psql
+    CREATE DATABASE "nomedobanco" WITH ENCODING 'UTF8';
+    CREATE USER "nomedousuario" SUPERUSER INHERIT CREATEDB CREATEROLE;
+    ALTER USER "nomedousuario" PASSWORD 'senha';
+    GRANT ALL PRIVILEGES ON DATABASE "nomedobanco" TO "nomedousuario";
+    
+5º Após isto, adicione os dados iniciais para o banco de dados que fora criado utilizando o seguinte comando, 
+    estando no diretório raiz do projeto:
+
+    psql "nomedobanco" < transportadora_vietna
+    
+6º No arquivo "settings.py" modifique o campo "DATABASES" da seguinte forma:
+
+    DATABASES = {
+        'default':{
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'nomedobanco',
+            'USER': 'nomedousuario',
+            'PASSWORD': 'senha',
+            'HOST': '127.0.0.1',
+            'PORT': '5432',
+        }
+    }
+ 
+7º Crie um super usuário para acessar o campo Administrador, com o seguinte comando e seguindo as instruções que 
    virão com o mesmo, também detalhado abaixo:
 
     python manage.py createsuperuser
@@ -32,57 +70,16 @@ surga, ou sugestões de melhorias, podem ser feitas a qualquer momento via githu
     Superuser created successfully.
     
 
-4º Via terminal, para visualizar o programa em execução digite o comando, estando no diretório raiz do projeto:
+8º Via terminal, para visualizar o programa em execução digite o comando, estando no diretório raiz do projeto:
     
     python manage.py runserver
-    
-5º Para visualizar a aplicação, acesse no seu navegador: http://127.0.0.1:8000/
 
-6º Para acessar como cliente ou fornecedor, está dispobível duas imagens com logins pré configurados para acesso
+9º Para visualizar a aplicação, acesse no seu navegador: http://127.0.0.1:8000/
+
+10º Para acessar como cliente ou fornecedor, está dispobível duas imagens com logins pré configurados para acesso
    na aplicação em seus respectivos campos (cliente ou fornecedor), e para logar como administrador, use o 
    superusuário que fora criado.
-
-Passos Opcionais caso queira utilizar um banco de dados local para o projeto:
-   
-7º (Opcional) Instale o PosgreSQL se quiser utilizar um banco de dados local (O banco de dados padrão do programa está na nuvem)
-
-    Windows: https://www.postgresql.org/download/windows/
-    Linux: Digite os seguintes comandos: 
-        sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-        wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-        sudo apt-get update
-        sudo apt-get -y install postgresql
-
-8º (Opcional) Crie um usuário caso não queira utilizar o padrão, e crie sua base de dados para 
-    o projeto e modifique o arquivo "settings.py" colocando os dados do banco criado. O processo
-    para toda esse processo pode ser feito acessando o terminal e digitando os seguintes comandos:
     
-    (Windows):psql -U postgres
-    (Linux): sudo -u postgres psql
-    CREATE DATABASE "nomedobanco" WITH ENCODING 'UTF8';
-    CREATE USER "nomedousuario" SUPERUSER INHERIT CREATEDB CREATEROLE;
-    ALTER USER "nomedousuario" PASSWORD 'senha';
-    GRANT ALL PRIVILEGES ON DATABASE "nomedobanco" TO "nomedousuario";
-    
-9º (Opcional) Após isto, adicione os dados iniciais para o banco de dados que fora criado utilizando o seguinte comando, 
-    estando no diretório raiz do projeto:
-
-    psql "nomedobanco" < transportadora_vietna
-    
-10º (Opcional) No arquivo "settings.py" modifique o campo "DATABASES" da seguinte forma:
-
-    DATABASES = {
-        'default':{
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'nomedobanco',
-            'USER': 'nomedousuario',
-            'PASSWORD': 'senha',
-            'HOST': '127.0.0.1',
-            'PORT': '5432',
-        }
-    }
- 
-11º (Opcional) Salve o arquivo, e siga os passos 3 à 6 para visualizar a aplicação em funcionamento.
 
 
 
