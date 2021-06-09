@@ -1,5 +1,16 @@
 Projeto do site da "Transportadora Vietnã"
 
+Foi desenvolvido como parte da avaliação da disciplina Sistemas Distribuídos da UNIVASF, sendo uma aplicação de gerência de uma 
+transportadora que atua também como um e-commerce com o registro de produtos pelos fornecedores, alteração e deleção dos mesmos,
+e para os clientes a vizualição dos prdodutos já comprados. Na página de filiadas, com acesso exclusivo do fornecedor, o mesmo 
+pode adicionar novas transportadoras, como também alterar ou excluir as já existentes. Por último, há a gerência dos pedidos, onde
+os fornecedores e clientes podem visualizar os pedidos de acordo com sua perspectiva, onde os funcionários podem alterar as etapas
+do rastreamento do produto, enquanto os clientes podem fazer pedidos e pagar pelo mesmo portal de pedidos. A conta teste para o 
+pagamento no paypal pode ser criada acessando https://developer.paypal.com/home e criando uma conta, se já não tiver no paypal, 
+para acessar os recurosos e criar uma conta de cliente para fazer os testes de pagamento e a devida vizualização do que ocorre com
+os pedidos em sua totalidade. Importante salientar que o programa pode ser modificado sobre a licença GPL 3.0 e qualquer dúvida que
+surga, ou sugestões de melhorias, podem ser feitas a qualquer momento via github.
+
 1º Instale o Python (https://python.org/downloads/)
 
 2° Instale as dependências do programa, entre na raiz do protejo e utilize o comando:
@@ -27,9 +38,13 @@ Projeto do site da "Transportadora Vietnã"
     
 5º Para visualizar a aplicação, acesse no seu navegador: http://127.0.0.1:8000/
 
+6º Para acessar como cliente ou fornecedor, está dispobível duas imagens com logins pré configurados para acesso
+   na aplicação em seus respectivos campos (cliente ou fornecedor), e para logar como administrador, use o 
+   superusuário que fora criado.
+
 Passos Opcionais caso queira utilizar um banco de dados local para o projeto:
    
-6º (Opcional) Instale o PosgreSQL se quiser utilizar um banco de dados local (O banco de dados padrão do programa está na nuvem)
+7º (Opcional) Instale o PosgreSQL se quiser utilizar um banco de dados local (O banco de dados padrão do programa está na nuvem)
 
     Windows: https://www.postgresql.org/download/windows/
     Linux: Digite os seguintes comandos: 
@@ -38,7 +53,7 @@ Passos Opcionais caso queira utilizar um banco de dados local para o projeto:
         sudo apt-get update
         sudo apt-get -y install postgresql
 
-7º (Opcional) Crie um usuário caso não queira utilizar o padrão, e crie sua base de dados para 
+8º (Opcional) Crie um usuário caso não queira utilizar o padrão, e crie sua base de dados para 
     o projeto e modifique o arquivo "settings.py" colocando os dados do banco criado. O processo
     para toda esse processo pode ser feito acessando o terminal e digitando os seguintes comandos:
     
@@ -49,12 +64,12 @@ Passos Opcionais caso queira utilizar um banco de dados local para o projeto:
     ALTER USER "nomedousuario" PASSWORD 'senha';
     GRANT ALL PRIVILEGES ON DATABASE "nomedobanco" TO "nomedousuario";
     
-8º (Opcional) Após isto, adicione os dados iniciais para o banco de dados que fora criado utilizando o seguinte comando, 
+9º (Opcional) Após isto, adicione os dados iniciais para o banco de dados que fora criado utilizando o seguinte comando, 
     estando no diretório raiz do projeto:
 
     psql "nomedobanco" < transportadora_vietna
     
-9º (Opcional) No arquivo "settings.py" modifique o campo "DATABASES" da seguinte forma:
+10º (Opcional) No arquivo "settings.py" modifique o campo "DATABASES" da seguinte forma:
 
     DATABASES = {
         'default':{
@@ -67,7 +82,7 @@ Passos Opcionais caso queira utilizar um banco de dados local para o projeto:
         }
     }
  
-10º (Opcional) Salve o arquivo, e siga os passos 3 à 5 para visualizar a aplicação em funcionamento.
+11º (Opcional) Salve o arquivo, e siga os passos 3 à 6 para visualizar a aplicação em funcionamento.
 
 
 
