@@ -69,14 +69,17 @@ surga, ou sugestões de melhorias, podem ser feitas a qualquer momento via githu
     
     Superuser created successfully.
     
+8º Renomeie o arquivo .env.example para .env e coloque os seus dados, conforme descrito nesse mesmo arquivo, para configuração dos
+   dados sensíveis da aplicação. Olhe o arquivo "settings.py" também, fazendo as devidas modificações, caso não queira fazer
+   o programa funcionar utilizando AWS.
 
-8º Via terminal, para visualizar o programa em execução digite o comando, estando no diretório raiz do projeto:
+9º Via terminal, para visualizar o programa em execução digite o comando, estando no diretório raiz do projeto:
     
     python manage.py runserver
 
-9º Para visualizar a aplicação, acesse no seu navegador: http://127.0.0.1:8000/
+10º Para visualizar a aplicação, acesse no seu navegador: http://127.0.0.1:8000/
 
-10º Para acessar como cliente ou fornecedor, está dispobível duas imagens com logins pré configurados para acesso
+11º Para acessar como cliente ou fornecedor, está dispobível duas imagens com logins pré configurados para acesso
    na aplicação em seus respectivos campos (cliente ou fornecedor), e para logar como administrador, use o 
    superusuário que fora criado.
     
