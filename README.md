@@ -11,6 +11,8 @@ para acessar os recurosos e criar uma conta de cliente para fazer os testes de p
 os pedidos em sua totalidade. Importante salientar que o programa pode ser modificado sobre a licença GPL 3.0 e qualquer dúvida que
 surga, ou sugestões de melhorias, podem ser feitas a qualquer momento via github.
 
+O site pode ser acessado através do seguinte link: http://transportadora-vietna.herokuapp.com/
+
 1º Instale o Python (https://python.org/downloads/)
 
 2° Instale as dependências do programa, entre na raiz do protejo e utilize o comando:
