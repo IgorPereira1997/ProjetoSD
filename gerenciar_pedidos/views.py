@@ -116,11 +116,11 @@ def details(request):
             else:
                 form = PedidoForm(produto.estoque, request.POST)
                 return render(request, 'produtos_det/detalhe.html', {'form':form, 'prod': produto, 'id': idProduto, 'cli': cliente,'forn': fornecedor,
-                                                                     'nome': nome.nomecompleto,})
+                                                                     'nome': nome.nomecompleto,'link': settings.MEDIA_LINK})
         else:
             form = PedidoForm(produto.estoque)
             return render(request, 'produtos_det/detalhe.html', {'form':form, 'prod': produto, 'id': idProduto, 'cli': cliente,'forn': fornecedor,
-                                                                 'nome': nome.nomecompleto,})
+                                                                 'nome': nome.nomecompleto,'link': settings.MEDIA_LINK})
 
 
 def modificar(request):

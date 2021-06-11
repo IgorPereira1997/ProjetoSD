@@ -79,7 +79,7 @@ def recuperar_senha(request):
                     'subject': 'Recuperação de Email do site Transportadora Vietnã',
                     'message': "Por favor, acesse o link '"+
                                 #"http://127.0.0.1:8000/login/finalizar_recovery/?codC={}"+
-                                "http://transportadora-vietna.herokuapp.com//login/finalizar_recovery/?codC={}"+
+                                "http://transportadora-vietna.herokuapp.com/login/finalizar_recovery/?codC={}"+
                                 "' para \nconfigurar uma nova senha.".format(cliente.clienteid),
                 }
 
@@ -147,7 +147,7 @@ def finalizar_recovery(request):
     codF = request.GET.get('codF')
     if codC is None and codF is None:
         raise PermissionDenied()
-    elif codF is None:
+    elif codF is None: # cliente
         if request.method == "POST":
             form = RecuperarSenhaForm(request.POST)
             if form.is_valid():
