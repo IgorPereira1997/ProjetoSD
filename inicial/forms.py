@@ -336,7 +336,7 @@ class AdicionarFornecedorIniForm(forms.Form):
 
     email = forms.EmailField(
         required=True,
-        label='Senha',
+        label='E-mail',
         validators=[validarEmailForn]
     )
 
@@ -420,7 +420,7 @@ class AdicionarFornecedorForm(forms.Form):
             attrs={'readonly': True}
         ),
         required=True,
-        label='Email',
+        label='E-mail',
     )
 
     usuario = forms.CharField(
@@ -470,7 +470,7 @@ class AlterarFornecedorIniForm(forms.Form):
 
     email = forms.EmailField(
         required=True,
-        label='Email',
+        label='E-mail',
         validators=[validarEmailFornUpd]
     )
 

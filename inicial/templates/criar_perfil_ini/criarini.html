@@ -57,7 +57,7 @@
                     <h4> {{ form.cep.label_tag }}{{ form.cep }} </h4>
 
                     <h5> {{ form.ddd.errors  }} </h5>
-                    <h4> {{ form.dddlabel_tag }}{{ form.ddd }} </h4>
+                    <h4> {{ form.ddd.label_tag }}{{ form.ddd }} </h4>
 
                     <h5> {{ form.telefone.errors  }} </h5>
                     <h4> {{ form.telefone.label_tag }}{{ form.telefone }} </h4>
@@ -72,11 +72,10 @@
                 <input type="submit" value="Próximo">
             </form>
             {%if forn %} 
-                <form action="/login/fornecedor/" method="POST">
+                <form action="/login/fornecedor/" method="GET">
             {%else%}
-                <form action="/login/cliente/" method="POST">
+                <form action="/login/cliente/" method="GET">
             {% endif %}
-                    {% csrf_token %}
                     <input type="submit" value="Cancelar">
                 </form>
             </form>

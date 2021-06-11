@@ -28,7 +28,7 @@
             <div id="janela_pedidos">
                 <form action="/gerenciar_pedidos/cancelar_pedido/?order={{ id }}" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <h4>{{ msg }}</h4>
+                    <h2>{{ msg }}</h2>
                     <input type="hidden" name="order" value="{{ id }}">
                     <input type="submit" value="Cancelar Pedido">
                 </form>

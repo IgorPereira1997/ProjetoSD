@@ -24,14 +24,11 @@ class RecuperarSenhaFornForm(forms.Form):
 
 class RecuperarSenhaForm(forms.Form):
     def __init__(self, *args, **kwargs):
-        super(RecuperarSenhaFornForm, self).__init__(*args, **kwargs)
+        super(RecuperarSenhaForm, self).__init__(*args, **kwargs)
         self.fields['novasenha'] = forms.CharField(widget=forms.PasswordInput)
 
 
     novasenha = forms.CharField(
-        widget= forms.TextInput(
-            attrs={'placeholder': 'Insira a nova senha'}
-        ),
         label="Nova Senha",
         required=True,
     )

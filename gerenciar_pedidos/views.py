@@ -350,10 +350,10 @@ def cancelar(request):
             return redirect('/gerenciar_pedidos/lista_pedidos/')
         else:
             if cliente:
-                nome = Clientes.objects.get(clienteid_exact=cliente)
+                nome = Clientes.objects.get(clienteid__exact=cliente)
                 return render(request, 'cancelar_pedido/cancelar.html', {'id': idPedido, 'msg': msg, 'forn': fornecedor, 'cli': cliente, 'nome': nome.nomecompleto})
             else:
-                nome = Fornecedores.objects.get(fornecedorid_exact=fornecedor)
+                nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
                 return render(request, 'cancelar_pedido/cancelar.html', {'id': idPedido, 'msg': msg, 'forn': fornecedor, 'cli': cliente, 'nome': nome.nomefornecedor})
 
 def detalhar(request):

@@ -6,6 +6,7 @@ from django.http.response import BadHeaderError, HttpResponse
 from django.shortcuts import render
 from django.core.mail import send_mail, BadHeaderError
 from django.contrib import messages
+from ProjetoSD_2 import settings
 # Create your views here.
 
 mensagem = 'Usuário ou senha incorretos!'
@@ -23,7 +24,6 @@ def login_cliente(request):
             if ((campo['usuario'] == usuarioC) and (campo['senha'] == senhaC)):
                 validoCliente = 'Igual'
                 request.session['idCliente'] = campo['clienteid']
-                request.session['idFornecedor'] = ''
                 return redirect('/listar_produtos/listar/')
         if validoCliente == 'Diferente':
             return render(request, 'cliente/index.html', {'logincliente': validoCliente, 'msg': mensagem,})
@@ -60,8 +60,9 @@ def login_fornecedor(request):
 
 def recuperar_senha(request):
     op = request.POST.get('op')
+    flag = request.POST.get('flag')
     if op == "1":
-        if request.method == "POST":
+        if request.method == "POST" and flag:
             form = RecuperarSenhaCliForm(request.POST)
             if form.is_valid():
                 cliente = Clientes.objects.get(email__iexact=request.POST.get('email'))
@@ -69,9 +70,8 @@ def recuperar_senha(request):
                 body = {
                     'Nome': cliente.nomecompleto,
                     'phonenumber': cliente.telefone,
-                    'subject': form.cleaned_data['subject'],
-                    'message': "Por favor, acesse o link 'http://transportadora-vietna.herokuapp.com//login/finalizar_recovery/?codC="+ cliente.clienteid + "' para " +
-                               "\nconfigurar uma nova senha.",
+                    'subject': 'Recuperação de Email do site Transportadora Vietnã',
+                    'message': "Por favor, acesse o link 'http://transportadora-vietna.herokuapp.com//login/finalizar_recovery/?codC={}' para \nconfigurar uma nova senha.".format(cliente.clienteid),
                 }
 
                 message = (
@@ -79,8 +79,8 @@ def recuperar_senha(request):
                             + "\nTelefone: " + body.get('phonenumber') + "\n\nMensagem: " + body.get('message')
                         )
 
-                sender = 'transportadoravietna@gmail.com'
-                recipient = [cliente.email]
+                sender = settings.EMAIL_HOST_USER
+                recipient = [settings.EMAIL_HOST_USER]#[cliente.email]
 
                 try:
                     send_mail(subject, message, sender, recipient, fail_silently=True)
@@ -94,17 +94,16 @@ def recuperar_senha(request):
             form = RecuperarSenhaCliForm()
             return render(request, 'recuperar_senha/index.html', {'form': form,'forn': 0})
     elif op == "2":
-        if request.method == "POST":
+        if request.method == "POST" and flag:
             form = RecuperarSenhaFornForm(request.POST)
             if form.is_valid():
                 fornecedor = Fornecedores.objects.get(email__iexact=request.POST.get('email'))
                 subject = "Recuperar Senha"
                 body = {
-                    'Nome': fornecedor.nomecompleto,
+                    'Nome': fornecedor.nomefornecedor,
                     'phonenumber': fornecedor.telefone,
-                    'subject': form.cleaned_data['subject'],
-                    'message': "Por favor, acesse o link 'http://127.0.0.1:8000/login/finalizar_recovery/?codF="+ fornecedor.clienteid + "' para " +
-                               "\nconfigurar uma nova senha.",
+                    'subject': 'Recuperação de Email do site Transportadora Vietnã',
+                    'message': "Por favor, acesse o link 'http://127.0.0.1:8000/login/finalizar_recovery/?codF={}' para \nconfigurar uma nova senha.".format(fornecedor.fornecedorid),
                 }
 
                 message = (
@@ -112,8 +111,8 @@ def recuperar_senha(request):
                             + "\nTelefone: " + body.get('phonenumber') + "\n\nMensagem: " + body.get('message')
                         )
 
-                sender = 'transportadoravietna@gmail.com'
-                recipient = [fornecedor.email]
+                sender = settings.EMAIL_HOST_USER
+                recipient = [settings.EMAIL_HOST_USER]#[fornecedor.email]
 
                 try:
                     send_mail(subject, message, sender, recipient, fail_silently=True)
@@ -140,7 +139,7 @@ def finalizar_recovery(request):
                 cliente = Clientes.objects.get(clienteid=codC)
                 cliente.senha = request.POST.get('novasenha')
                 cliente.save(force_update=True)
-                return render(request, 'finalizar_recovery/index.html', {'form': form, 'sucesso': 1, 'forn': 0, 'id': codC})
+                return redirect('/login/redirecionar/?l=1')
             else:
                 return render(request, 'finalizar_recovery/index.html', {'form': form, 'sucesso': 0, 'forn': 0, 'id': codC})
         else:
@@ -153,7 +152,7 @@ def finalizar_recovery(request):
                 fornecedor = Fornecedores.objects.get(fornecedorid=codF)
                 fornecedor.senha = request.POST.get('novasenha')
                 fornecedor.save(force_update=True)
-                return render(request, 'finalizar_recovery/index.html', {'form': form, 'sucesso': 1, 'forn': 1, 'id': codF})
+                return redirect('/login/redirecionar/?l=2')
             else:
                 return render(request, 'finalizar_recovery/index.html', {'form': form, 'sucesso': 0, 'forn': 1, 'id': codF})
         else:
@@ -161,5 +160,17 @@ def finalizar_recovery(request):
             return render(request, 'finalizar_recovery/index.html', {'form': form, 'sucesso': 0, 'forn': 1, 'id': codF})
     else:
         raise PermissionDenied()
+
+def redirecionar(request):
+    flag = request.GET.get('l')
+    ok = request.GET.get('ok')
+    print(flag)
+    print(ok)
+    if request.method == "GET" and ok:
+        if flag == "2":
+            return redirect('/login/fornecedor/')
+        elif flag == "1":
+            return redirect('/login/cliente/')
+    return render(request, 'redirecionar/retornar.html', {'flag': flag})
 
 

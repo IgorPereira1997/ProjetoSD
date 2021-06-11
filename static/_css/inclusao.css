@@ -1,13 +1,13 @@
 /* estilos da pesquisa */
 
-main div#janela_formulario {
+main div#janela_formulario, main div#janela_pedidos {
     width:70%;
     justify-content: center;
     align-items: center;
     margin:10% auto 30px;
 }
 
-main div#janela_formulario form {
+main div#janela_formulario form, main div#janela_pedidos form {
     width: 85%;
     display: flex;
     justify-content: center;
@@ -21,7 +21,9 @@ main div#janela_formulario form {
     flex-direction: column;
 }
 
-main div#janela_formulario h2, main div#janela_formulario form h2 {
+main div#janela_formulario h2, 
+main div#janela_formulario form h2, 
+main div#janela_pedidos form h2 {
     font-family: sans-serif;
     color: #9A9668;
 }
@@ -72,7 +74,8 @@ main div#janela_formulario form h4 a {
     width: 100%;
 }
 
-main div#janela_formulario form input[type="submit"] {
+main div#janela_formulario form input[type="submit"],
+main div#janela_pedidos form input[type="submit"] {
     justify-content: center;
     align-items: center;
     padding: 10px 20px;

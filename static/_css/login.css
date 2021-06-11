@@ -19,7 +19,8 @@ main div#janela_login form h2  {
     text-align: center;
 }
 
-main div#janela_login form p {
+main div#janela_login form p,
+main div#janela_login p {
     margin-bottom: -5px;
     margin-top: 10px;
     font-family: sans-serif;
@@ -31,7 +32,8 @@ main div#janela_login form p {
     border-radius: 5px;
 }
 
-main div#janela_login form input[type="text"] {
+main div#janela_login form input[type="text"],
+main div#janela_login form input[type="email"] {
     width:90%;
     padding:10px;
     border:1px solid #CDC99B;

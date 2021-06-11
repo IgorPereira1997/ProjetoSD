@@ -29,6 +29,9 @@
             <div id="janela_formulario">
                 <form action="/listar_transportadoras/deletar/?codigo={{ cod }}" method="POST">
                     {% csrf_token %}
+
+                    <h2>Dados da transportadora que será deletada</h2>
+
                     <h5> {{ form.nometransportadora.errors  }} </h5>
                     <h4> {{ form.nometransportadora.label_tag }}{{ form.nometransportadora }} </h4>
 

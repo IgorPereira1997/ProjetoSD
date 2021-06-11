@@ -6,14 +6,14 @@ main div#janela_formulario {
     margin:50px auto 30px;
 }
 
-main div#janela_formulario form {
+main div#janela_formulario form, main div#janela_pedidos form {
     width:65%;
     justify-content: center;
     text-align: center;
     margin:0px auto;
 }
 
-main div#janela_formulario form h2  {
+main div#janela_formulario form h2, main div#janela_pedidos form h2{
     justify-content: center;
     text-align: center;
     font-family: sans-serif;
@@ -59,7 +59,8 @@ main div#janela_formulario form select {
     margin-bottom: 25px;
 }
 
-main div#janela_formulario form input[type="submit"] {
+main div#janela_formulario form input[type="submit"],
+main div#janela_pedidos form input[type="submit"] {
     justify-content: center;
     align-items: center;
     padding:10px 20px;

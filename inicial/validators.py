@@ -318,7 +318,7 @@ def validarRecuperarCli(value):
         )
 
 def validarRecuperarForn(value):
-    if Clientes.objects.filter(email__iexact=value):
+    if Fornecedores.objects.filter(email__iexact=value):
         return value
     else:
         raise ValidationError(

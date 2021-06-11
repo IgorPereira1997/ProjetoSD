@@ -1,0 +1,47 @@
+
+{% include 'standard/base.html' %}
+{% load static %}
+
+<html>
+    <head>
+        <title>Sucesso na modificação da Senha</title>
+        <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
+        <link href="{% static '_css/inclusao.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <main>
+        <!-- Top navigation -->
+            <div class="topnav">
+                <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="#">Recuperar Senha</a>
+                </div>
+                <!-- Left-aligned links (default) -->
+                <a href="/">Home</a>
+                <a href="/login/cliente/">Entrar como Cliente</a>
+                <a href="/login/fornecedor/">Entrar como Fornecedor</a>
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a href="/admin/">Entrar como Administrador</a>
+                    <a href="#">Fale Conosco</a>
+                </div>
+            </div>
+            <div id="janela_formulario">
+                <form method="GET" action="/login/redirecionar/">
+                    {% csrf_token %}
+                    <h4>Mudança de senha realizada com sucesso!</h4>
+                    <input type="hidden" name="l" value="{{flag}}"> 
+                    <input type="hidden" name="ok" value="1"> 
+                    <input type="submit" value="Fazer Login">
+                </form>
+                <form method="POST" action="/">
+                {% csrf_token %}
+                    <input type="submit" value="Página Inicial">
+                </form>
+            </div>
+        </main>
+    </body>
+</html>
+
+{% include 'standard/footer.html' %}
+

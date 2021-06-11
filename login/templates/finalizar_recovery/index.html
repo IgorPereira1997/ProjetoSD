@@ -33,22 +33,26 @@
             {% endif %}
                 {% csrf_token %}
                 <h2>Digite a nova senha para o {%if forn %} Fornecedor {%else%} Cliente {% endif %}</h2>
-                {{ form.email.errors }}
-                {{ form.email.label_tag }}{{ form.email }}
-
-                {%if sucesso == 1 %}
-                    <p>Senha modificada com sucesso!</p>
+                {{ form.novasenha.errors }}
+                {{ form.novasenha.label_tag }}{{ form.novasenha }}
+                {%if forn %}
+                    <input type="hidden" name="flag" value="2">
+                {% else %}
+                    <input type="hidden" name="flag" value="1">
                 {% endif %}
-
+                <input type="submit" value="Modficar">
             </form>
             {%if forn %} 
             <form action="/login/fornecedor/" method="POST">
             {% else %}
             <form action="/login/cliente/" method="POST">
             {% endif %}
+                {% csrf_token %}
                 <input type="submit" value="Voltar">
             </form>
         </div>
         </main>
     </body>
 </html>
+
+{% include 'standard/footer.html' %}

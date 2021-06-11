@@ -35,16 +35,25 @@
                 {%if sucesso == 1 %}
                     <p>Link de recuperação enviado para o email!</p>
                 {% endif %}
-
+                <input type="hidden" name="flag" value="0">
+                {%if forn %}
+                <input type="hidden" name="op" value="2"> 
+                {% else %}
+                <input type="hidden" name="op" value="1">
+                {% endif %}
+                <input type="submit" value="Verificar">
             </form>
             {%if forn %} 
             <form action="/login/fornecedor/" method="POST">
             {% else %}
             <form action="/login/cliente/" method="POST">
             {% endif %}
+                {% csrf_token %}
                 <input type="submit" value="Voltar">
             </form>
         </div>
         </main>
     </body>
 </html>
+
+{% include 'standard/footer.html' %}
