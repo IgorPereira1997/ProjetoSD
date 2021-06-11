@@ -47,6 +47,7 @@
             <form method="POST" enctype="multipart/form" action="/gerenciar_pedidos/modificar_pedido/?pedido={{id}}">
                 {% csrf_token %}
                 <h4>{{ msg }}</h4>
+                 <input type="hidden" name="flag" value="1">
                 <input type="submit" value="Modificar Pedido">
             </form>
         {% endif %}

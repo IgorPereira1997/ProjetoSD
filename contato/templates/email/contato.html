@@ -5,8 +5,27 @@
     <head>
         <title>Fale Conosco</title>
         <link href="{% static '_css/contato.css' %}" rel="stylesheet">
+        <link href="{% static '_css/menu_ini.css' %}" rel="stylesheet">
     </head>
-    <div style="margin: 10%;" class="marg">
+    <main>
+        <!-- Top navigation -->
+            <div class="topnav">
+                <!-- Centered link -->
+                <div class="topnav-centered">
+                    <a class="active" href="#">Fale Conosco</a>
+                    
+                </div>
+                <!-- Left-aligned links (default) -->
+                <a href="/">Home</a>
+                <a href="/login/fornecedor/">Entrar como Fornecedor</a>
+                
+                <!-- Right-aligned links -->
+                <div class="topnav-right">
+                    <a href="/login/cliente/">Entrar como Cliente</a>
+                    <a href="/admin/">Entrar como Administrador</a>
+                </div>
+            </div>
+            <div style="margin: 10%;" class="marg">
             <form class="form-contact contact_form container" action="/contato/email/" method="post" id="contactForm"
                 novalidate="novalidate">
                 <h1 class="text-center">Fale Conosco</h1>
@@ -70,6 +89,7 @@
                 <h2 style="color:green;">Mensagem enviada com sucesso!</h2>
             {% endif %}
         </div>
+    </main>
 </html>
 
 {% include 'standard/footer.html' %}

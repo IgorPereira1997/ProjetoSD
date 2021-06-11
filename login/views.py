@@ -58,6 +58,12 @@ def login_fornecedor(request):
         request.session['idFornecedor'] = ''
         return render(request, 'fornecedor/index.html', {'loginfornecedor': validoFornecedor})
 
+# Para a recuperação da senha, será checado o email do requisitante, para saber se o mesmo está cadastrado, se confirmado o cadastro
+# E redirecionado um email para o usuário que fez o pedido, para exemplificação, será enviado para o próprio email da empresa, por
+# conta dos emails nos cadastros do banco de dados serem inexistentes, e facilitar o teste do projeto. Porém, o email é enviado
+# também para o cliente/fornecedor da mesma forma que para a empresa, por fins de teste da função no desenvolvimento. Caso seja
+# utilizado o servidor local, há a linha comentada no 'message' que muda o link para o servidor local, caso seja necessário.
+
 def recuperar_senha(request):
     op = request.POST.get('op')
     flag = request.POST.get('flag')
@@ -71,7 +77,10 @@ def recuperar_senha(request):
                     'Nome': cliente.nomecompleto,
                     'phonenumber': cliente.telefone,
                     'subject': 'Recuperação de Email do site Transportadora Vietnã',
-                    'message': "Por favor, acesse o link 'http://transportadora-vietna.herokuapp.com//login/finalizar_recovery/?codC={}' para \nconfigurar uma nova senha.".format(cliente.clienteid),
+                    'message': "Por favor, acesse o link '"+
+                                #"http://127.0.0.1:8000/login/finalizar_recovery/?codC={}"+
+                                "http://transportadora-vietna.herokuapp.com//login/finalizar_recovery/?codC={}"+
+                                "' para \nconfigurar uma nova senha.".format(cliente.clienteid),
                 }
 
                 message = (
@@ -80,7 +89,7 @@ def recuperar_senha(request):
                         )
 
                 sender = settings.EMAIL_HOST_USER
-                recipient = [settings.EMAIL_HOST_USER]#[cliente.email]
+                recipient = [settings.EMAIL_HOST_USER, cliente.email]
 
                 try:
                     send_mail(subject, message, sender, recipient, fail_silently=True)
@@ -103,7 +112,10 @@ def recuperar_senha(request):
                     'Nome': fornecedor.nomefornecedor,
                     'phonenumber': fornecedor.telefone,
                     'subject': 'Recuperação de Email do site Transportadora Vietnã',
-                    'message': "Por favor, acesse o link 'http://127.0.0.1:8000/login/finalizar_recovery/?codF={}' para \nconfigurar uma nova senha.".format(fornecedor.fornecedorid),
+                    'message': "Por favor, acesse o link '"+
+                                #"http://127.0.0.1:8000/login/finalizar_recovery/?codF={}"+
+                                "http://transportadora-vietna.herokuapp.com/login/finalizar_recovery/?codF={}"+
+                                "' para \nconfigurar uma nova senha.".format(fornecedor.fornecedorid),
                 }
 
                 message = (
@@ -112,7 +124,7 @@ def recuperar_senha(request):
                         )
 
                 sender = settings.EMAIL_HOST_USER
-                recipient = [settings.EMAIL_HOST_USER]#[fornecedor.email]
+                recipient = [settings.EMAIL_HOST_USER, fornecedor.email]
 
                 try:
                     send_mail(subject, message, sender, recipient, fail_silently=True)
@@ -126,6 +138,9 @@ def recuperar_senha(request):
         else:
             form = RecuperarSenhaFornForm()
             return render(request, 'recuperar_senha/index.html', {'form': form, 'forn': 1})
+
+#Página que será renderizada quando o cliente/fornecedor clicar no login, e identificará se o requisitante é um cliente ou fornecedor, 
+#recuperando o registro do mesmo e fazendo a alteração de senha. Ao terminar, passa o comando à página de redirecionamento
 
 def finalizar_recovery(request):
     codC = request.GET.get('codC')
@@ -160,6 +175,9 @@ def finalizar_recovery(request):
             return render(request, 'finalizar_recovery/index.html', {'form': form, 'sucesso': 0, 'forn': 1, 'id': codF})
     else:
         raise PermissionDenied()
+
+#Página de redirecionamento após recuperação da senha, permitindo o requisitante voltar para página inicial ou mesmo fazer o login, já com os novos 
+# dados em funcionamento
 
 def redirecionar(request):
     flag = request.GET.get('l')

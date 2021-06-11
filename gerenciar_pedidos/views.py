@@ -135,7 +135,8 @@ def modificar(request):
     elif fornecedor:
         nome = Fornecedores.objects.get(fornecedorid__exact=fornecedor)
         list_status = []
-        list_status.clear() 
+        list_status.clear()
+        flag=request.POST.get('flag')
         pedido_change = Pedidos.objects.get(pedidoid__exact=pedido)
         msg = "Deseja confirmar que o pedido foi "
         if pedido_change.status_pedido == 1:
@@ -144,7 +145,7 @@ def modificar(request):
             msg += "enviado?"
         elif pedido_change.status_pedido == 6:
             msg += "entregue?"
-        if request.method == "POST":
+        if request.method == "POST" and flag == "1":
             status = pedido_change.status_pedido
             if status == 1:
                 pedido_change.status_pedido = 5
