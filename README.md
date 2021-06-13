@@ -18,6 +18,11 @@ O site pode ser acessado através do seguinte link: http://transportadora-vietna
 2° Instale as dependências do programa, entre na raiz do protejo e utilize o comando:
     
     pip install -r requirements.txt
+
+2.1º ( Apenas para Windows) É necessário instalar a libmagic1 (pré instalada para MacOS e Linux) no windows, e isto
+     é feito pelo comando abaixo:
+
+     pip install python-magic-bin
    
 3º Instale o PosgreSQL se quiser utilizar um banco de dados local (O banco de dados padrão do programa está na nuvem)
 
@@ -44,18 +49,19 @@ O site pode ser acessado através do seguinte link: http://transportadora-vietna
 
     psql "nomedobanco" < transportadora_vietna
     
-6º No arquivo "settings.py" modifique o campo "DATABASES" da seguinte forma:
+6º  Renomeie o arquivo .env.example como . env e modifique as linhas, conforme abaixo: 
 
-    DATABASES = {
-        'default':{
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'nomedobanco',
-            'USER': 'nomedousuario',
-            'PASSWORD': 'senha',
-            'HOST': '127.0.0.1',
-            'PORT': '5432',
-        }
-    }
+    # configurações do banco de dados, seguindo o feito no README.md
+    DATABASE_NAME =nomedobanco
+    DATABASE_USER =nomedousuario
+    DATABASE_PASSWORD =senha
+    DATABASE_HOST =127.0.0.1
+    DATABASE_PORT =5432
+
+6.1º (Opcional) Caso não use a AWS, vá no arquivos "settings.py" e faça o que é citado como comentário nas linha 172:
+
+    # Comente o bloco de cima, da 156 à 170 e descomente as linhas 174 à 178 para usar arquivos locais
+     
  
 7º Crie um super usuário para acessar o campo Administrador, com o seguinte comando e seguindo as instruções que 
    virão com o mesmo, também detalhado abaixo:
@@ -81,7 +87,7 @@ O site pode ser acessado através do seguinte link: http://transportadora-vietna
 
 10º Para visualizar a aplicação, acesse no seu navegador: http://127.0.0.1:8000/
 
-11º Para acessar como cliente ou fornecedor, está dispobível duas imagens com logins pré configurados para acesso
+11º Para acessar como cliente ou fornecedor, está disponível duas imagens com logins pré-configurados para acesso
    na aplicação em seus respectivos campos (cliente ou fornecedor), e para logar como administrador, use o 
    superusuário que fora criado.
     
