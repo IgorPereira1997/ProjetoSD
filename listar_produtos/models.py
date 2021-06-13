@@ -9,7 +9,7 @@ import os
 
 class Produtos(models.Model):
     produtoid = models.AutoField(db_column='produtoID', primary_key=True)  # Field name made lowercase.
-    nomeproduto = models.CharField(max_length=50, blank=True, null=True)
+    nomeproduto = models.CharField(max_length=150, blank=True, null=True)
     descricao = models.TextField(blank=True, null=True)
     codigobarra = models.CharField(max_length=15, blank=True, null=True)
     tempoentrega = models.SmallIntegerField(blank=True, null=True)
@@ -58,7 +58,7 @@ class Produtos(models.Model):
 
 class ProdutosClientes(models.Model):
     produtoid = models.AutoField(db_column='produtoID', primary_key=True)  # Field name made lowercase.
-    nomeproduto = models.CharField(max_length=50, blank=True, null=True)
+    nomeproduto = models.CharField(max_length=150, blank=True, null=True)
     descricao = models.TextField(blank=True, null=True)
     codigobarra = models.CharField(max_length=15, blank=True, null=True)
     tempoentrega = models.SmallIntegerField(blank=True, null=True)
@@ -107,7 +107,7 @@ class ProdutosClientes(models.Model):
 
 class ProdutosStandby(models.Model):
     produtoid = models.IntegerField(db_column='produtoID', primary_key=True)  # Field name made lowercase.
-    nomeproduto = models.CharField(max_length=50, blank=True, null=True)
+    nomeproduto = models.CharField(max_length=150, blank=True, null=True)
     descricao = models.TextField(blank=True, null=True)
     codigobarra = models.CharField(max_length=15, blank=True, null=True)
     tempoentrega = models.SmallIntegerField(blank=True, null=True)
