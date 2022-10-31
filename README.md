@@ -58,7 +58,7 @@ O site pode ser acessado através do seguinte link: http://transportadora-vietna
     DATABASE_HOST =127.0.0.1
     DATABASE_PORT =5432
 
-6.1º (Opcional) Caso não use a AWS, vá no arquivos "settings.py" e faça o que é citado como comentário nas linha 172:
+6.1º (Opcional) Caso não use a AWS, vá no arquivos "settings.py" e faça o que é citado como comentário na linha 172:
 
     # Comente o bloco de cima, da 156 à 170 e descomente as linhas 174 à 178 para usar arquivos locais
      
