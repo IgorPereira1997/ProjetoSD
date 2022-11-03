@@ -1,0 +1,51 @@
+version: "3.3"
+
+services:
+  postgres_db:
+    image: postgres:latest
+    hostname: postgres
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: "transportadora_vietna"
+      POSTGRES_PASSWORD: "admintransportadora"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+      - ./scripts/transportadora_vietna.sql:/docker-entrypoint-initdb.d/db.sql
+    networks:
+      - backend
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    hostname: pgadmin
+    container_name: pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "transportadoravietna@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+      # 10=DEBUG,20=INFO,25=SQL,30=WARNING,40=ERROR
+      PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: 40
+    depends_on:
+      - postgres_db
+    volumes:
+    - ./servers.json:/pgadmin4/servers.json
+    networks:
+      - backend
+
+  web:
+    build: .
+    image: web
+    command: python manage.py runserver 0.0.0.0:8000
+    hostname: web
+    container_name: web
+    restart: always
+    volumes:
+      - .:/code
+    networks:
+      - backend
+    depends_on:
+      - postgres_db
+
+networks: 
+  backend:
+    driver: bridge
