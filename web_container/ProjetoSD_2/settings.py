@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get("DEBUG", default=0))
+DEBUG = bool(os.environ.get("DEBUG"))
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 
@@ -152,7 +152,7 @@ USE_TZ = True
 # caminho padrão dos arquivos estáticos, modificado para ser resolvido pelo Amazon Web Services S3
 
 
-if os.environ.get("SECRET_KEY") == 1:
+if os.environ.get("USE_AWS") == 1:
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
@@ -168,7 +168,7 @@ else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
     MEDIA_URL = "/media/"
-    MEDIA_ROOT = BASE_DIR / "mediafiles"
+    MEDIA_ROOT = BASE_DIR / "media"
     MEDIA_LINK = '/media/'
 
 

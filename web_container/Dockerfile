@@ -11,7 +11,7 @@ COPY requirements.txt .
 
 RUN apk add --no-cache --virtual .build-deps gcc musl-dev libffi-dev postgresql-dev libxml2 libxslt-dev libmagic libpq-dev python3-dev
 RUN python -m pip install -r /code/requirements.txt --no-cache-dir
-
+RUN apk del .build-deps
 
 # copy entrypoint.sh
 COPY entrypoint.sh .

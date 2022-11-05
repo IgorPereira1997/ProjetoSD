@@ -60,11 +60,11 @@ services:
       - postgres_db
 
   nginx:
+    build: ./nginx_container
     hostname: nginx
     container_name: nginx
-    build: ./nginx_container
     volumes:
-      #- ./nginx_container/logs/:/home/code/web/logs.log
+      - ./nginx_container/logs:/home/code/web/logs
       - ./static:/home/code/web/staticfiles
       - ./media:/home/code/web/mediafiles
     ports:
