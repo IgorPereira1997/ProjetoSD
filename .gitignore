@@ -1,4 +1,4 @@
 */__pychache__/
 /ProjetoSD_2/.env
 .env*
-pgadata/
+postgres_container/pgadata/
