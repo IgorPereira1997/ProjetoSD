@@ -1,0 +1,46 @@
+/* estilos da listagem */
+main div#listagem_produtos {
+    width:100%;
+    margin:0 auto;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+main div#listagem_produtos ul {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+main div#listagem_produtos li {
+    font-family: sans-serif;
+    list-style: none;
+    width: 200px;
+}
+
+main div#listagem_produtos li.imagem {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+main div#listagem_produtos li h3 {
+    margin:0;
+}
+
+main div#listagem_produtos li img {
+    border:1px solid #ddd;
+    height: fit-content;   
+}
+
+main div#listagem_produtos h2{
+    width:70%;
+    justify-content: center;
+    align-items: center;
+    margin:150px auto 30px;
+    font-family: sans-serif;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 3px;
+    color: #9A9668;  
+}

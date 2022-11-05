@@ -1,0 +1,18 @@
+asgiref==3.3.4
+boto3==1.17.89
+cryptography==38.0.3
+defusedxml==0.7.1
+Django==3.2.4
+django-cleanup==5.2.0
+#django-heroku==0.3.1
+django-session-timeout==0.1.0
+django-storages==1.11.1
+gunicorn==20.1.0
+isodate==0.6.0 #
+lxml==4.6.3 #
+Pillow==9.3.0
+pycep-correios==5.1.0
+pycparser==2.20 #
+python-magic==0.4.27
+PyYAML==5.4.1 #
+psycopg2==2.9.5

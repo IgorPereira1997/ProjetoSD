@@ -7,9 +7,10 @@ services:
     hostname: postgres
     image: postgres:14.5-alpine
     env_file:
-        - ./.env.dev.db
+        - ./.env.prod.db
     volumes:
       - $PWD/postgres_container/pgdata:/var/lib/postgresql/data
+      - $PWD/postgres_container/backups/transportadora_vietna:/tmp/transportadora_vietna
       - $PWD/postgres_container/feedDB.sh:/docker-entrypoint-initdb.d/10-init.sh
       # if you want some data restore, point to your backup
       - $PWD/postgres_container/backups:/db_backup
@@ -26,34 +27,56 @@ services:
     container_name: pgadmin
     restart: always
     env_file:
-        - ./.env.dev.pgadmin
+        - ./.env.prod.pgadmin
     depends_on:
       - postgres_db
     volumes:
       - ./pgadmin_container/servers.json:/pgadmin4/servers.json
-      #- ./pgadmin_container/entrypoint.sh:/docker-entrypoint-initdb.d/10-entrypoint.sh
     ports:
       - "8081:80"
     networks:
       - backend
   web:
-    build: ./web_container
-    command: python manage.py runserver 0.0.0.0:8000
+    build: 
+      context: ./web_container
+      dockerfile: Dockerfile.prod
+    command: gunicorn ProjetoSD_2.wsgi:application --bind 0.0.0.0:8000
     hostname: web
     container_name: web
     restart: always
     volumes:
       - ./web_container:/code
-      #- ./web_container/entrypoint.sh:/docker-entrypoint-initdb.d/10-entrypoint.sh
+      - ./static:/home/code/web/staticfiles
+      - ./media:/home/code/web/mediafiles
     env_file:
-      - ./.env.dev
+      - ./.env.prod
     ports:
-      - "8080:8000"
+      - "8000:8000"
+    expose:
+      - 8000
     networks:
       - backend
     depends_on:
       - postgres_db
 
+  nginx:
+    hostname: nginx
+    container_name: nginx
+    build: ./nginx_container
+    volumes:
+      #- ./nginx_container/logs/:/home/code/web/logs.log
+      - ./static:/home/code/web/staticfiles
+      - ./media:/home/code/web/mediafiles
+    ports:
+      - 1337:80
+    networks:
+      - backend
+    depends_on:
+      - web
+
 networks: 
   backend:
     driver: bridge
+#volumes:
+#  static:
+#  media:
