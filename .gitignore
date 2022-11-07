@@ -2,4 +2,4 @@
 /ProjetoSD_2/.env
 .env*
 /postgres_container/pgdata/
-/nginx_container/logs/*
+/nginx_container/logs/logs.log
