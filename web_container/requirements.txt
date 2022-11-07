@@ -9,7 +9,7 @@ django-session-timeout==0.1.0
 django-storages==1.11.1
 gunicorn==20.1.0
 isodate==0.6.0 #
-lxml==4.6.3 #
+lxml==4.9.1 #
 Pillow==9.3.0
 pycep-correios==5.1.0
 pycparser==2.20 #
