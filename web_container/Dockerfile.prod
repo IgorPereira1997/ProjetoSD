@@ -46,7 +46,7 @@ RUN mkdir $APP_HOME/mediafiles
 WORKDIR $APP_HOME
 
 # install dependencies
-RUN apk add --no-cache --virtual .build-deps gcc musl-dev libffi-dev postgresql-dev libxml2 libxslt-dev libmagic libpq-dev python3-dev
+RUN apk add --no-cache libmagic libpq-dev
 COPY --from=builder /code/wheels /wheels
 COPY --from=builder /code/requirements.txt .
 RUN pip install --no-cache /wheels/*

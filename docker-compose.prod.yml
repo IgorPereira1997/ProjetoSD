@@ -46,8 +46,8 @@ services:
     restart: always
     volumes:
       - ./web_container:/code
-      - ./static:/home/code/web/staticfiles
-      - ./media:/home/code/web/mediafiles
+      - ./static:/code/staticfiles
+      - ./media:/code/mediafiles
     env_file:
       - ./.env.prod
     ports:
@@ -68,7 +68,8 @@ services:
       - ./static:/home/code/web/staticfiles
       - ./media:/home/code/web/mediafiles
     ports:
-      - 1337:80
+      - 80:80
+      - 443:443
     networks:
       - backend
     depends_on:

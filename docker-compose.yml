@@ -44,7 +44,8 @@ services:
     restart: always
     volumes:
       - ./web_container:/code
-      #- ./web_container/entrypoint.sh:/docker-entrypoint-initdb.d/10-entrypoint.sh
+      - ./static:/code/static
+      - ./media:/code/media
     env_file:
       - ./.env.dev
     ports:
