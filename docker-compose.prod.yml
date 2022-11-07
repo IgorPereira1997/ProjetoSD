@@ -46,8 +46,6 @@ services:
     restart: always
     volumes:
       - ./web_container:/code
-      - ./static:/code/staticfiles
-      - ./media:/code/mediafiles
     env_file:
       - ./.env.prod
     ports:
