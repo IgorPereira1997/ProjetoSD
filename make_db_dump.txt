@@ -1,0 +1,3 @@
+docker exec -i postgres pg_dump -U vtliqlvhugzosr ddi6bisncdt0sf > postgres-backup.sql
+
+#                                   usuário         nome do db       nome do arquivo

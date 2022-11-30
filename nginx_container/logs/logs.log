@@ -101,3 +101,5 @@
 2022/11/07 14:35:36 [error] 20#20: *14 open() "/home/app/web/mediafiles/images/product_images/Year1999Blend_Group_Smallb.jpg" failed (2: No such file or directory), client: 172.19.0.1, server: , request: "GET /media/images/product_images/Year1999Blend_Group_Smallb.jpg HTTP/1.1", host: "localhost", referrer: "http://localhost/listar_produtos/listar/"
 2022/11/07 14:35:36 [error] 21#21: *1 open() "/home/app/web/mediafiles/images/product_images/WinterBlend_Group_Smallb.jpg" failed (2: No such file or directory), client: 172.19.0.1, server: , request: "GET /media/images/product_images/WinterBlend_Group_Smallb.jpg HTTP/1.1", host: "localhost", referrer: "http://localhost/listar_produtos/listar/"
 2022/11/07 14:55:31 [info] 20#20: *1 client timed out (110: Operation timed out) while waiting for request, client: 172.20.0.1, server: 0.0.0.0:80
+2022/11/07 15:12:45 [info] 21#21: *2 client timed out (110: Operation timed out) while waiting for request, client: 172.22.0.1, server: 0.0.0.0:80
+2022/11/07 15:17:05 [info] 22#22: *8 client timed out (110: Operation timed out) while waiting for request, client: 172.22.0.1, server: 0.0.0.0:80
